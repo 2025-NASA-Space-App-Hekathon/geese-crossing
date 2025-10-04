@@ -2,8 +2,7 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { useFrame, useThree } from '@react-three/fiber';
-import { cartesianToLatLon, ClickInfo, getGlobeRotationForLatLon, isInSouthKorea } from '../../components/utils/globeMath';
-import { dlog, isDebug } from '../../components/utils/debugConfig';
+import { cartesianToLatLon, ClickInfo, getGlobeRotationForLatLon } from '../../components/utils/globeMath';
 import { SingleBandDataset } from '../../components/utils/textureLoaders';
 
 export default function EarthMesh({ texture, heightMap, autoRotate, rotationSpeed, onLocationClick, externalRef, initialFocus, mountainsDataset, segments = 96 }: {
@@ -78,7 +77,6 @@ export default function EarthMesh({ texture, heightMap, autoRotate, rotationSpee
         const clickInfo: ClickInfo = {
             latitude,
             longitude,
-            isKorea: isInSouthKorea(latitude, longitude),
             timestamp: Date.now(),
             localVector: {
                 x: normalizedLocalVector.x,
@@ -102,22 +100,9 @@ export default function EarthMesh({ texture, heightMap, autoRotate, rotationSpee
             clickInfo.mountainsPixelX = px;
             clickInfo.mountainsPixelY = py;
 
-            if (isDebug()) {
-                dlog('mountains sample', {
-                    lat: latitude.toFixed(3),
-                    lon: longitude.toFixed(3),
-                    px, py, val,
-                    uv: { u: u.toFixed(3), v: v.toFixed(3) },
-                    localVector: clickInfo.localVector
-                });
-            }
-
             // mountains.tif 값이 0보다 큰 경우에만 클릭 이벤트 발생
             if (val > 0) {
                 onLocationClick(clickInfo);
-            } else {
-                // 산이 아닌 지역 클릭 시 로그 출력 (디버그 모드에서만)
-                if (isDebug()) dlog('Non-mountain area clicked', val);
             }
         } else {
             // mountains dataset가 없는 경우 기본적으로 클릭 이벤트 발생

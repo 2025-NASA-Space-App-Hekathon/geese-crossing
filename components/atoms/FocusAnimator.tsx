@@ -76,7 +76,6 @@ export default function FocusAnimator({ globeRef, focusStateRef, setFocusMode }:
                 dlog('Focus complete');
             }
         } else if (st.mode === 'unfocusing') {
-            const startDistance = st.originalDistance ?? camera.position.length();
             if (st.startQuat && st.targetQuat) {
                 tmpQuat.current.copy(st.startQuat).slerp(st.targetQuat, k);
                 g.quaternion.copy(tmpQuat.current);
@@ -89,7 +88,7 @@ export default function FocusAnimator({ globeRef, focusStateRef, setFocusMode }:
                 g.rotation.y = sry + (trgy - sry) * k;
             }
             const dir = camera.position.clone().normalize();
-            const newDistance = targetDistance + (startDistance - targetDistance) * k;
+            const newDistance = targetDistance + (3 - targetDistance) * k;
             camera.position.copy(dir.multiplyScalar(newDistance));
             if (tRaw >= 1) {
                 st.mode = 'idle';

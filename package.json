@@ -9,8 +9,8 @@
         "lint": "next lint"
     },
     "dependencies": {
-        "@mantine/core": "7.0.0",
-        "@mantine/hooks": "7.0.0",
+        "@mantine/core": "8.3.0",
+        "@mantine/hooks": "8.3.0",
         "@react-three/drei": "9.48.3",
         "@react-three/fiber": "8.13.4",
         "@tabler/icons-react": "^3.35.0",

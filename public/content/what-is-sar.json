@@ -1,0 +1,200 @@
+{
+    "id": "what-is-sar",
+    "title": "What is SAR?",
+    "description": "Introduction to Synthetic Aperture Radar and related remote sensing concepts.",
+    "sections": [
+        {
+            "id": "whatis",
+            "title": "What is SAR?",
+            "level": 2,
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "Synthetic Aperture Radar (SAR) is an active remote sensing technique that transmits microwave pulses and records the energy scattered back from Earth's surface. Unlike optical sensors, SAR works day and night, through clouds, haze, and even vegetation or soil depending on the wavelength."
+                }
+            ]
+        },
+        {
+            "id": "why-synthetic-aperture",
+            "title": "Why 'Synthetic Aperture'?",
+            "level": 3,
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "The angular resolution follows: θ ~ λ / D. For λ = 5 cm, achieving 10 m resolution would require a 4 km antenna. SAR synthesizes signals along the flight path, forming a virtual large antenna and enabling fine resolution imaging."
+                }
+            ]
+        },
+        {
+            "id": "flight-geometry-distortions",
+            "title": "Flight Geometry & Distortions",
+            "level": 3,
+            "content": [
+                {
+                    "type": "list",
+                    "style": "unordered",
+                    "items": [
+                        "Slant range: line-of-sight distance measured by radar.",
+                        "Ground range: projection of slant range onto the surface.",
+                        "Along-track: parallel to flight path; Across-track: perpendicular.",
+                        "Layover and Shadow: distortions caused by terrain relief."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "wavelengths",
+            "title": "Wavelengths",
+            "level": 3,
+            "content": [
+                {
+                    "type": "list",
+                    "style": "unordered",
+                    "items": [
+                        "X-band (~3 cm): canopy tops, but cannot penetrate dense forests.",
+                        "L-band (~23 cm): penetrates through vegetation, sensitive to trunks and ground.",
+                        "P-band (~1 m): deeper penetration, used in archaeology and soil studies."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "polarization-scattering",
+            "title": "Polarization & Scattering",
+            "level": 3,
+            "content": [
+                {
+                    "type": "list",
+                    "style": "unordered",
+                    "items": [
+                        "VV: smooth bare soil or water surfaces.",
+                        "VH/HV: volume scattering from leaves and branches.",
+                        "HH: double-bounce scattering from trunks or man-made structures."
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "speckle",
+            "title": "Speckle",
+            "level": 3,
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "Speckle is grainy noise-like pattern caused by interference from many small scatterers. It is reproducible and can be reduced using multi-look averaging or repeated observations."
+                }
+            ]
+        },
+        {
+            "id": "resolution-vs-pixel-size",
+            "title": "Resolution vs Pixel Size",
+            "level": 3,
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "Spatial resolution is the true physical sensor capability. Pixel size is the spacing in the processed image grid. They are related but not identical."
+                }
+            ]
+        },
+        {
+            "id": "insar",
+            "title": "InSAR (Interferometric SAR)",
+            "level": 3,
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "By comparing the phase of radar signals from at least two acquisitions, distances can be measured with centimeter precision. Interferograms reveal surface changes such as earthquakes, glacier motion, or subsidence."
+                },
+                {
+                    "type": "paragraph",
+                    "text": "Workflow: raw signal → calibration → interferogram → analysis."
+                }
+            ]
+        },
+        {
+            "id": "references",
+            "title": "References",
+            "level": 4,
+            "content": [
+                {
+                    "type": "references",
+                    "items": [
+                        {
+                            "label": "NASA Earthdata - Remote Sensing Basics",
+                            "url": "https://www.earthdata.nasa.gov/learn/earth-observation-data-basics/remote-sensing"
+                        },
+                        {
+                            "label": "NASA Earthdata - Synthetic Aperture Radar (SAR)",
+                            "url": "https://www.earthdata.nasa.gov/learn/earth-observation-data-basics/sar"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "data-sources",
+            "title": "Data Sources",
+            "level": 2,
+            "content": []
+        },
+        {
+            "id": "dem",
+            "title": "Digital Elevation Model (DEM)",
+            "level": 3,
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "To analyze mountain structure and surface topography, we use Digital Elevation Models (DEMs) available through NASA's Earthdata Search. In this project, we employ DEM products with ~1 km spatial resolution."
+                },
+                {
+                    "type": "paragraph",
+                    "text": "DEMs are generated by combining remote sensing data (e.g., radar altimetry, optical stereoscopy, and interferometric SAR) into a continuous gridded representation of Earth's surface elevation. Because radar-based DEMs rely on active measurements (microwave pulses transmitted and received), they provide consistent height information independent of sunlight or weather conditions."
+                },
+                {
+                    "type": "paragraph",
+                    "text": "Using DEMs ensures that we can extract reliable elevation baselines to normalize SAR backscatter, correct for terrain distortions, and interpret slope-dependent scattering patterns across different mountain ranges."
+                }
+            ]
+        },
+        {
+            "id": "sentinel-1",
+            "title": "Sentinel-1 SAR (C-band)",
+            "level": 3,
+            "content": [
+                {
+                    "type": "paragraph",
+                    "text": "For radar backscatter analysis, our main dataset comes from the Sentinel-1 mission, part of the European Space Agency's Copernicus program. Sentinel-1A (launched 2014) and Sentinel-1B (2016-2022) operate in the C-band (~5.6 cm wavelength), making them highly suitable for mapping vegetation, soil moisture, snow cover, and surface deformation."
+                },
+                {
+                    "type": "paragraph",
+                    "text": "Sentinel-1 features include:"
+                },
+                {
+                    "type": "list",
+                    "style": "unordered",
+                    "items": [
+                        "All-weather, day-and-night imaging with Synthetic Aperture Radar (SAR).",
+                        "Multiple polarization modes (VV, VH, HH, HV) for structural and surface characterization.",
+                        "Interferometric Wide Swath (IW) mode with ~5 m x 20 m resolution over 250 km swath.",
+                        "Free and open data access, enabling global-scale monitoring and reproducible science."
+                    ]
+                },
+                {
+                    "type": "paragraph",
+                    "text": "By combining DEM-derived topography with Sentinel-1 C-band SAR backscatter, we can analyze how elevation, slope, and roughness control radar signals across different mountain systems worldwide."
+                }
+            ]
+        },
+        {
+            "id": "footer",
+            "title": "Footer",
+            "level": 2,
+            "content": [
+                {
+                    "type": "footer",
+                    "text": "© 2025 Global Mountain SAR Project"
+                }
+            ]
+        }
+    ]
+}

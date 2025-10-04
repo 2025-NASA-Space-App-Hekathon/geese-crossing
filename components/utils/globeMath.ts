@@ -29,20 +29,11 @@ export function getGlobeRotationForLatLon(latitude: number, longitude: number) {
 export interface ClickInfo {
     latitude: number;
     longitude: number;
-    isKorea: boolean;
     timestamp: number;
     mountainsValue?: number; // raw mountains.tif value at click
     mountainsPixelX?: number; // pixel x in mountains.tif
     mountainsPixelY?: number; // pixel y in mountains.tif
     localVector?: { x: number; y: number; z: number }; // normalized local sphere vector (before globe rotation application)
-}
-
-export function isInSouthKorea(lat: number, lon: number): boolean {
-    const minLat = 32.5;
-    const maxLat = 39.0;
-    const minLon = 124.0;
-    const maxLon = 132.0;
-    return lat >= minLat && lat <= maxLat && lon >= minLon && lon <= maxLon;
 }
 
 /**

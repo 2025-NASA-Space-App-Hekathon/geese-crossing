@@ -9,11 +9,6 @@ import { useMountainStore } from '../components/store/mountainStore';
 const EarthGlobe = dynamic(() => import('../components/organisms/EarthGlobe'), { ssr: false });
 
 export default function Page() {
-    const [wireframe, setWireframe] = useState(false);
-    const [color, setColor] = useState('#4ade80');
-    const [mode, setMode] = useState<'cube' | 'earth'>('earth');
-    const [earthTex, setEarthTex] = useState<'tif' | 'jpg'>('jpg');
-
     const [opened, { toggle }] = useDisclosure();
 
     const { selected: selectedMountain } = useMountainStore();
@@ -25,7 +20,10 @@ export default function Page() {
             navbar={{
                 width: 300,
                 breakpoint: 'sm',
-                collapsed: { mobile: !opened, desktop: !opened },
+                collapsed: {
+                    mobile: !opened,
+                    desktop: selectedMountain?.id ? false : true
+                },
             }}
             padding={0}
             styles={{
@@ -43,18 +41,20 @@ export default function Page() {
                 <Stack>
                     <Card style={{ opacity: 0.9 }}>
                         <Title order={4}>
-                            {selectedMountain ? selectedMountain.name : 'None'}
+                            {selectedMountain ? selectedMountain.name : 'No mountain selected'}
                         </Title>
                     </Card>
 
-                    <Card style={{ opacity: 0.9 }}>
-                        <Text size="sm">
-                            Use the header menu to toggle wireframe mode, change color, and switch between cube and earth modes.
-                        </Text>
-                        <Text size="sm">
-                            In Earth mode, you can also choose between .tif and .jpg textures for the globe.
-                        </Text>
-                    </Card>
+                    {selectedMountain && selectedMountain.metadata && (
+                        <Card style={{ opacity: 0.9 }}>
+                            <Text>
+                                Latitude: {selectedMountain.metadata.latitude.toFixed(4)}°
+                            </Text>
+                            <Text>
+                                Longitude: {selectedMountain.metadata.longitude.toFixed(4)}°
+                            </Text>
+                        </Card>
+                    )}
                 </Stack>
             </AppShell.Navbar>
             <AppShell.Header>
