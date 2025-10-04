@@ -1,29 +1,58 @@
 "use client";
 import React, { useState } from 'react';
 import dynamic from 'next/dynamic';
-import { Container, Title, Group, Button, ColorInput, Switch, Text } from '@mantine/core';
+import { Text, AppShell } from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
+import Header from '../components/organisms/header/Header';
 
-const ThreeScene = dynamic(() => import('../components/ThreeScene'), { ssr: false });
+const EarthGlobe = dynamic(() => import('../components/organisms/EarthGlobe'), { ssr: false });
 
 export default function Page() {
     const [wireframe, setWireframe] = useState(false);
     const [color, setColor] = useState('#4ade80');
+    const [mode, setMode] = useState<'cube' | 'earth'>('earth');
+    const [earthTex, setEarthTex] = useState<'tif' | 'jpg'>('jpg');
+
+    const [opened, { toggle }] = useDisclosure();
 
     return (
-        <Container size="lg" pt={24}>
-            <Group justify="space-between" align="center">
-                <Title order={2}>Geese Crossing — Mantine + Three.js (App Router)</Title>
-                <Group>
-                    <Text size="sm">Wireframe</Text>
-                    <Switch checked={wireframe} onChange={(e) => setWireframe(e.currentTarget.checked)} />
-                </Group>
-            </Group>
-            <Group gap="md" mt={12} mb={12}>
-                <Button onClick={() => setWireframe(s => !s)}>Toggle Wireframe</Button>
-                <ColorInput value={color} onChange={setColor} label="Cube color" format="hex" disallowInput={false} />
-            </Group>
-            <ThreeScene wireframe={wireframe} color={color} />
-            <Text size="xs" c="dimmed" mt={8}>The 3D canvas is rendered with react-three-fiber (three.js) and controlled with Mantine UI (App Router).</Text>
-        </Container>
+        <AppShell
+            header={{ height: 60 }}
+            footer={{ height: 60 }}
+            padding={0}
+            styles={{
+                main: {
+                    padding: 0,
+                    overflow: 'hidden',
+                    position: 'relative'
+                }
+            }}
+            h={'100dvh'}
+        >
+            <AppShell.Header>
+                <Header
+                    opened={opened}
+                    toggle={toggle}
+                />
+            </AppShell.Header>
+            <AppShell.Main
+                pos="relative"
+                w="100%"
+                h="100%"
+                style={{
+                    padding: 0,
+                    margin: 0,
+                    overflow: 'hidden',
+                    height: 'calc(100dvh - 120px)' // header(60px) + footer(60px) 제외
+                }}
+            >
+                <EarthGlobe />
+            </AppShell.Main>
+            <AppShell.Footer>
+                <Text size="xs" c="dimmed" mt={8}>
+                    The 3D canvas is rendered with react-three-fiber (three.js) and controlled with Mantine UI (App Router).
+                </Text>
+            </AppShell.Footer>
+        </AppShell>
     );
 }
