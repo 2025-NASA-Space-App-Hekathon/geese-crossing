@@ -8,8 +8,8 @@ export default function CameraSetup({ onReady }: {
 }) {
     const { camera } = useThree();
     useEffect(() => {
-        camera.position.set(0, 0, 3);
-        camera.lookAt(0, 0, 0);
+        camera.position.set(0, 0, 4);
+        // camera.lookAt(0, 0, 0);
         camera.updateProjectionMatrix();
         onReady?.(camera as THREE.PerspectiveCamera);
     }, [camera, onReady]);

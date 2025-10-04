@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useRef, useState } from 'react';
-import { useThree, useFrame } from '@react-three/fiber';
+import { useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 import { getGlobeRotationForLatLon } from '../../components/utils/globeMath';
 import { Canvas } from '@react-three/fiber';
@@ -12,6 +12,7 @@ import CameraFollowingLight from '../../components/atoms/CameraFollowingLight';
 import ClickInfoPanel from '../../components/molecules/ClickInfoPanel';
 import { ClickInfo } from '../../components/utils/globeMath';
 import { loadGeoTiffToTexture, loadStandardImage, loadGeoTiffHeightMap } from '../../components/utils/textureLoaders';
+import FocusAnimator from '../atoms/FocusAnimator';
 
 export default function EarthGlobe() {
     const DEBUG = true; // 디버그 로깅 토글
@@ -22,8 +23,19 @@ export default function EarthGlobe() {
     const [heightMap, setHeightMap] = useState<THREE.Texture | null>(null);
     const [clickInfo, setClickInfo] = useState<ClickInfo | null>(null);
     const globeRef = useRef<THREE.Mesh | null>(null);
+    // 가상 지구 회전 변화 (라디안)
+    const [rotationDelta, setRotationDelta] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
     // mode: 'idle' | 'focusing' | 'focused' | 'unfocusing'
-    const focusState = useRef<{ mode: string; progress: number; startRotX?: number; startRotY?: number; targetRotX?: number; targetRotY?: number }>({ mode: 'idle', progress: 0 });
+    const focusState = useRef<{
+        mode: string;
+        progress: number;
+        startRotX?: number;
+        startRotY?: number;
+        targetRotX?: number;
+        targetRotY?: number;
+        startZ?: number; // legacy (z-axis value) – kept for backward compatibility
+        originalDistance?: number; // 실제 카메라-지구중심 거리 (포커스 전)
+    }>({ mode: 'idle', progress: 0 });
     const [focusMode, setFocusMode] = useState<'idle' | 'focusing' | 'focused' | 'unfocusing'>('idle');
     // 초기 기본 회전 (대한민국 중앙)
     const initialBaseRotation = getGlobeRotationForLatLon(37.5, 127);
@@ -52,7 +64,7 @@ export default function EarthGlobe() {
                 }
             });
         const hmStart = performance.now();
-        loadGeoTiffHeightMap('/earth.tif', { invert: true })
+        loadGeoTiffHeightMap('/earth1.tif', { invert: true })
             .then(h => { if (!cancelled) { dlog('HeightMap load success', { ms: Math.round(performance.now() - hmStart) }); setHeightMap(h); } })
             .catch(e => { if (!cancelled) { console.warn('Height map load failed', e); dlog('HeightMap load failed', e); } });
         return () => { cancelled = true; };
@@ -74,6 +86,46 @@ export default function EarthGlobe() {
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
+    const controlsRef = useRef<any>(null);
+    const sceneCameraRef = useRef<THREE.Camera | null>(null); // Canvas 내부 카메라 캡쳐용
+    // 축(axes) 표시 토글
+    const [showAxes, setShowAxes] = useState<boolean>(true);
+    const axesHelperRef = useRef<THREE.AxesHelper | null>(null);
+    useEffect(() => {
+        // 축이 안 보이던 이유:
+        // 1) 축 길이가 지구 반지름(1.5)와 동일해서 선이 전부 구 내부에 가려짐
+        // 2) effect 가 최초 렌더 때 globeRef.current 가 아직 설정 안 된 시점에 실행될 수 있음
+        // 해결:
+        // - 길이를 반지름보다 크게(2.2) 설정
+        // - texture 로딩 이후(지구 mesh 초기화 후) 한 번 더 실행되도록 dependency 에 texture 포함
+        if (!axesHelperRef.current) {
+            axesHelperRef.current = new THREE.AxesHelper(2.2); // 지구 반지름(1.5)보다 크게
+            axesHelperRef.current.name = 'GlobeAxesHelper';
+            axesHelperRef.current.raycast = () => { };
+        }
+        const attachIfPossible = () => {
+            if (!globeRef.current || !axesHelperRef.current) return;
+            if (showAxes) {
+                if (!globeRef.current.children.includes(axesHelperRef.current)) {
+                    globeRef.current.add(axesHelperRef.current);
+                }
+            } else {
+                if (globeRef.current.children.includes(axesHelperRef.current)) {
+                    globeRef.current.remove(axesHelperRef.current);
+                }
+            }
+        };
+        attachIfPossible();
+        // 한 번 더 지연 체크 (ref 세팅 지연 대비)
+        const tid = setTimeout(attachIfPossible, 50);
+        return () => {
+            clearTimeout(tid);
+            if (globeRef.current && axesHelperRef.current && globeRef.current.children.includes(axesHelperRef.current)) {
+                globeRef.current.remove(axesHelperRef.current);
+            }
+        };
+    }, [showAxes, texture]);
+
     return (
         <Box
             ref={containerRef}
@@ -94,7 +146,7 @@ export default function EarthGlobe() {
                 gl={{ antialias: true, alpha: false, preserveDrawingBuffer: false }}
                 resize={{ scroll: false, debounce: { scroll: 50, resize: 0 } }}
             >
-                <CameraSetup onReady={(camera) => { /* reserved for future */ }} />
+                {/* <CameraSetup onReady={(camera) => { }} /> */}
                 <ambientLight intensity={0.3} />
                 <CameraFollowingLight />
                 <EarthMesh
@@ -104,12 +156,18 @@ export default function EarthGlobe() {
                     rotationSpeed={0.01}
                     onLocationClick={(info) => {
                         setClickInfo(info);
-                        dlog('Click', { lat: info.latitude.toFixed(3), lon: info.longitude.toFixed(3), isKorea: info.isKorea, currentMode: focusState.current.mode });
-                        // Korea 클릭시에만 포커스. 다른 지역 클릭은 무시 (정보 패널만 업데이트 가능)
-                        // if (!info.isKorea) {
-                        //     dlog('Non-Korea click -> no focus action'); 
-                        //     return;
-                        // }
+                        dlog('Click', {
+                            lat: info.latitude.toFixed(3),
+                            lon: info.longitude.toFixed(3),
+                            isKorea: info.isKorea,
+                            currentMode: focusState.current.mode,
+                            current: globeRef.current ? { rotX: globeRef.current.rotation.x.toFixed(4), rotY: globeRef.current.rotation.y.toFixed(4) } : null
+                        });
+                        // Korea 클릭시에만 포커스. 다른 지역 클릭은 완전 무시
+                        if (!info.isKorea) {
+                            dlog('Non-Korea click -> ignore (no focus)');
+                            return;
+                        }
                         // 이미 focusing/focused 상태라면 재시작하지 않음
                         if (focusState.current.mode === 'focusing' || focusState.current.mode === 'focused') {
                             dlog('Already focusing/focused -> ignore'); return;
@@ -121,18 +179,26 @@ export default function EarthGlobe() {
 
                         if (info.isKorea) {
                             const base = getGlobeRotationForLatLon(info.latitude, info.longitude);
-                            const liftAngle = 0.9; // 조정 가능 (라디안)
-                            const targetRotX = base.rotationX - liftAngle;
-                            const targetRotY = base.rotationY;
+                            // const targetRotY = initialBaseRotation.rotationY - rotationDelta.y; // 현재 회전 변화 반영
+                            // const targetRotX = initialBaseRotation.rotationX; // 현재 회전 변화 반영
+                            const targetRotY = initialBaseRotation.rotationY - rotationDelta.y; // 현재 회전 변화 반영
+                            const targetRotX = initialBaseRotation.rotationX + rotationDelta.x; // 현재 회전 변화 반영
                             dlog('Focus start', {
                                 baseRotX: base.rotationX.toFixed(4), baseRotY: base.rotationY.toFixed(4),
-                                targetRotX: targetRotX.toFixed(4), targetRotY: targetRotY.toFixed(4), liftAngle
+                                targetRotX: targetRotX.toFixed(4), targetRotY: targetRotY.toFixed(4)
                             });
+                            // 지구 중심 위치와 카메라 거리 측정
+                            const globeCenter = globeRef.current.getWorldPosition(new THREE.Vector3());
+                            const cam = sceneCameraRef.current;
+                            const camZ = cam ? cam.position.z : 0;
+                            const originalDistance = cam ? cam.position.distanceTo(globeCenter) : 4;
                             focusState.current = {
                                 mode: 'focusing',
                                 progress: 0,
                                 startRotX: globeRef.current.rotation.x,
                                 startRotY: globeRef.current.rotation.y,
+                                startZ: camZ,
+                                originalDistance,
                                 targetRotX,
                                 targetRotY
                             };
@@ -141,11 +207,41 @@ export default function EarthGlobe() {
                     }}
                     externalRef={globeRef}
                 />
-                <OrbitControls enablePan={false} enableRotate={focusMode === 'idle'} enableZoom={focusMode === 'idle'} />
+                {/* 카메라 객체를 상위 ref에 저장 */}
+                <CaptureCamera onCapture={(cam) => { sceneCameraRef.current = cam; }} />
+                <OrbitControls ref={controlsRef} enablePan={false} enableRotate={focusMode === 'idle'} enableZoom={focusMode === 'idle'} />
                 {/* 포커싱 애니메이션 */}
                 <FocusAnimator globeRef={globeRef} focusStateRef={focusState} setFocusMode={setFocusMode} />
+                {/* 회전 변화 추적기 */}
+                <RotationTracker
+                    globeRef={globeRef}
+                    controlsRef={controlsRef}
+                    initialMeshRotation={{ x: initialBaseRotation.rotationX, y: initialBaseRotation.rotationY }}
+                    onDelta={(d) => setRotationDelta(d)}
+                />
             </Canvas>
             <ClickInfoPanel info={clickInfo} onClose={() => setClickInfo(null)} />
+            {/* 회전 변화 표시 (초기 기준) */}
+            <div
+                style={{
+                    position: 'absolute',
+                    top: 8,
+                    right: 8,
+                    fontSize: 12,
+                    lineHeight: 1.4,
+                    background: 'rgba(0,0,0,0.55)',
+                    color: '#fff',
+                    padding: '6px 10px',
+                    borderRadius: 6,
+                    fontFamily: 'monospace',
+                    zIndex: 1200,
+                    pointerEvents: 'none'
+                }}
+            >
+                <div style={{ opacity: 0.75 }}>Virtual Globe Rotation Δ (rad)</div>
+                <div>ΔX: {rotationDelta.x.toFixed(3)}</div>
+                <div>ΔY: {rotationDelta.y.toFixed(3)}</div>
+            </div>
             {(focusMode === 'focused' || focusMode === 'focusing') && (
                 <button
                     onClick={() => {
@@ -153,11 +249,14 @@ export default function EarthGlobe() {
                         if (focusState.current.mode === 'unfocusing') return; // already
                         // 수동 축소
                         dlog('Unfocus button clicked', { from: focusState.current.mode });
+                        const preservedStartZ = focusState.current.startZ ?? (sceneCameraRef.current ? sceneCameraRef.current.position.z : 4);
                         focusState.current = {
                             mode: 'unfocusing',
                             progress: 0,
                             startRotX: globeRef.current.rotation.x,
                             startRotY: globeRef.current.rotation.y,
+                            startZ: preservedStartZ,
+                            originalDistance: focusState.current.originalDistance,
                             targetRotX: initialBaseRotation.rotationX,
                             targetRotY: initialBaseRotation.rotationY
                         };
@@ -178,6 +277,24 @@ export default function EarthGlobe() {
                     }}
                 >축소</button>
             )}
+            {/* 축 표시 토글 버튼 */}
+            <button
+                onClick={() => setShowAxes(v => !v)}
+                style={{
+                    position: 'absolute',
+                    bottom: 16,
+                    left: 16,
+                    zIndex: 1100,
+                    background: 'rgba(0,0,0,0.55)',
+                    color: 'white',
+                    border: '1px solid rgba(255,255,255,0.2)',
+                    padding: '6px 12px',
+                    borderRadius: 6,
+                    cursor: 'pointer',
+                    fontSize: 12,
+                    backdropFilter: 'blur(4px)'
+                }}
+            >{showAxes ? '축 숨기기' : '축 보이기'}</button>
             {error && (
                 <div style={{ position: 'absolute', top: 8, left: 8, color: 'red', fontSize: 12, zIndex: 1000, backgroundColor: 'rgba(0,0,0,0.7)', padding: '4px 8px', borderRadius: '4px' }}>Error: {error}</div>
             )}
@@ -185,71 +302,48 @@ export default function EarthGlobe() {
     );
 }
 
-// FocusAnimator: 한국 클릭 시 카메라 줌 + 구 살짝 아래로 이동
-function FocusAnimator({ globeRef, focusStateRef, setFocusMode }: {
-    globeRef: React.RefObject<THREE.Mesh | null>;
-    focusStateRef: React.MutableRefObject<{ mode: string; progress: number; startRotX?: number; startRotY?: number; targetRotX?: number; targetRotY?: number; }>;
-    setFocusMode: React.Dispatch<React.SetStateAction<'idle' | 'focusing' | 'focused' | 'unfocusing'>>;
-}) {
+// Canvas 내부에서 three.js camera를 참조용 ref에 저장
+function CaptureCamera({ onCapture }: { onCapture: (c: THREE.Camera) => void }) {
     const { camera } = useThree();
-    const DEBUG = true;
-    const dlog = (...args: any[]) => { if (DEBUG) console.log('[FocusAnimator]', ...args); };
-    const lastStepRef = useRef<number>(-1);
-    const lastModeRef = useRef<string>('idle');
-    useFrame((_, delta: number) => {
-        const st = focusStateRef.current;
-        if (st.mode === 'idle') return;
-        const duration = 1.1; // 초
-        st.progress += delta / duration;
-        const tRaw = Math.min(1, st.progress);
-        const ease = (x: number) => x * x * (3 - 2 * x); // smoothstep
-        const k = ease(tRaw);
+    useEffect(() => { onCapture(camera); }, [camera, onCapture]);
+    return null;
+}
 
-        const startZ = 3;
-        const focusZ = 1.5; // 더 가까이
-        const startGlobeY = 0;
-        const focusGlobeY = -1.5; // 지구 1/3 정도만 위로 보이게 더 내림
-
-        const g = globeRef.current;
-
-        const stepPct = Math.floor(tRaw * 100);
-        if (lastModeRef.current !== st.mode) {
-            dlog('Mode change', { from: lastModeRef.current, to: st.mode });
-            lastModeRef.current = st.mode;
+// OrbitControls 기반 '가상 지구 회전' 추적 컴포넌트
+// 카메라가 도는 것을 지구가 반대로 돈 것으로 간주하여 Δ를 계산
+function RotationTracker({ globeRef, controlsRef, initialMeshRotation, onDelta }: {
+    globeRef: React.RefObject<THREE.Mesh | null>;
+    controlsRef: React.RefObject<any>;
+    initialMeshRotation: { x: number; y: number };
+    onDelta: (d: { x: number; y: number }) => void;
+}) {
+    const lastSent = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
+    const baseAnglesRef = useRef<{ azimuthal: number; polar: number } | null>(null);
+    const norm = (r: number) => {
+        const TWO = Math.PI * 2;
+        return ((r + Math.PI) % TWO + TWO) % TWO - Math.PI; // -PI~PI
+    };
+    useFrame(() => {
+        const ctrl = controlsRef.current;
+        if (!ctrl) return;
+        // THREE.OrbitControls 내부의 구면 좌표 접근 (비공식 속성: getPolarAngle / getAzimuthalAngle가 있으면 사용)
+        const azimuthal = typeof ctrl.getAzimuthalAngle === 'function' ? ctrl.getAzimuthalAngle() : (ctrl as any).azimuthalAngle || 0;
+        const polar = typeof ctrl.getPolarAngle === 'function' ? ctrl.getPolarAngle() : (ctrl as any).polarAngle || 0;
+        if (!baseAnglesRef.current) {
+            baseAnglesRef.current = { azimuthal, polar };
         }
-        if (stepPct % 10 === 0 && stepPct !== lastStepRef.current) {
-            lastStepRef.current = stepPct;
-            const gpos = g ? { y: g.position.y.toFixed(3) } : {};
-            dlog('Progress', { mode: st.mode, pct: stepPct, k: k.toFixed(3), camZ: camera.position.z.toFixed(3), globeY: gpos });
+        const dazim = norm(azimuthal - baseAnglesRef.current.azimuthal);
+        const dpolar = norm(polar - baseAnglesRef.current.polar);
+        // 카메라가 +azimuthal 로 돈 것은 지구가 -Y 로 돈 것과 유사
+        // ΔY: -dazim, ΔX: dpolar (위/아래 기울임 느낌)
+        const dx = dpolar; // x축 회전 변화(위/아래)
+        const dy = -dazim; // y축 회전 변화(좌/우)
+        if (Math.abs(dx - lastSent.current.x) > 0.004 || Math.abs(dy - lastSent.current.y) > 0.004) {
+            lastSent.current = { x: dx, y: dy };
+            onDelta({ x: dx, y: dy });
         }
-
-        if (st.mode === 'focusing') {
-            if (g && st.startRotX !== undefined && st.targetRotX !== undefined) {
-                const rotX = st.startRotX + (st.targetRotX - st.startRotX) * k;
-                const rotY = st.startRotY! + (st.targetRotY! - st.startRotY!) * k;
-                g.rotation.x = rotX;
-                g.rotation.y = rotY;
-            }
-            camera.position.z = startZ + (focusZ - startZ) * k;
-            if (g) g.position.y = startGlobeY + (focusGlobeY - startGlobeY) * k;
-            if (tRaw >= 1) { st.mode = 'focused'; st.progress = 0; setFocusMode('focused'); dlog('Focus complete'); }
-        } else if (st.mode === 'unfocusing') {
-            if (g && st.startRotX !== undefined && st.targetRotX !== undefined) {
-                const rotX = st.startRotX + (st.targetRotX - st.startRotX) * k;
-                const rotY = st.startRotY! + (st.targetRotY! - st.startRotY!) * k;
-                g.rotation.x = rotX;
-                g.rotation.y = rotY;
-            }
-            // 역방향 (k 대신 (1-k))
-            camera.position.z = focusZ + (startZ - focusZ) * k;
-            if (g) g.position.y = focusGlobeY + (0 - focusGlobeY) * k;
-            if (tRaw >= 1) { st.mode = 'idle'; st.progress = 0; setFocusMode('idle'); dlog('Unfocus complete'); }
-        } else if (st.mode === 'focused') {
-            // 유지 상태
-            camera.position.z = focusZ;
-            if (g) g.position.y = focusGlobeY;
-        }
-        camera.updateProjectionMatrix();
     });
     return null;
 }
+
+

@@ -81,7 +81,7 @@ export default function EarthMesh({ texture, heightMap, autoRotate, rotationSpee
         const dx = e.clientX - pointerDownRef.current.x;
         const dy = e.clientY - pointerDownRef.current.y;
         if (Math.sqrt(dx * dx + dy * dy) > DRAG_THRESHOLD_PX) {
-            movedRef.current = true; // 드래그로 판정
+            movedRef.current = true; // 드래그로 판정 (회전은 OrbitControls 담당)
         }
     };
 
@@ -90,7 +90,6 @@ export default function EarthMesh({ texture, heightMap, autoRotate, rotationSpee
         const wasMoved = movedRef.current;
         pointerDownRef.current = null;
         if (!wasMoved) {
-            // 실제 클릭으로 판정
             resolveClick();
         }
     };
