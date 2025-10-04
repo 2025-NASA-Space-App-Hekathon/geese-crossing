@@ -1,60 +1,59 @@
 "use client";
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import * as THREE from 'three';
+import { useMountainStore } from '../../components/store/mountainStore';
+
+export interface MountainPathPoint { lon: number; lat: number }
+export interface MountainRangeData { id: string; name?: string; paths: MountainPathPoint[][] }
 
 interface MountainRangesProps {
-    radius?: number; // sphere radius
-    url?: string; // geojson path
+    ranges?: MountainRangeData[]; // 외부에서 이미 제공되는 산맥 분류 데이터
+    radius?: number;
     visible?: boolean;
     color?: string;
-    lineWidth?: number; // (WebGL1 ignored, semantic only)
-    simplifyModulo?: number; // sample every Nth point for performance
-    altitudeOffset?: number; // lift above surface to avoid z-fighting
+    altitudeOffset?: number;
+    thickness?: number; // 라인 두께 흉내 (확장 라인)
+    attachTo?: React.RefObject<THREE.Object3D | null>;
     onRangeClick?: (info: { name?: string; centroid: { lat: number; lon: number } }) => void;
-    attachTo?: React.RefObject<THREE.Object3D | null>; // parent (globe) to follow rotation
-    showLabels?: boolean; // 텍스트 라벨 표시 여부
-    labelColor?: string; // 라벨 폰트 색
-    labelBackground?: string; // 라벨 배경 색 (rgba)
-    labelSize?: number; // 폰트 크기(px)
-    labelAltitudeOffset?: number; // 기본 라인보다 추가 상승 높이
+    showLabels?: boolean;
+    labelColor?: string;
+    labelBackground?: string;
+    labelSize?: number;
+    labelAltitudeOffset?: number;
 }
 
-type GeoJSONPosition = [number, number]; // [lon, lat]
-
 export default function MountainRanges({
+    ranges = [],
     radius = 1.5,
-    url = '/mountains.json',
     visible = true,
-    color = '#ffcc66',
-    lineWidth = 1,
-    simplifyModulo = 1,
+    color = '#2d8bff',
     altitudeOffset = 0.04,
-    onRangeClick,
+    thickness = 0,
     attachTo,
+    onRangeClick,
     showLabels = true,
     labelColor = '#ffffff',
     labelBackground = 'rgba(0,0,0,0.55)',
-    labelSize = 28,
+    labelSize = 24,
     labelAltitudeOffset = 0.08
 }: MountainRangesProps) {
     const groupRef = useRef<THREE.Group>(null);
-    const [loaded, setLoaded] = useState(false);
-    const [error, setError] = useState<string | null>(null);
-    const featureMetaRef = useRef<Array<{ name?: string; centroid: { lat: number; lon: number }; objects: THREE.Object3D[] }>>([]);
+    const allLineObjectsRef = useRef<THREE.Line[]>([]);
     const labelSpritesRef = useRef<THREE.Sprite[]>([]);
+    const selected = useMountainStore(s => s.selected);
 
-    // Convert lon/lat (deg) to 3D position on sphere (matching globeMath.ts conventions)
+    // Height sampling (DataTexture assumed). Returns 0..1 or 0 if not available
     const lonLatToVec3 = (lonDeg: number, latDeg: number): THREE.Vector3 => {
-        // Apply texture shift of +90 deg used elsewhere
         const SHIFT_DEG = 90;
         const rawLon = (lonDeg + SHIFT_DEG) * Math.PI / 180;
         const lat = latDeg * Math.PI / 180;
         const r = radius + altitudeOffset;
         const cosLat = Math.cos(lat);
-        const x = cosLat * Math.sin(rawLon) * r;
-        const y = Math.sin(lat) * r;
-        const z = cosLat * Math.cos(rawLon) * r;
-        return new THREE.Vector3(x, y, z);
+        return new THREE.Vector3(
+            cosLat * Math.sin(rawLon) * r,
+            Math.sin(lat) * r,
+            cosLat * Math.cos(rawLon) * r
+        );
     };
 
     // 라벨용 위치 (조금 더 띄워서)
@@ -64,13 +63,11 @@ export default function MountainRanges({
         const lat = latDeg * Math.PI / 180;
         const baseR = radius + altitudeOffset + labelAltitudeOffset;
         const cosLat = Math.cos(lat);
-        const dir = new THREE.Vector3(
-            cosLat * Math.sin(rawLon),
-            Math.sin(lat),
-            cosLat * Math.cos(rawLon)
+        return new THREE.Vector3(
+            cosLat * Math.sin(rawLon) * baseR,
+            Math.sin(lat) * baseR,
+            cosLat * Math.cos(rawLon) * baseR
         );
-        dir.multiplyScalar(baseR);
-        return dir;
     };
 
     const createLabelSprite = (text: string, key: string) => {
@@ -104,6 +101,9 @@ export default function MountainRanges({
         ctx.quadraticCurveTo(x, y, x + radiusCorner, y);
         ctx.closePath();
         ctx.fill();
+        ctx.lineWidth = 10;
+        ctx.strokeStyle = 'rgba(0,0,0,0.6)';
+        ctx.strokeText(text, canvas.width / 2, canvas.height / 2 + 4);
         ctx.fillStyle = labelColor;
         ctx.fillText(text, canvas.width / 2, canvas.height / 2 + 4);
 
@@ -120,121 +120,93 @@ export default function MountainRanges({
     };
 
     useEffect(() => {
-        // Parent to globe (attachTo) if provided
         if (attachTo?.current && groupRef.current && attachTo.current !== groupRef.current.parent) {
             attachTo.current.add(groupRef.current);
         }
     }, [attachTo]);
 
     useEffect(() => {
-        let cancelled = false;
-        async function load() {
-            try {
-                const res = await fetch(url);
-                if (!res.ok) throw new Error(`HTTP ${res.status}`);
-                const data = await res.json();
-                if (cancelled) return;
-                const g = groupRef.current;
-                if (!g) return;
-
-                const sharedMaterial = new THREE.LineBasicMaterial({ color, linewidth: lineWidth });
-
-                const featureMetas: Array<{ name?: string; centroid: { lat: number; lon: number }; objects: THREE.Object3D[] }> = [];
-
-                const addRing = (positions: GeoJSONPosition[]) => {
-                    const pts: THREE.Vector3[] = [];
-                    for (let i = 0; i < positions.length; i++) {
-                        if (simplifyModulo > 1 && (i % simplifyModulo) !== 0 && i !== positions.length - 1) continue;
-                        const [lon, lat] = positions[i];
-                        pts.push(lonLatToVec3(lon, lat));
-                    }
-                    if (pts.length < 2) return;
-                    const geom = new THREE.BufferGeometry().setFromPoints(pts);
-                    const line = new THREE.Line(geom, sharedMaterial);
-                    line.frustumCulled = true;
-                    g.add(line);
-                };
-
-                if (Array.isArray(data.features)) {
-                    for (const f of data.features) {
-                        if (!f.geometry) continue;
-                        const { type, coordinates } = f.geometry;
-                        if (!coordinates) continue;
-                        const objects: THREE.Object3D[] = [];
-                        const collect = (ring: GeoJSONPosition[]) => {
-                            const pts: THREE.Vector3[] = [];
-                            const maxPoints = 800; // cap to avoid huge buffers
-                            // adaptive step: longer rings -> larger step
-                            const adaptiveStep = Math.max(simplifyModulo, Math.ceil(ring.length / maxPoints));
-                            for (let i = 0; i < ring.length; i++) {
-                                if ((i % adaptiveStep) !== 0 && i !== ring.length - 1) continue;
-                                const [lon, lat] = ring[i];
-                                pts.push(lonLatToVec3(lon, lat));
-                            }
-                            if (pts.length < 2) return;
-                            const geom = new THREE.BufferGeometry().setFromPoints(pts);
-                            const line = new THREE.Line(geom, sharedMaterial);
-                            line.userData.__mountainName = f.properties?.Name;
-                            line.userData.__mountainLonLat = ring[Math.floor(ring.length / 2)];
-                            objects.push(line);
-                            g.add(line);
-                        };
-                        if (type === 'Polygon') {
-                            for (const ring of coordinates as GeoJSONPosition[][]) collect(ring);
-                        } else if (type === 'MultiPolygon') {
-                            for (const poly of coordinates as GeoJSONPosition[][][]) for (const ring of poly) collect(ring);
-                        } else if (type === 'LineString') {
-                            collect(coordinates as GeoJSONPosition[]);
-                        } else if (type === 'MultiLineString') {
-                            for (const line of coordinates as GeoJSONPosition[][]) collect(line);
-                        }
-                        // Improved centroid: average of all stored line userData lon/lat (midpoints)
-                        let latSum = 0, lonSum = 0, cnt = 0;
-                        for (const obj of objects) {
-                            const ll = obj.userData.__mountainLonLat as GeoJSONPosition | undefined;
-                            if (ll) { lonSum += ll[0]; latSum += ll[1]; cnt++; }
-                        }
-                        const centroid = { lat: cnt ? latSum / cnt : 0, lon: cnt ? lonSum / cnt : 0 };
-                        featureMetas.push({ name: f.properties?.Name, centroid, objects });
-
-                        // Label sprite
-                        if (showLabels && f.properties?.Name) {
-                            const sprite = createLabelSprite(f.properties.Name, f.properties.Name);
-                            if (sprite) {
-                                const pos = lonLatToLabelVec3(centroid.lon, centroid.lat);
-                                sprite.position.copy(pos);
-                                sprite.userData.__mountainLonLat = [centroid.lon, centroid.lat];
-                                g.add(sprite);
-                                labelSpritesRef.current.push(sprite);
-                            }
-                        }
-                    }
+        const g = groupRef.current; if (!g) return;
+        // cleanup old
+        allLineObjectsRef.current.forEach(o => g.remove(o));
+        labelSpritesRef.current.forEach(o => g.remove(o));
+        allLineObjectsRef.current.length = 0;
+        labelSpritesRef.current.length = 0;
+        const baseMat = new THREE.LineBasicMaterial({ color, transparent: true, opacity: 1 });
+        for (const r of ranges) {
+            let cx = 0, cy = 0, cz = 0, cc = 0;
+            const linesForRange: THREE.Line[] = [];
+            for (const path of r.paths) {
+                if (path.length < 2) continue;
+                const pts = path.map(p => lonLatToVec3(p.lon, p.lat));
+                const geom = new THREE.BufferGeometry().setFromPoints(pts);
+                const line = new THREE.Line(geom, baseMat.clone());
+                line.userData.__mountainName = r.name;
+                g.add(line);
+                allLineObjectsRef.current.push(line);
+                linesForRange.push(line);
+                if (thickness > 0) {
+                    const baseRad = radius + altitudeOffset;
+                    const expand = (baseRad + thickness) / baseRad;
+                    const thickPts = pts.map(v => v.clone().multiplyScalar(expand));
+                    const thickGeom = new THREE.BufferGeometry().setFromPoints(thickPts);
+                    const thickLine = new THREE.Line(thickGeom, (line.material as THREE.LineBasicMaterial).clone());
+                    (thickLine.material as THREE.LineBasicMaterial).opacity = 0.6;
+                    thickLine.userData.__mountainName = r.name;
+                    thickLine.renderOrder = 2;
+                    g.add(thickLine);
+                    allLineObjectsRef.current.push(thickLine);
+                    linesForRange.push(thickLine);
                 }
-                featureMetaRef.current = featureMetas;
-                setLoaded(true);
-            } catch (e: any) {
-                if (!cancelled) setError(e.message || String(e));
+                // centroid accumulate
+                for (const p of path) {
+                    const latR = THREE.MathUtils.degToRad(p.lat);
+                    const lonR = THREE.MathUtils.degToRad(p.lon);
+                    const cosLat = Math.cos(latR);
+                    cx += cosLat * Math.cos(lonR);
+                    cy += Math.sin(latR);
+                    cz += cosLat * Math.sin(lonR);
+                    cc++;
+                }
+            }
+            let centroid = { lat: 0, lon: 0 };
+            if (cc > 0) {
+                cx /= cc; cy /= cc; cz /= cc;
+                const hyp = Math.sqrt(cx * cx + cz * cz) || 1;
+                const latR = Math.atan2(cy, hyp);
+                const lonR = Math.atan2(cz, cx);
+                centroid = { lat: THREE.MathUtils.radToDeg(latR), lon: THREE.MathUtils.radToDeg(lonR) };
+            }
+            for (const l of linesForRange) l.userData.__featureCentroid = centroid;
+            if (showLabels && r.name) {
+                const sprite = createLabelSprite(r.name, r.id);
+                if (sprite) {
+                    sprite.position.copy(lonLatToLabelVec3(centroid.lon, centroid.lat));
+                    sprite.userData.__mountainName = r.name;
+                    sprite.userData.__featureCentroid = centroid;
+                    g.add(sprite);
+                    labelSpritesRef.current.push(sprite);
+                }
             }
         }
-        load();
-        return () => { cancelled = true; };
-    }, [url, radius, color, lineWidth, simplifyModulo, altitudeOffset]);
+    }, [ranges, radius, altitudeOffset, color, thickness, showLabels, labelAltitudeOffset, labelBackground, labelColor, labelSize]);
 
-    // 라벨 visibility 동기화
-    useEffect(() => {
-        labelSpritesRef.current.forEach(s => { s.visible = showLabels; });
-    }, [showLabels]);
+    useEffect(() => { labelSpritesRef.current.forEach(s => { s.visible = showLabels; }); }, [showLabels]);
 
-    // Raycast click handling if callback provided
     useEffect(() => {
-        if (!onRangeClick) return;
-        const handler = (e: MouseEvent) => {
-            if (!groupRef.current) return;
-            const rendererEl = (e.target as HTMLElement).closest('canvas');
-            if (!rendererEl) return;
-        };
-        return () => { };
-    }, [onRangeClick]);
+        const sel = selected?.name;
+        allLineObjectsRef.current.forEach(l => {
+            const mat = l.material as THREE.LineBasicMaterial;
+            if (!sel) {
+                mat.color.set(color); mat.opacity = 1; l.renderOrder = 1; return;
+            }
+            const match = l.userData.__mountainName === sel;
+            if (match) { mat.color.set('#ffffff'); mat.opacity = 1; l.renderOrder = 1000; }
+            else { mat.color.set(color); mat.opacity = 0.25; l.renderOrder = 1; }
+        });
+    }, [selected, color]);
+
+    // 별도 raycast hook 불필요 (group onClick 사용)
 
     return (
         <group
@@ -246,10 +218,8 @@ export default function MountainRanges({
                 e.stopPropagation();
                 const obj = e.object as THREE.Object3D;
                 const name = obj.userData.__mountainName as string | undefined;
-                const ll = obj.userData.__mountainLonLat as GeoJSONPosition | undefined;
-                if (ll) {
-                    onRangeClick({ name, centroid: { lon: ll[0], lat: ll[1] } });
-                }
+                const cen = obj.userData.__featureCentroid as { lat: number; lon: number } | undefined;
+                if (cen) onRangeClick({ name, centroid: { lat: cen.lat, lon: cen.lon } });
             }}
         />
     );

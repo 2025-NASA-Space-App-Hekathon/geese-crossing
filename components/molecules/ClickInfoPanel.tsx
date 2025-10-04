@@ -7,7 +7,7 @@ export default function ClickInfoPanel({ info, onClose }: { info: ClickInfo | nu
     return (
         <div style={{
             position: 'absolute',
-            top: 16,
+            top: 76,
             right: 16,
             backgroundColor: info.isKorea ? 'rgba(34, 197, 94, 0.9)' : 'rgba(59, 130, 246, 0.9)',
             color: 'white',
@@ -24,6 +24,16 @@ export default function ClickInfoPanel({ info, onClose }: { info: ClickInfo | nu
             </div>
             <div>위도: {info.latitude.toFixed(4)}°</div>
             <div>경도: {info.longitude.toFixed(4)}°</div>
+            {info.mountainsValue !== undefined && (
+                <div style={{ marginTop: 6 }}>
+                    <div style={{ fontWeight: 600, marginBottom: 2 }}>산 데이터</div>
+                    <div>값: {info.mountainsValue}</div>
+                    {info.mountainsPixelX !== undefined && info.mountainsPixelY !== undefined && (
+                        <div style={{ marginTop: 2, fontSize: '12px', opacity: 0.85 }}>픽셀: ({info.mountainsPixelX}, {info.mountainsPixelY})</div>
+                    )}
+                </div>
+            )}
+            {/* Precipitation & angle info removed */}
             <button onClick={onClose} style={{
                 marginTop: '8px',
                 padding: '4px 8px',

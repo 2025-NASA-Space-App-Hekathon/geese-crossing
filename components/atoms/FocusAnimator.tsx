@@ -1,5 +1,6 @@
 import { useFrame, useThree } from "@react-three/fiber";
 import { useRef } from "react";
+import * as THREE from 'three';
 
 // FocusAnimator: 한국 클릭 시 카메라 줌 + 구 살짝 아래로 이동
 export default function FocusAnimator({ globeRef, focusStateRef, setFocusMode }: {
@@ -7,11 +8,13 @@ export default function FocusAnimator({ globeRef, focusStateRef, setFocusMode }:
     focusStateRef: React.MutableRefObject<{
         mode: string;
         progress: number;
-        startRotX?: number;
-        startRotY?: number;
-        originalDistance?: number; // 실제 시작 거리
-        targetRotX?: number;
-        targetRotY?: number;
+        startRotX?: number; // legacy euler path
+        startRotY?: number; // legacy euler path
+        originalDistance?: number;
+        targetRotX?: number; // legacy euler path
+        targetRotY?: number; // legacy euler path
+        startQuat?: THREE.Quaternion; // quaternion animation start
+        targetQuat?: THREE.Quaternion; // quaternion animation target
     }>;
     setFocusMode: React.Dispatch<React.SetStateAction<'idle' | 'focusing' | 'focused' | 'unfocusing'>>;
 }) {
@@ -20,6 +23,7 @@ export default function FocusAnimator({ globeRef, focusStateRef, setFocusMode }:
     const dlog = (...args: any[]) => { if (DEBUG) console.log('[FocusAnimator]', ...args); };
     const lastStepRef = useRef<number>(-1);
     const lastModeRef = useRef<string>('idle');
+    const tmpQuat = useRef(new THREE.Quaternion());
     useFrame((_, delta: number) => {
         const st = focusStateRef.current;
         if (st.mode === 'idle') return;
@@ -39,29 +43,32 @@ export default function FocusAnimator({ globeRef, focusStateRef, setFocusMode }:
             dlog('Mode change', { from: lastModeRef.current, to: st.mode });
             lastModeRef.current = st.mode;
         }
-        // const stepPct = Math.floor(tRaw * 100);
-        // if (stepPct % 10 === 0 && stepPct !== lastStepRef.current) {
-        //     lastStepRef.current = stepPct;
-        //     const gpos = g ? { y: g.position.y.toFixed(3) } : {};
-        //     dlog('Progress', { mode: st.mode, pct: stepPct, k: k.toFixed(3), camZ: camera.position.z.toFixed(3), globeY: gpos });
-        // }
+        const stepPct = Math.floor(tRaw * 100);
+        if (stepPct % 10 === 0 && stepPct !== lastStepRef.current) {
+            lastStepRef.current = stepPct;
+            const gpos = g ? { y: g.position.y.toFixed(3) } : {};
+            dlog('Progress', { mode: st.mode, pct: stepPct, k: k.toFixed(3), camZ: camera.position.z.toFixed(3), globeY: gpos });
+        }
 
         if (!g) return;
         if (st.mode === 'focusing') {
-            const srx = st.startRotX ?? g.rotation.x;
-            const sry = st.startRotY ?? g.rotation.y;
             const startDistance = st.originalDistance ?? camera.position.length();
-            const trgx = st.targetRotX ?? srx;
-            const trgy = st.targetRotY ?? sry;
-
-            g.rotation.x = srx + (trgx - srx) * k;
-            g.rotation.y = sry + (trgy - sry) * k;
-            // 카메라 방향 유지한 채 거리만 보간 (카메라가 원점 바라본다고 가정)
+            if (st.startQuat && st.targetQuat) {
+                // Reuse tmp quaternion to avoid GC churn
+                tmpQuat.current.copy(st.startQuat).slerp(st.targetQuat, k);
+                g.quaternion.copy(tmpQuat.current);
+            } else {
+                // Legacy Euler fallback
+                const srx = st.startRotX ?? g.rotation.x;
+                const sry = st.startRotY ?? g.rotation.y;
+                const trgx = st.targetRotX ?? srx;
+                const trgy = st.targetRotY ?? sry;
+                g.rotation.x = srx + (trgx - srx) * k;
+                g.rotation.y = sry + (trgy - sry) * k;
+            }
             const dir = camera.position.clone().normalize();
             const newDistance = startDistance + (targetDistance - startDistance) * k;
             camera.position.copy(dir.multiplyScalar(newDistance));
-            // g.position.y = startGlobeY + (focusGlobeY - startGlobeY) * k;
-
             if (tRaw >= 1) {
                 st.mode = 'focused';
                 st.progress = 0;
@@ -69,20 +76,21 @@ export default function FocusAnimator({ globeRef, focusStateRef, setFocusMode }:
                 dlog('Focus complete');
             }
         } else if (st.mode === 'unfocusing') {
-            const srx = st.startRotX ?? g.rotation.x;
-            const sry = st.startRotY ?? g.rotation.y;
             const startDistance = st.originalDistance ?? camera.position.length();
-            const trgx = st.targetRotX ?? srx;
-            const trgy = st.targetRotY ?? sry;
-
-            g.rotation.x = srx + (trgx - srx) * k;
-            g.rotation.y = sry + (trgy - sry) * k;
+            if (st.startQuat && st.targetQuat) {
+                tmpQuat.current.copy(st.startQuat).slerp(st.targetQuat, k);
+                g.quaternion.copy(tmpQuat.current);
+            } else {
+                const srx = st.startRotX ?? g.rotation.x;
+                const sry = st.startRotY ?? g.rotation.y;
+                const trgx = 0;
+                const trgy = 0;
+                g.rotation.x = srx + (trgx - srx) * k;
+                g.rotation.y = sry + (trgy - sry) * k;
+            }
             const dir = camera.position.clone().normalize();
-            // 역방향: targetDistance -> startDistance 로 이동
             const newDistance = targetDistance + (startDistance - targetDistance) * k;
             camera.position.copy(dir.multiplyScalar(newDistance));
-            // g.position.y = focusGlobeY + (startGlobeY - focusGlobeY) * k;
-
             if (tRaw >= 1) {
                 st.mode = 'idle';
                 st.progress = 0;
@@ -94,7 +102,7 @@ export default function FocusAnimator({ globeRef, focusStateRef, setFocusMode }:
             // 유지 상태: targetDistance 유지
             const dir = camera.position.clone().normalize();
             camera.position.copy(dir.multiplyScalar(targetDistance));
-            // if (g) g.position.y = focusGlobeY;
+            // g.position.y = focusGlobeY;
         }
         camera.updateProjectionMatrix();
     });
