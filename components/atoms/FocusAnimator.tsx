@@ -9,7 +9,6 @@ export default function FocusAnimator({ globeRef, focusStateRef, setFocusMode }:
         progress: number;
         startRotX?: number;
         startRotY?: number;
-        startZ?: number; // deprecated direct z usage
         originalDistance?: number; // 실제 시작 거리
         targetRotX?: number;
         targetRotY?: number;

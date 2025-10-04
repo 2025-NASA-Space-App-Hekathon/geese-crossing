@@ -7,7 +7,6 @@ import { Canvas } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 import { Box, useComputedColorScheme } from '@mantine/core';
 import EarthMesh from './EarthMesh';
-import CameraSetup from '../../components/atoms/CameraSetup';
 import CameraFollowingLight from '../../components/atoms/CameraFollowingLight';
 import ClickInfoPanel from '../../components/molecules/ClickInfoPanel';
 import { ClickInfo } from '../../components/utils/globeMath';
@@ -16,7 +15,7 @@ import FocusAnimator from '../atoms/FocusAnimator';
 import MountainRanges from './MountainRanges';
 
 export default function EarthGlobe() {
-    const DEBUG = true; // 디버그 로깅 토글
+    const DEBUG = typeof window !== 'undefined' && (window as any).__GLOBE_DEBUG__ === true; // 전역 플래그로 제어 (기본 off)
     const dlog = (...args: any[]) => { if (DEBUG) console.log('[EarthGlobe]', ...args); };
 
     const [texture, setTexture] = useState<THREE.Texture | null>(null);
@@ -34,7 +33,6 @@ export default function EarthGlobe() {
         startRotY?: number;
         targetRotX?: number;
         targetRotY?: number;
-        startZ?: number; // legacy (z-axis value) – kept for backward compatibility
         originalDistance?: number; // 실제 카메라-지구중심 거리 (포커스 전)
     }>({ mode: 'idle', progress: 0 });
     const [focusMode, setFocusMode] = useState<'idle' | 'focusing' | 'focused' | 'unfocusing'>('idle');
@@ -62,14 +60,12 @@ export default function EarthGlobe() {
         const adjTargetY = shortest(curY, targetRotY);
         const globeCenter = globeRef.current.getWorldPosition(new THREE.Vector3());
         const cam = sceneCameraRef.current;
-        const camZ = cam ? cam.position.z : 0;
         const originalDistance = cam ? cam.position.distanceTo(globeCenter) : 4;
         focusState.current = {
             mode: 'focusing',
             progress: 0,
             startRotX: curX,
             startRotY: curY,
-            startZ: camZ,
             originalDistance,
             targetRotX: adjTargetX,
             targetRotY: adjTargetY
@@ -126,45 +122,8 @@ export default function EarthGlobe() {
 
     const controlsRef = useRef<any>(null);
     const sceneCameraRef = useRef<THREE.Camera | null>(null); // Canvas 내부 카메라 캡쳐용
-    // 축(axes) 표시 토글
-    const [showAxes, setShowAxes] = useState<boolean>(true);
-    const axesHelperRef = useRef<THREE.AxesHelper | null>(null);
     const [showMountains, setShowMountains] = useState(true);
     const [showMountainLabels, setShowMountainLabels] = useState(true);
-    useEffect(() => {
-        // 축이 안 보이던 이유:
-        // 1) 축 길이가 지구 반지름(1.5)와 동일해서 선이 전부 구 내부에 가려짐
-        // 2) effect 가 최초 렌더 때 globeRef.current 가 아직 설정 안 된 시점에 실행될 수 있음
-        // 해결:
-        // - 길이를 반지름보다 크게(2.2) 설정
-        // - texture 로딩 이후(지구 mesh 초기화 후) 한 번 더 실행되도록 dependency 에 texture 포함
-        if (!axesHelperRef.current) {
-            axesHelperRef.current = new THREE.AxesHelper(2.2); // 지구 반지름(1.5)보다 크게
-            axesHelperRef.current.name = 'GlobeAxesHelper';
-            axesHelperRef.current.raycast = () => { };
-        }
-        const attachIfPossible = () => {
-            if (!globeRef.current || !axesHelperRef.current) return;
-            if (showAxes) {
-                if (!globeRef.current.children.includes(axesHelperRef.current)) {
-                    globeRef.current.add(axesHelperRef.current);
-                }
-            } else {
-                if (globeRef.current.children.includes(axesHelperRef.current)) {
-                    globeRef.current.remove(axesHelperRef.current);
-                }
-            }
-        };
-        attachIfPossible();
-        // 한 번 더 지연 체크 (ref 세팅 지연 대비)
-        const tid = setTimeout(attachIfPossible, 50);
-        return () => {
-            clearTimeout(tid);
-            if (globeRef.current && axesHelperRef.current && globeRef.current.children.includes(axesHelperRef.current)) {
-                globeRef.current.remove(axesHelperRef.current);
-            }
-        };
-    }, [showAxes, texture]);
 
     return (
         <Box
@@ -186,7 +145,6 @@ export default function EarthGlobe() {
                 gl={{ antialias: true, alpha: false, preserveDrawingBuffer: false, powerPreference: 'high-performance' }}
                 resize={{ scroll: false, debounce: { scroll: 50, resize: 0 } }}
             >
-                {/* <CameraSetup onReady={(camera) => { }} /> */}
                 <ambientLight intensity={0.3} />
                 <CameraFollowingLight />
                 <EarthMesh
@@ -280,13 +238,11 @@ export default function EarthGlobe() {
                         if (focusState.current.mode === 'unfocusing') return; // already
                         // 수동 축소
                         dlog('Unfocus button clicked', { from: focusState.current.mode });
-                        const preservedStartZ = focusState.current.startZ ?? (sceneCameraRef.current ? sceneCameraRef.current.position.z : 4);
                         focusState.current = {
                             mode: 'unfocusing',
                             progress: 0,
                             startRotX: globeRef.current.rotation.x,
                             startRotY: globeRef.current.rotation.y,
-                            startZ: preservedStartZ,
                             originalDistance: focusState.current.originalDistance,
                             targetRotX: globeRef.current.rotation.x,
                             targetRotY: globeRef.current.rotation.y
@@ -308,24 +264,6 @@ export default function EarthGlobe() {
                     }}
                 >축소</button>
             )}
-            {/* 축 표시 토글 버튼 */}
-            <button
-                onClick={() => setShowAxes(v => !v)}
-                style={{
-                    position: 'absolute',
-                    bottom: 16,
-                    left: 16,
-                    zIndex: 1100,
-                    background: 'rgba(0,0,0,0.55)',
-                    color: 'white',
-                    border: '1px solid rgba(255,255,255,0.2)',
-                    padding: '6px 12px',
-                    borderRadius: 6,
-                    cursor: 'pointer',
-                    fontSize: 12,
-                    backdropFilter: 'blur(4px)'
-                }}
-            >{showAxes ? '축 숨기기' : '축 보이기'}</button>
             {error && (
                 <div style={{ position: 'absolute', top: 8, left: 8, color: 'red', fontSize: 12, zIndex: 1000, backgroundColor: 'rgba(0,0,0,0.7)', padding: '4px 8px', borderRadius: '4px' }}>Error: {error}</div>
             )}
