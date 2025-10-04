@@ -20,9 +20,10 @@ export default function EarthMesh({ texture, heightMap, autoRotate, rotationSpee
 
     useEffect(() => {
         if (ref.current && texture && !isInitialized) {
-            const focus = initialFocus || { latitude: 37.5, longitude: 127 };
-            const { rotationX, rotationY } = getGlobeRotationForLatLon(focus.latitude, focus.longitude);
-            ref.current.rotation.set(rotationX, rotationY, 0);
+            if (initialFocus) {
+                const { rotationX, rotationY } = getGlobeRotationForLatLon(initialFocus.latitude, initialFocus.longitude);
+                ref.current.rotation.set(rotationX, rotationY, 0);
+            }
             setIsInitialized(true);
         }
     }, [texture, isInitialized, initialFocus]);
@@ -38,7 +39,7 @@ export default function EarthMesh({ texture, heightMap, autoRotate, rotationSpee
             const mat = new THREE.MeshStandardMaterial({
                 map: texture,
                 displacementMap: heightMap || undefined,
-                displacementScale: heightMap ? 0.08 : 0, // 지형 과장률
+                displacementScale: heightMap ? 0.2 : 0, // 지형 과장률
                 displacementBias: 0,
                 roughness: 1,
                 metalness: 0
@@ -102,8 +103,8 @@ export default function EarthMesh({ texture, heightMap, autoRotate, rotationSpee
             onPointerUp={handlePointerUp}
             onPointerLeave={() => { pointerDownRef.current = null; }}
         >
-            {/* 세밀한 displacement 구현을 위해 세그먼트 수 유지 (64,64) */}
-            <sphereGeometry args={[1.5, 128, 128]} />
+            {/* LOD: 기본 세그먼트 수를 줄여 성능 개선 (128 -> 96) */}
+            <sphereGeometry args={[1.5, 96, 96]} />
             <primitive object={material} attach="material" />
         </mesh>
     );

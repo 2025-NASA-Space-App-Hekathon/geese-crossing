@@ -13,6 +13,7 @@ import ClickInfoPanel from '../../components/molecules/ClickInfoPanel';
 import { ClickInfo } from '../../components/utils/globeMath';
 import { loadGeoTiffToTexture, loadStandardImage, loadGeoTiffHeightMap } from '../../components/utils/textureLoaders';
 import FocusAnimator from '../atoms/FocusAnimator';
+import MountainRanges from './MountainRanges';
 
 export default function EarthGlobe() {
     const DEBUG = true; // 디버그 로깅 토글
@@ -37,8 +38,45 @@ export default function EarthGlobe() {
         originalDistance?: number; // 실제 카메라-지구중심 거리 (포커스 전)
     }>({ mode: 'idle', progress: 0 });
     const [focusMode, setFocusMode] = useState<'idle' | 'focusing' | 'focused' | 'unfocusing'>('idle');
-    // 초기 기본 회전 (대한민국 중앙)
-    const initialBaseRotation = getGlobeRotationForLatLon(37.5, 127);
+    // 한국 기준 회전 (클릭 / 버튼 시 사용)
+    const koreaBaseRotationRef = useRef(getGlobeRotationForLatLon(37.5, 127));
+
+    // 짧은 회전 경로 보정 (-PI~PI) helper
+    const normalizeAngle = (a: number) => {
+        const TWO = Math.PI * 2;
+        return ((a + Math.PI) % TWO + TWO) % TWO - Math.PI;
+    };
+    const shortest = (from: number, to: number) => {
+        let diff = normalizeAngle(to - from);
+        return from + diff;
+    };
+
+    const startFocus = (targetRotX: number, targetRotY: number) => {
+        if (!globeRef.current) return;
+        if (focusState.current.mode === 'focusing' || focusState.current.mode === 'focused') return;
+        // 현재 회전 상태
+        const curX = globeRef.current.rotation.x;
+        const curY = globeRef.current.rotation.y;
+        // 최단 회전 경로로 목표 재조정
+        const adjTargetX = shortest(curX, targetRotX);
+        const adjTargetY = shortest(curY, targetRotY);
+        const globeCenter = globeRef.current.getWorldPosition(new THREE.Vector3());
+        const cam = sceneCameraRef.current;
+        const camZ = cam ? cam.position.z : 0;
+        const originalDistance = cam ? cam.position.distanceTo(globeCenter) : 4;
+        focusState.current = {
+            mode: 'focusing',
+            progress: 0,
+            startRotX: curX,
+            startRotY: curY,
+            startZ: camZ,
+            originalDistance,
+            targetRotX: adjTargetX,
+            targetRotY: adjTargetY
+        };
+        setFocusMode('focusing');
+        dlog('Focus start', { curX: curX.toFixed(3), curY: curY.toFixed(3), targetRotX: adjTargetX.toFixed(3), targetRotY: adjTargetY.toFixed(3) });
+    };
 
     const containerRef = useRef<HTMLDivElement>(null);
     const computedColorScheme = useComputedColorScheme('light', { getInitialValueInEffect: true });
@@ -91,6 +129,8 @@ export default function EarthGlobe() {
     // 축(axes) 표시 토글
     const [showAxes, setShowAxes] = useState<boolean>(true);
     const axesHelperRef = useRef<THREE.AxesHelper | null>(null);
+    const [showMountains, setShowMountains] = useState(true);
+    const [showMountainLabels, setShowMountainLabels] = useState(true);
     useEffect(() => {
         // 축이 안 보이던 이유:
         // 1) 축 길이가 지구 반지름(1.5)와 동일해서 선이 전부 구 내부에 가려짐
@@ -142,8 +182,8 @@ export default function EarthGlobe() {
             <Canvas
                 camera={{ position: [0, 0, 4] }}
                 style={{ width: '100%', height: '100%', display: 'block' }}
-                dpr={[1, 2]}
-                gl={{ antialias: true, alpha: false, preserveDrawingBuffer: false }}
+                dpr={Math.min(1.5, typeof window !== 'undefined' ? window.devicePixelRatio : 1)}
+                gl={{ antialias: true, alpha: false, preserveDrawingBuffer: false, powerPreference: 'high-performance' }}
                 resize={{ scroll: false, debounce: { scroll: 50, resize: 0 } }}
             >
                 {/* <CameraSetup onReady={(camera) => { }} /> */}
@@ -164,45 +204,14 @@ export default function EarthGlobe() {
                             current: globeRef.current ? { rotX: globeRef.current.rotation.x.toFixed(4), rotY: globeRef.current.rotation.y.toFixed(4) } : null
                         });
                         // Korea 클릭시에만 포커스. 다른 지역 클릭은 완전 무시
-                        if (!info.isKorea) {
-                            dlog('Non-Korea click -> ignore (no focus)');
-                            return;
-                        }
-                        // 이미 focusing/focused 상태라면 재시작하지 않음
-                        if (focusState.current.mode === 'focusing' || focusState.current.mode === 'focused') {
-                            dlog('Already focusing/focused -> ignore'); return;
-                        }
-                        if (!globeRef.current) {
-                            dlog('Globe ref missing'); return;
-                        }
-                        // 목표 회전 계산: 한국을 위(북쪽) 방향으로 보내 지평선 느낌
-
                         if (info.isKorea) {
-                            const base = getGlobeRotationForLatLon(info.latitude, info.longitude);
-                            // const targetRotY = initialBaseRotation.rotationY - rotationDelta.y; // 현재 회전 변화 반영
-                            // const targetRotX = initialBaseRotation.rotationX; // 현재 회전 변화 반영
-                            const targetRotY = initialBaseRotation.rotationY - rotationDelta.y; // 현재 회전 변화 반영
-                            const targetRotX = initialBaseRotation.rotationX + rotationDelta.x; // 현재 회전 변화 반영
-                            dlog('Focus start', {
-                                baseRotX: base.rotationX.toFixed(4), baseRotY: base.rotationY.toFixed(4),
-                                targetRotX: targetRotX.toFixed(4), targetRotY: targetRotY.toFixed(4)
-                            });
-                            // 지구 중심 위치와 카메라 거리 측정
-                            const globeCenter = globeRef.current.getWorldPosition(new THREE.Vector3());
-                            const cam = sceneCameraRef.current;
-                            const camZ = cam ? cam.position.z : 0;
-                            const originalDistance = cam ? cam.position.distanceTo(globeCenter) : 4;
-                            focusState.current = {
-                                mode: 'focusing',
-                                progress: 0,
-                                startRotX: globeRef.current.rotation.x,
-                                startRotY: globeRef.current.rotation.y,
-                                startZ: camZ,
-                                originalDistance,
-                                targetRotX,
-                                targetRotY
-                            };
-                            setFocusMode('focusing');
+                            // 한국 클릭 -> 한국 기준 회전 값 사용 (rotationDelta 로 보정)
+                            const base = koreaBaseRotationRef.current;
+                            const targetRotY = base.rotationY - rotationDelta.y;
+                            const targetRotX = base.rotationX + rotationDelta.x;
+                            startFocus(targetRotX, targetRotY);
+                        } else {
+                            dlog('Non-Korea click (no focus)');
                         }
                     }}
                     externalRef={globeRef}
@@ -212,11 +221,33 @@ export default function EarthGlobe() {
                 <OrbitControls ref={controlsRef} enablePan={false} enableRotate={focusMode === 'idle'} enableZoom={focusMode === 'idle'} />
                 {/* 포커싱 애니메이션 */}
                 <FocusAnimator globeRef={globeRef} focusStateRef={focusState} setFocusMode={setFocusMode} />
+                {/* 산맥(GeoJSON) 라인 */}
+                <MountainRanges
+                    radius={1.5}
+                    visible={showMountains}
+                    simplifyModulo={4}
+                    altitudeOffset={0.06}
+                    color={computedColorScheme === 'light' ? '#ffcf4d' : '#ffd27a'}
+                    attachTo={globeRef}
+                    showLabels={showMountainLabels}
+                    labelColor={'#ffffff'}
+                    labelBackground={'rgba(0,0,0,0.55)'}
+                    labelSize={18}
+                    labelAltitudeOffset={0.12}
+                    onRangeClick={({ centroid }) => {
+                        // 산맥 중심(lat/lon) -> 회전값 계산 후 포커스
+                        const rot = getGlobeRotationForLatLon(centroid.lat, centroid.lon);
+                        // rotationDelta 반영 (현재 가상 회전) 역보정
+                        const targetRotY = rot.rotationY - rotationDelta.y;
+                        const targetRotX = rot.rotationX + rotationDelta.x;
+                        startFocus(targetRotX, targetRotY);
+                    }}
+                />
                 {/* 회전 변화 추적기 */}
                 <RotationTracker
                     globeRef={globeRef}
                     controlsRef={controlsRef}
-                    initialMeshRotation={{ x: initialBaseRotation.rotationX, y: initialBaseRotation.rotationY }}
+                    initialMeshRotation={{ x: 0, y: 0 }}
                     onDelta={(d) => setRotationDelta(d)}
                 />
             </Canvas>
@@ -257,8 +288,8 @@ export default function EarthGlobe() {
                             startRotY: globeRef.current.rotation.y,
                             startZ: preservedStartZ,
                             originalDistance: focusState.current.originalDistance,
-                            targetRotX: initialBaseRotation.rotationX,
-                            targetRotY: initialBaseRotation.rotationY
+                            targetRotX: globeRef.current.rotation.x,
+                            targetRotY: globeRef.current.rotation.y
                         };
                         setFocusMode('unfocusing');
                     }}
@@ -298,6 +329,66 @@ export default function EarthGlobe() {
             {error && (
                 <div style={{ position: 'absolute', top: 8, left: 8, color: 'red', fontSize: 12, zIndex: 1000, backgroundColor: 'rgba(0,0,0,0.7)', padding: '4px 8px', borderRadius: '4px' }}>Error: {error}</div>
             )}
+            {/* 한국 포커스 버튼 (선택적 수동 트리거) */}
+            {focusMode === 'idle' && (
+                <button
+                    onClick={() => {
+                        const base = koreaBaseRotationRef.current;
+                        const targetRotY = base.rotationY - rotationDelta.y;
+                        const targetRotX = base.rotationX + rotationDelta.x;
+                        startFocus(targetRotX, targetRotY);
+                    }}
+                    style={{
+                        position: 'absolute',
+                        top: 16,
+                        left: 16,
+                        zIndex: 1100,
+                        background: 'rgba(0,0,0,0.55)',
+                        color: 'white',
+                        border: '1px solid rgba(255,255,255,0.2)',
+                        padding: '8px 14px',
+                        borderRadius: 6,
+                        cursor: 'pointer',
+                        backdropFilter: 'blur(4px)'
+                    }}
+                >한국 포커스</button>
+            )}
+            {/* 산맥 표시 토글 */}
+            <button
+                onClick={() => setShowMountains(v => !v)}
+                style={{
+                    position: 'absolute',
+                    bottom: 16,
+                    left: 300,
+                    zIndex: 1100,
+                    background: 'rgba(0,0,0,0.55)',
+                    color: 'white',
+                    border: '1px solid rgba(255,255,255,0.2)',
+                    padding: '6px 12px',
+                    borderRadius: 6,
+                    cursor: 'pointer',
+                    fontSize: 12,
+                    backdropFilter: 'blur(4px)'
+                }}
+            >{showMountains ? '산맥 숨기기' : '산맥 보이기'}</button>
+            {/* 산맥 라벨 토글 */}
+            <button
+                onClick={() => setShowMountainLabels(v => !v)}
+                style={{
+                    position: 'absolute',
+                    bottom: 16,
+                    left: 430,
+                    zIndex: 1100,
+                    background: 'rgba(0,0,0,0.55)',
+                    color: 'white',
+                    border: '1px solid rgba(255,255,255,0.2)',
+                    padding: '6px 12px',
+                    borderRadius: 6,
+                    cursor: 'pointer',
+                    fontSize: 12,
+                    backdropFilter: 'blur(4px)'
+                }}
+            >{showMountainLabels ? '라벨 숨기기' : '라벨 보이기'}</button>
         </Box>
     );
 }
