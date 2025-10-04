@@ -1,0 +1,14 @@
+html,
+body,
+#__next {
+  height: 100%;
+  margin: 0;
+}
+body {
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial;
+}
+.canvas-wrap {
+  width: 100%;
+  height: 60vh;
+}
