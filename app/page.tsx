@@ -7,6 +7,7 @@ import Header from '../components/organisms/header/Header';
 import { useMountainStore } from '../components/store/mountainStore';
 import OverlayPanel from '../components/organisms/OverlayPanel';
 import { useUIStore } from '../components/store/uiStore';
+import OverlayLegend from '../components/organisms/OverlayLegend';
 
 const EarthGlobe = dynamic(() => import('../components/organisms/EarthGlobe'), { ssr: false });
 
@@ -145,6 +146,9 @@ export default function Page() {
                         ) : (
                             <Text c="dimmed" size="sm" mt={6}>hover your mouse on mountain range</Text>
                         )}
+                    </Card>
+                    <Card style={{ background: 'transparent', boxShadow: 'none' }} p={0}>
+                        <OverlayLegend />
                     </Card>
                 </Stack>
             </AppShell.Aside>
