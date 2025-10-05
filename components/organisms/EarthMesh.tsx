@@ -5,7 +5,7 @@ import { useFrame, useThree } from '@react-three/fiber';
 import { cartesianToLatLon, ClickInfo, getGlobeRotationForLatLon } from '../../components/utils/globeMath';
 import { SingleBandDataset } from '../../components/utils/textureLoaders';
 
-export default function EarthMesh({ texture, heightMap, autoRotate, rotationSpeed, onLocationClick, externalRef, initialFocus, mountainsDataset, segments = 96 }: {
+export default function EarthMesh({ texture, heightMap, autoRotate, rotationSpeed, onLocationClick, externalRef, initialFocus, mountainsDataset, segments = 96, visible = true }: {
     texture: THREE.Texture | null;
     heightMap?: THREE.Texture | null;
     autoRotate: boolean;
@@ -15,6 +15,7 @@ export default function EarthMesh({ texture, heightMap, autoRotate, rotationSpee
     initialFocus?: { latitude: number; longitude: number };
     mountainsDataset?: SingleBandDataset | null;
     segments?: number; // sphere segment resolution (both width & height)
+    visible?: boolean;
 }) {
     const internalRef = useRef<THREE.Mesh | null>(null);
     const ref = externalRef || internalRef;
@@ -41,7 +42,7 @@ export default function EarthMesh({ texture, heightMap, autoRotate, rotationSpee
         if (texture) {
             const mat = new THREE.MeshStandardMaterial({
                 map: texture,
-                displacementMap: heightMap || undefined,
+                displacementMap: heightMap || null,
                 displacementScale: heightMap ? 0.08 : 0, // 지형 과장률
                 displacementBias: 0,
                 roughness: 1,
@@ -133,6 +134,10 @@ export default function EarthMesh({ texture, heightMap, autoRotate, rotationSpee
             resolveClick();
         }
     };
+
+    if (!visible) {
+        return null;
+    }
 
     return (
         <mesh

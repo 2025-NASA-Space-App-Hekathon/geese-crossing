@@ -2,6 +2,7 @@ import '@mantine/core/styles.css';
 import './globals.css';
 import React from 'react';
 import type { Metadata } from 'next';
+import { ColorSchemeScript } from '@mantine/core';
 import Providers from './providers';
 
 export const metadata: Metadata = {
@@ -12,7 +13,9 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
     return (
         <html lang="ko">
-            <head />
+            <head>
+                <ColorSchemeScript defaultColorScheme="dark" />
+            </head>
             <body>
                 <Providers>
                     {children}

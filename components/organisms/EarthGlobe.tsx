@@ -12,6 +12,7 @@ import { ClickInfo } from '../../components/utils/globeMath';
 import { loadGeoTiffToTexture, loadStandardImage, loadGeoTiffHeightMap, loadGeoTiffMaskTexture, loadGeoTiffSingleBand, SingleBandDataset } from '../../components/utils/textureLoaders';
 import { LONGITUDE_TEXTURE_SHIFT_DEG } from '../../components/utils/globeMath';
 import MountainsMaskOverlay from './MountainsMaskOverlay';
+import OverlayManager, { OverlayData } from './OverlayManager';
 import FocusAnimator from '../atoms/FocusAnimator';
 import { useMountainStore } from '../../components/store/mountainStore';
 
@@ -24,6 +25,7 @@ export default function EarthGlobe() {
     const [heightMap, setHeightMap] = useState<THREE.Texture | null>(null);
     const [mountainsMask, setMountainsMask] = useState<THREE.Texture | null>(null);
     const [showMountainsMask, setShowMountainsMask] = useState(true);
+    const [showEarthSurface, setShowEarthSurface] = useState(true);
     const [mountainsBand, setMountainsBand] = useState<SingleBandDataset | null>(null);
     const [mountainsLoadStatus, setMountainsLoadStatus] = useState<'idle' | 'loading' | 'ok' | 'error'>('idle');
     const [mountainsLoadError, setMountainsLoadError] = useState<string | null>(null);
@@ -128,6 +130,16 @@ export default function EarthGlobe() {
     const sceneCameraRef = useRef<THREE.Camera | null>(null);
     const [showMountainLabels, setShowMountainLabels] = useState(true);
     const [resetVirtualRotKey, setResetVirtualRotKey] = useState(0);
+    const [overlays, setOverlays] = useState<OverlayData[]>([]);
+    const [overlayLoading, setOverlayLoading] = useState(true);
+    const [overlayError, setOverlayError] = useState<string | null>(null);
+    const [selectedOverlayId, setSelectedOverlayId] = useState<string | null>(null);
+
+    // 오버레이가 선택되어도 지구 표면과 산 마스크는 계속 표시
+    // useEffect(() => {
+    //     setShowEarthSurface(!selectedOverlayId);
+    //     setShowMountainsMask(!selectedOverlayId);
+    // }, [selectedOverlayId]);
 
     // Apply anisotropy when texture becomes available
     const AnisotropySetter = () => {
@@ -152,9 +164,10 @@ export default function EarthGlobe() {
                 <CameraFollowingLight />
                 <EarthMesh
                     texture={texture}
-                    heightMap={heightMap}
+                    heightMap={selectedOverlayId ? null : heightMap}
                     autoRotate={false}
                     rotationSpeed={0.01}
+                    visible={showEarthSurface}
                     onLocationClick={(info) => {
                         setClickInfo(info);
                         // 새 규칙: mountains.tif 값이 0보다 큰 지점을 클릭하면 해당 지점으로 포커싱
@@ -209,7 +222,18 @@ export default function EarthGlobe() {
                 <FocusAnimator globeRef={globeRef} focusStateRef={focusState} setFocusMode={setFocusMode} />
                 {/* Rotation tracker */}
                 <RotationTracker globeRef={globeRef} controlsRef={controlsRef} initialMeshRotation={{ x: 0, y: 0 }} resetKey={resetVirtualRotKey} onDelta={(d) => setRotationDelta(d)} />
-                <MountainsMaskOverlay texture={mountainsMask} visible={showMountainsMask} radius={1.5} elevation={0.003} opacity={1.0} followRef={globeRef} />
+                <MountainsMaskOverlay texture={mountainsMask} visible={showMountainsMask} radius={1.504} elevation={0.003} opacity={1.0} followRef={globeRef} />
+                {/* 동적 오버레이 매니저 */}
+                <OverlayManager 
+                    folderPath="/overlays" 
+                    globeRef={globeRef} 
+                    segments={96}
+                    onOverlaysChange={setOverlays}
+                    selectedOverlayId={selectedOverlayId}
+                    onOverlaySelect={setSelectedOverlayId}
+                    onLoadingChange={setOverlayLoading}
+                    onErrorChange={setOverlayError}
+                />
             </Canvas>
             {(focusMode === 'focused' || focusMode === 'focusing') && (
                 <button
@@ -231,10 +255,22 @@ export default function EarthGlobe() {
                 <div style={{ position: 'absolute', top: 76, right: 16, background: 'rgba(0,0,0,0.55)', color: '#fff', padding: '6px 10px', fontSize: 12, borderRadius: 6, zIndex: 1100 }}>산 데이터 로딩중...</div>
             )}
             {mountainsLoadStatus === 'error' && (
-                <div style={{ position: 'absolute', top: 76, right: 16, background: 'rgba(160,0,0,0.7)', color: '#fff', padding: '6px 10px', fontSize: 12, borderRadius: 6, zIndex: 1100 }}>산 데이터 오류</div>
+                <div style={{ position: 'absolute', top: 76, right: 16, background: 'rgba(160,0,0,0.7)', color: '#fff', padding: '6px 10px', fontSize: 12, borderRadius: 6, zIndex: 1100 }}>
+                    산 데이터 오류: {mountainsLoadError || '알 수 없는 오류'}
+                </div>
             )}
             <button onClick={() => setShowMountainLabels(v => !v)} style={{ position: 'absolute', bottom: 16, left: 430, zIndex: 1100, background: 'rgba(0,0,0,0.55)', color: 'white', border: '1px solid rgba(255,255,255,0.2)', padding: '6px 12px', borderRadius: 6, cursor: 'pointer', fontSize: 12, backdropFilter: 'blur(4px)' }}>{showMountainLabels ? '라벨 숨기기' : '라벨 보이기'}</button>
             <button onClick={() => setShowMountainsMask(v => !v)} style={{ position: 'absolute', bottom: 16, left: 560, zIndex: 1100, background: 'rgba(0,0,0,0.55)', color: 'white', border: '1px solid rgba(255,255,255,0.2)', padding: '6px 12px', borderRadius: 6, cursor: 'pointer', fontSize: 12, backdropFilter: 'blur(4px)' }}>{showMountainsMask ? '산 마스크 숨기기' : '산 마스크 보이기'}</button>
+            
+            {/* 단일 오버레이 선택 패널 */}
+            <SingleOverlaySelector
+                overlays={overlays}
+                loading={overlayLoading}
+                error={overlayError}
+                selectedOverlayId={selectedOverlayId}
+                onSelect={(id) => setSelectedOverlayId(id)}
+                onClear={() => setSelectedOverlayId(null)}
+            />
         </Box>
     );
 }
@@ -266,6 +302,176 @@ function RotationTracker({ globeRef, controlsRef, initialMeshRotation, onDelta, 
         }
     });
     return null;
+}
+
+// 단일 오버레이 선택 패널 컴포넌트
+function SingleOverlaySelector({ 
+    overlays, 
+    loading, 
+    error, 
+    selectedOverlayId,
+    onSelect,
+    onClear
+}: {
+    overlays: OverlayData[];
+    loading: boolean;
+    error: string | null;
+    selectedOverlayId: string | null;
+    onSelect: (id: string) => void;
+    onClear: () => void;
+}) {
+    const [isExpanded, setIsExpanded] = useState(false);
+
+    if (loading) {
+        return (
+            <div style={{ 
+                position: 'absolute', 
+                top: 16, 
+                right: 16, 
+                background: 'rgba(0,0,0,0.7)', 
+                color: 'white', 
+                padding: '8px 12px', 
+                borderRadius: 6, 
+                fontSize: 12 
+            }}>
+                오버레이 로딩중...
+            </div>
+        );
+    }
+
+    if (error) {
+        return (
+            <div style={{ 
+                position: 'absolute', 
+                top: 16, 
+                right: 16, 
+                background: 'rgba(160,0,0,0.7)', 
+                color: 'white', 
+                padding: '8px 12px', 
+                borderRadius: 6, 
+                fontSize: 12 
+            }}>
+                오버레이 오류: {error}
+            </div>
+        );
+    }
+
+    if (overlays.length === 0) {
+        return null;
+    }
+
+    const selectedOverlay = overlays.find(o => o.id === selectedOverlayId);
+
+    return (
+        <div style={{ 
+            position: 'absolute', 
+            top: 80, 
+            right: 20, 
+            background: 'rgba(0,0,0,0.95)', 
+            color: 'white', 
+            padding: '16px', 
+            borderRadius: 12, 
+            minWidth: 280,
+            maxHeight: '70vh',
+            overflowY: 'auto',
+            border: '3px solid #00ff00',
+            boxShadow: '0 8px 32px rgba(0,0,0,0.8)',
+            zIndex: 2000
+        }}>
+            <div style={{ 
+                display: 'flex', 
+                justifyContent: 'space-between', 
+                alignItems: 'center', 
+                marginBottom: 8 
+            }}>
+                <h4 style={{ margin: 0, fontSize: 18, fontWeight: 'bold', color: '#00ff00' }}>
+                    🎯 오버레이 선택 ({overlays.length}개)
+                </h4>
+                <div>
+                    {selectedOverlayId && (
+                        <button
+                            onClick={onClear}
+                            style={{
+                                background: 'rgba(255,0,0,0.3)',
+                                color: 'white',
+                                border: '1px solid rgba(255,255,255,0.2)',
+                                padding: '4px 8px',
+                                borderRadius: 4,
+                                fontSize: 10,
+                                cursor: 'pointer',
+                                marginRight: 4
+                            }}
+                        >
+                            선택 해제
+                        </button>
+                    )}
+                    <button
+                        onClick={() => setIsExpanded(!isExpanded)}
+                        style={{
+                            background: 'rgba(255,255,255,0.1)',
+                            color: 'white',
+                            border: '1px solid rgba(255,255,255,0.2)',
+                            padding: '4px 8px',
+                            borderRadius: 4,
+                            fontSize: 10,
+                            cursor: 'pointer'
+                        }}
+                    >
+                        {isExpanded ? '접기' : '펼치기'}
+                    </button>
+                </div>
+            </div>
+            
+            {/* 현재 선택된 오버레이 표시 */}
+            {selectedOverlay && (
+                <div style={{
+                    background: 'rgba(0,255,0,0.2)',
+                    padding: '8px',
+                    borderRadius: 4,
+                    marginBottom: 8,
+                    border: '1px solid rgba(0,255,0,0.3)'
+                }}>
+                    <div style={{ fontSize: 12, fontWeight: 'bold' }}>
+                        현재 선택: {selectedOverlay.name}
+                    </div>
+                    <div style={{ fontSize: 10, opacity: 0.8 }}>
+                        반투명 오버레이로 표시됨
+                    </div>
+                </div>
+            )}
+            
+            {isExpanded && (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+                    {overlays.map((overlay) => (
+                        <button
+                            key={overlay.id}
+                            onClick={() => onSelect(overlay.id)}
+                            style={{
+                                background: selectedOverlayId === overlay.id 
+                                    ? 'rgba(0,255,0,0.4)' 
+                                    : 'rgba(255,255,255,0.2)',
+                                color: 'white',
+                                border: selectedOverlayId === overlay.id
+                                    ? '2px solid #00ff00'
+                                    : '2px solid rgba(255,255,255,0.3)',
+                                padding: '12px 16px',
+                                borderRadius: 8,
+                                fontSize: 14,
+                                fontWeight: 'bold',
+                                cursor: 'pointer',
+                                textAlign: 'left',
+                                transition: 'all 0.3s',
+                                marginBottom: '8px',
+                                width: '100%'
+                            }}
+                        >
+                            {selectedOverlayId === overlay.id ? '✅ ' : '📊 '}{overlay.name}
+                        </button>
+                    ))}
+                </div>
+            )}
+        </div>
+    );
 }
 
 

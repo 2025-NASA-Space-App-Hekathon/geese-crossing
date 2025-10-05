@@ -1,5 +1,27 @@
 import * as THREE from 'three';
-import { fromUrl } from 'geotiff';
+
+// GeoTIFF를 동적 import로 로드
+async function loadGeoTiff() {
+  try {
+    const { fromUrl } = await import('geotiff');
+    return fromUrl;
+  } catch (error) {
+    console.warn('GeoTIFF 라이브러리 로딩 실패:', error);
+    throw new Error('GeoTIFF 라이브러리를 로드할 수 없습니다');
+  }
+}
+
+// GeoTIFF 로딩 실패 시 fallback 처리를 위한 헬퍼 함수
+async function safeGeoTiffLoad(url: string) {
+  try {
+    const fromUrl = await loadGeoTiff();
+    return await fromUrl(url);
+  } catch (error) {
+    console.warn(`GeoTIFF 로딩 실패 (${url}):`, error);
+    // 압축 모듈 로딩 실패 시 기본 이미지로 fallback
+    throw new Error(`GeoTIFF 파일을 로드할 수 없습니다: ${error instanceof Error ? error.message : '알 수 없는 오류'}`);
+  }
+}
 
 export async function loadStandardImage(url: string): Promise<THREE.Texture> {
     return await new Promise((resolve, reject) => {
@@ -10,7 +32,7 @@ export async function loadStandardImage(url: string): Promise<THREE.Texture> {
 
 // General GeoTIFF -> RGBA texture (for color map)
 export async function loadGeoTiffToTexture(url: string): Promise<THREE.Texture> {
-    const tiff = await fromUrl(url);
+    const tiff = await safeGeoTiffLoad(url);
     const image = await tiff.getImage();
     const width = image.getWidth();
     const height = image.getHeight();
@@ -50,7 +72,7 @@ export interface HeightMapOptions {
 }
 
 export async function loadGeoTiffHeightMap(url: string, opts: HeightMapOptions = {}): Promise<THREE.Texture> {
-    const tiff = await fromUrl(url);
+    const tiff = await safeGeoTiffLoad(url);
     const image = await tiff.getImage();
     const width = image.getWidth();
     const height = image.getHeight();
@@ -115,7 +137,7 @@ function pickColorFromStops(val: number, stops: PrecipColorStop[], maxAlpha: num
 }
 export async function loadGeoTiffPrecipTexture(url: string, opts: PrecipTextureOptions = {}): Promise<THREE.Texture> {
     const { invert = false, maxAlpha = 0.7, colorStops } = opts;
-    const tiff = await fromUrl(url);
+    const tiff = await safeGeoTiffLoad(url);
     const image = await tiff.getImage();
     const width = image.getWidth();
     const height = image.getHeight();
@@ -172,7 +194,7 @@ export interface PrecipMetaDataset {
 
 export async function loadGeoTiffPrecipDataset(url: string, opts: PrecipTextureOptions = {}): Promise<PrecipMetaDataset> {
     const { invert = false, maxAlpha = 0.7, colorStops } = opts;
-    const tiff = await fromUrl(url);
+    const tiff = await safeGeoTiffLoad(url);
     const image = await tiff.getImage();
     const width = image.getWidth();
     const height = image.getHeight();
@@ -232,7 +254,7 @@ function parseHexToRGB(hex: string): [number, number, number] {
 }
 export async function loadGeoTiffMaskTexture(url: string, opts: MaskTextureOptions = {}): Promise<THREE.Texture> {
     const { threshold = 0, color = '#ff8c00', maxAlpha = 0.85, scaleAlphaByValue = false } = opts;
-    const tiff = await fromUrl(url);
+    const tiff = await safeGeoTiffLoad(url);
     const image = await tiff.getImage();
     const width = image.getWidth();
     const height = image.getHeight();
@@ -278,7 +300,7 @@ export interface SingleBandDataset {
     max: number;
 }
 export async function loadGeoTiffSingleBand(url: string): Promise<SingleBandDataset> {
-    const tiff = await fromUrl(url);
+    const tiff = await safeGeoTiffLoad(url);
     const image = await tiff.getImage();
     const width = image.getWidth();
     const height = image.getHeight();
