@@ -1,0 +1,92 @@
+{
+  "viridis_rgb_mapping": {
+    "rgb_68_1_83": {
+      "rgb": [
+        68,
+        1,
+        83
+      ],
+      "hex": "#440153",
+      "year": 252,
+      "geological_period": "Cenozoic",
+      "normalized_value": 0.0
+    },
+    "rgb_68_26_96": {
+      "rgb": [
+        68,
+        26,
+        96
+      ],
+      "hex": "#441a60",
+      "year": 359,
+      "geological_period": "Cenozoic",
+      "normalized_value": 0.028548559231590182
+    },
+    "rgb_68_68_117": {
+      "rgb": [
+        68,
+        68,
+        117
+      ],
+      "hex": "#444475",
+      "year": 539,
+      "geological_period": "Cenozoic",
+      "normalized_value": 0.07657417289220918
+    },
+    "rgb_68_175_171": {
+      "rgb": [
+        68,
+        175,
+        171
+      ],
+      "hex": "#44afab",
+      "year": 1000,
+      "geological_period": "Mesozoic",
+      "normalized_value": 0.19957310565635006
+    },
+    "rgb_150_235_108": {
+      "rgb": [
+        150,
+        235,
+        108
+      ],
+      "hex": "#96eb6c",
+      "year": 1600,
+      "geological_period": "Mesozoic",
+      "normalized_value": 0.35965848452508004
+    },
+    "rgb_255_167_87": {
+      "rgb": [
+        255,
+        167,
+        87
+      ],
+      "hex": "#ffa757",
+      "year": 2500,
+      "geological_period": "Paleozoic",
+      "normalized_value": 0.5997865528281751
+    },
+    "rgb_255_255_0": {
+      "rgb": [
+        255,
+        255,
+        0
+      ],
+      "hex": "#ffff00",
+      "year": 4000,
+      "geological_period": "Precambrian",
+      "normalized_value": 1.0
+    },
+    "rgb_255_255_255": {
+      "rgb": [
+        255,
+        255,
+        255
+      ],
+      "hex": "#ffffff",
+      "year": 0,
+      "geological_period": "Background",
+      "normalized_value": 0.0
+    }
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "success": true,
+  "folder": "/overlays",
+  "count": 7,
+  "files": [
+    {
+      "id": "Cosine_Roughness",
+      "name": "Cosine_Roughness",
+      "file": "Cosine_Roughness.png",
+      "path": "/overlays/Cosine_Roughness.png",
+      "extension": ".png"
+    },
+    {
+      "id": "Hessian_Roughness",
+      "name": "Hessian_Roughness",
+      "file": "Hessian_Roughness.png",
+      "path": "/overlays/Hessian_Roughness.png",
+      "extension": ".png"
+    },
+    {
+      "id": "Radar_Forest_Degradation_Index",
+      "name": "Radar_Forest_Degradation_Index",
+      "file": "Radar_Forest_Degradation_Index.png",
+      "path": "/overlays/Radar_Forest_Degradation_Index.png",
+      "extension": ".png"
+    },
+    {
+      "id": "Rader_Vegetation_Index",
+      "name": "Rader_Vegetation_Index",
+      "file": "Rader_Vegetation_Index.png",
+      "path": "/overlays/Rader_Vegetation_Index.png",
+      "extension": ".png"
+    },
+    {
+      "id": "Rocks_per_region",
+      "name": "Rocks_per_region",
+      "file": "Rocks_per_region.png",
+      "path": "/overlays/Rocks_per_region.png",
+      "extension": ".png"
+    },
+    {
+      "id": "Year_of_Creation",
+      "name": "Year_of_Creation",
+      "file": "Year_of_Creation.png",
+      "path": "/overlays/Year_of_Creation.png",
+      "extension": ".png"
+    },
+    {
+      "id": "precipitation_map",
+      "name": "precipitation_map",
+      "file": "precipitation_map.png",
+      "path": "/overlays/precipitation_map.png",
+      "extension": ".png"
+    }
+  ]
+}
