@@ -264,7 +264,7 @@ export default function EarthGlobe() {
                     산 데이터 오류: {mountainsLoadError || '알 수 없는 오류'}
                 </div>
             )}
-            <button onClick={() => setShowMountainLabels(v => !v)} style={{ position: 'absolute', bottom: 16, left: 430, zIndex: 1100, background: 'rgba(0,0,0,0.55)', color: 'white', border: '1px solid rgba(255,255,255,0.2)', padding: '6px 12px', borderRadius: 6, cursor: 'pointer', fontSize: 12, backdropFilter: 'blur(4px)' }}>{showMountainLabels ? '라벨 숨기기' : '라벨 보이기'}</button>
+            {/* <button onClick={() => setShowMountainLabels(v => !v)} style={{ position: 'absolute', bottom: 16, left: 430, zIndex: 1100, background: 'rgba(0,0,0,0.55)', color: 'white', border: '1px solid rgba(255,255,255,0.2)', padding: '6px 12px', borderRadius: 6, cursor: 'pointer', fontSize: 12, backdropFilter: 'blur(4px)' }}>{showMountainLabels ? '라벨 숨기기' : '라벨 보이기'}</button> */}
             <button onClick={() => setShowMountainsMask(v => !v)} style={{ position: 'absolute', bottom: 16, left: 560, zIndex: 1100, background: 'rgba(0,0,0,0.55)', color: 'white', border: '1px solid rgba(255,255,255,0.2)', padding: '6px 12px', borderRadius: 6, cursor: 'pointer', fontSize: 12, backdropFilter: 'blur(4px)' }}>{showMountainsMask ? '산 마스크 숨기기' : '산 마스크 보이기'}</button>
 
             {/* <MultiOverlayPanel
