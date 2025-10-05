@@ -1,0 +1,790 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>제목 없음</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 10px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.callout img.notion-static-icon {
+	width: 1em;
+	height: 1em;
+}
+
+.callout p {
+	margin: 0;
+}
+
+.callout h1,
+.callout h2,
+.callout h3 {
+	margin: 0 0 0.6rem;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+/* Click-to-zoom styling for graphs image */
+img[src$="graphs.png"] {
+	cursor: zoom-in;
+}
+
+/* Lightbox overlay */
+.lightbox-overlay {
+	position: fixed;
+	inset: 0;
+	background: rgba(0,0,0,0.85);
+	display: none; /* toggled to flex when open */
+	align-items: center;
+	justify-content: center;
+	z-index: 9999;
+}
+.lightbox-overlay.open {
+	display: flex;
+}
+.lightbox-content img {
+	max-width: 95vw;
+	max-height: 95vh;
+	width: auto;
+	height: auto;
+	border-radius: 4px;
+	box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray {
+	color: rgba(134, 131, 126, 1);
+	fill: rgba(134, 131, 126, 1);
+}
+.highlight-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.highlight-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.highlight-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.highlight-blue {
+	color: rgba(63, 126, 190, 1);
+	fill: rgba(63, 126, 190, 1);
+}
+.highlight-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.highlight-default_background {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray_background {
+	background: rgba(42, 28, 0, 0.07);
+}
+.highlight-brown_background {
+	background: rgba(139, 46, 0, 0.086);
+}
+.highlight-orange_background {
+	background: rgba(224, 101, 1, 0.129);
+}
+.highlight-yellow_background {
+	background: rgba(211, 168, 0, 0.137);
+}
+.highlight-teal_background {
+	background: rgba(0, 100, 45, 0.09);
+}
+.highlight-blue_background {
+	background: rgba(0, 111, 200, 0.09);
+}
+.highlight-purple_background {
+	background: rgba(102, 0, 178, 0.078);
+}
+.highlight-pink_background {
+	background: rgba(197, 0, 93, 0.086);
+}
+.highlight-red_background {
+	background: rgba(223, 22, 0, 0.094);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(134, 131, 126, 1);
+	fill: rgba(134, 131, 126, 1);
+}
+.block-color-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.block-color-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.block-color-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.block-color-blue {
+	color: rgba(63, 126, 190, 1);
+	fill: rgba(63, 126, 190, 1);
+}
+.block-color-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(240, 239, 237, 1);
+}
+.block-color-brown_background {
+	background: rgba(245, 237, 233, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 235, 222, 1);
+}
+.block-color-yellow_background {
+	background: rgba(249, 243, 220, 1);
+}
+.block-color-teal_background {
+	background: rgba(232, 241, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(232, 242, 250, 1);
+}
+.block-color-purple_background {
+	background: rgba(243, 235, 249, 1);
+}
+.block-color-pink_background {
+	background: rgba(250, 233, 241, 1);
+}
+.block-color-red_background {
+	background: rgba(252, 233, 231, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(209, 156, 0, 0.282); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 99, 174, 0.172); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body>
+<!-- Lightbox container -->
+<div class="lightbox-overlay" id="lightbox">
+	<div class="lightbox-content">
+		<img id="lightbox-img" alt="graph large preview" />
+	</div>
+	<!-- click anywhere to close -->
+	<button aria-label="Close" title="Close" style="position:absolute;top:12px;right:12px;background:rgba(255,255,255,0.9);border:none;border-radius:999px;padding:6px 10px;cursor:pointer;font-weight:600">✕</button>
+  
+</div>
+
+<article id="283817fd-e8e4-806a-b6d5-d867d64cfe94" class="page sans"><header><h1 class="page-title"></h1><p class="page-description"></p></header><div class="page-body"><h1 id="283817fd-e8e4-8083-92b6-c744c08e2348" class="">IV. Results and Findings</h1><p id="283817fd-e8e4-8098-9db7-f3ef5246b914" class="">This is the comprehensive figures of our all maps, from SAR datas to traditional mountain features. </p><figure id="283817fd-e8e4-801b-8a36-e15ac4195d7c" class="image"><a href="graphs.png"><img style="width:6600px" src="graphs.png"/></a></figure><p id="283817fd-e8e4-8014-a0fc-c8999816972d" class="">
+</p><h2 id="283817fd-e8e4-80ca-a92b-ef886999cadb" class="">1. Height : represents the height of each pixels from DEM datas</h2><ul id="283817fd-e8e4-80a2-a1d1-ca340394b8df" class="bulleted-list"><li style="list-style-type:disc">Height Ranking : Himalaya &gt;<strong>Drakensberg</strong> &gt; Tien Shan &gt; Rocky Mountain &gt;Alps&gt;Andes&gt; Japaense Alps&gt;Atlas&gt;Great Dividing Range &gt;Taeback</li></ul><table id="0b5f8442-7051-49c0-8f40-1de03ddf5a82" class="simple-table"><thead class="simple-table-header"><tr id="a92803e1-d7a1-4649-bb74-b82e010aad3d"><th id="vkOq" class="simple-table-header-color simple-table-header" style="width:132.52500915527344px">Mountain Range</th><th id="H&gt;qj" class="simple-table-header-color simple-table-header" style="width:141.28750610351562px">Average height (m)</th><th id="\@;Y" class="simple-table-header-color simple-table-header" style="width:173.2624969482422px">standard deviation(m)</th><th id="szg{" class="simple-table-header-color simple-table-header">Interpretation</th></tr></thead><tbody><tr id="abe96efd-4ef8-4c02-9f19-e7cf576fd99d"><td id="vkOq" class="" style="width:132.52500915527344px"><strong>Alps</strong></td><td id="H&gt;qj" class="" style="width:141.28750610351562px"><strong>842</strong></td><td id="\@;Y" class="" style="width:173.2624969482422px"><strong>702</strong></td><td id="szg{" class="">A typical alpine landscape.<br/>The average elevation is mid-high, and the large variance results from the combined structure of glacial valleys and mountain summits.<br/>The high relief creates a strong snow–rock–vegetation mixing zone.</td></tr><tr id="b846b565-7be4-4471-b3bf-fa583dd858b0"><td id="vkOq" class="" style="width:132.52500915527344px"><strong>Atlas</strong></td><td id="H&gt;qj" class="" style="width:141.28750610351562px"><strong>568</strong></td><td id="\@;Y" class="" style="width:173.2624969482422px"><strong>392</strong></td><td id="szg{" class="">A semi-arid mountain range in North Africa.<br/>It has medium to low elevation with gentle altitude variation, resembling a broad, undulating hilly terrain overall.</td></tr><tr id="b8191492-2ce3-46c5-be76-d2b790e2356f"><td id="vkOq" class="" style="width:132.52500915527344px"><strong>Great Dividing Range</strong></td><td id="H&gt;qj" class="" style="width:141.28750610351562px"><strong>355</strong></td><td id="\@;Y" class="" style="width:173.2624969482422px"><strong>260</strong></td><td id="szg{" class="">A mountain range along the eastern coast of Australia, characterized by low and gentle relief.<br/>Most of the terrain consists of hilly landscapes below 500 m in elevation, resulting in low altitude variance.</td></tr><tr id="83cb0e18-2244-49b4-a84a-d3d9543d8884"><td id="vkOq" class="" style="width:132.52500915527344px"><strong>Japanese Alps</strong></td><td id="H&gt;qj" class="" style="width:141.28750610351562px"><strong>693</strong></td><td id="\@;Y" class="" style="width:173.2624969482422px"><strong>557</strong></td><td id="szg{" class="">A mid- to high-elevation mountainous region, where active volcanic zones and canyons coexist.<br/>The large elevation differences contribute to high topographic diversity.</td></tr><tr id="bb247e41-eccc-4212-ad9d-7a58323a5a97"><td id="vkOq" class="" style="width:132.52500915527344px"><strong>Taebaek</strong></td><td id="H&gt;qj" class="" style="width:141.28750610351562px"><strong>336</strong></td><td id="\@;Y" class="" style="width:173.2624969482422px"><strong>252</strong></td><td id="szg{" class="">A low-elevation mountain range characterized by gentle ridges and eroded forms.<br/>The small elevation variance makes it a relatively homogeneous mountainous area.</td></tr><tr id="502a38dd-e35b-40a6-82d0-f04db670eeb4"><td id="vkOq" class="" style="width:132.52500915527344px"><strong>Andes</strong></td><td id="H&gt;qj" class="" style="width:141.28750610351562px"><strong>749</strong></td><td id="\@;Y" class="" style="width:173.2624969482422px"><strong>1137</strong></td><td id="szg{" class="">An extremely high mountain range stretching longitudinally from north to south.<br/>Some areas rise above 4,000 m, while others drop sharply to coastal lowlands, resulting in a very large standard deviation in elevation.</td></tr><tr id="74131ddf-4c5a-4453-858a-9dc7b0c5fd33"><td id="vkOq" class="" style="width:132.52500915527344px"><strong>Drakensberg</strong></td><td id="H&gt;qj" class="" style="width:141.28750610351562px"><strong>1546</strong></td><td id="\@;Y" class="" style="width:173.2624969482422px"><strong>520</strong></td><td id="szg{" class="">A plateau-type mountain range in southern Africa.<br/>Although the average elevation is high, the terrain is gentle, exhibiting the typical characteristics of a highland plateau.</td></tr><tr id="36e37090-e630-4264-a3f3-ebc4050dc43a"><td id="vkOq" class="" style="width:132.52500915527344px"><strong>Himalaya</strong></td><td id="H&gt;qj" class="" style="width:141.28750610351562px"><strong>3236</strong></td><td id="\@;Y" class="" style="width:173.2624969482422px"><strong>2125</strong></td><td id="szg{" class="">Both the mean and variance of elevation are the highest.<br/>It is the tallest mountain system in the world, with a wide elevation spectrum ranging from lowlands to over 8,000 m.<br/>The strong relief allows snow, glaciers, and vegetation zones to coexist.</td></tr><tr id="5199996f-5316-45ba-a1a4-7b05575466eb"><td id="vkOq" class="" style="width:132.52500915527344px"><strong>Rocky Mountains</strong></td><td id="H&gt;qj" class="" style="width:141.28750610351562px"><strong>1142</strong></td><td id="\@;Y" class="" style="width:173.2624969482422px"><strong>675</strong></td><td id="szg{" class="">A mid-elevation mountain range in North America.<br/>It shows large elevation variance and connects with multiple plains and plateaus, resulting in high topographic diversity.</td></tr><tr id="b426534e-8b5f-4c8a-aaa5-da40bc38946b"><td id="vkOq" class="" style="width:132.52500915527344px"><strong>Tien Shan</strong></td><td id="H&gt;qj" class="" style="width:141.28750610351562px"><strong>1281</strong></td><td id="\@;Y" class="" style="width:173.2624969482422px"><strong>1011</strong></td><td id="szg{" class="">A high-altitude mountainous region in Central Asia.<br/>It has a high mean elevation and large variance, featuring a complex structure of plateaus, glacial zones, and basins.</td></tr></tbody></table><h2 id="283817fd-e8e4-807c-bfa0-d66250cab23b" class="">2. Morpology : Hessian/Cosine roughness</h2><table id="a64608e1-20da-4277-a176-a6a33f65b2cb" class="simple-table"><thead class="simple-table-header"><tr id="bdee96bf-cadb-4079-968a-cde3df87ad72"><th id="BgWV" class="simple-table-header-color simple-table-header">Mountain Range</th><th id="NC^~" class="simple-table-header-color simple-table-header">Hessian Roughness (R₂) Characteristics</th><th id="Rwpu" class="simple-table-header-color simple-table-header">Cosine Roughness (R₁) Characteristics</th><th id="UhyH" class="simple-table-header-color simple-table-header">Geomorphic Interpretation</th></tr></thead><tbody><tr id="e83450ae-6ce2-4a34-9d88-a1da3e049349"><td id="BgWV" class=""><strong>Himalaya</strong></td><td id="NC^~" class="">Extremely wide and heavy-tailed distribution; strong curvature contrast between valleys and ridges</td><td id="Rwpu" class="">Very low mean, large variance</td><td id="UhyH" class="">Deeply dissected terrain with sharp relief; coexistence of steep monsoon-facing slopes and flat Tibetan Plateau sectors</td></tr><tr id="42681449-2cd0-4c2f-b7f0-547b6ea5f25b"><td id="BgWV" class=""><strong>Alps</strong></td><td id="NC^~" class="">Broad distribution with secondary peaks (valleys vs ridges)</td><td id="Rwpu" class="">Left-skewed; dominated by steep slopes</td><td id="UhyH" class="">Glacial carving and cirque–arête systems create highly rugged morphology</td></tr><tr id="7fe4d6e2-a9a2-4438-b2bc-357734ec241c"><td id="BgWV" class=""><strong>Andes</strong></td><td id="NC^~" class="">Bimodal pattern showing high-altitude plateau vs steep Cordillera margins</td><td id="Rwpu" class="">Polarized; both flat and steep zones present</td><td id="UhyH" class="">Mixed landscape of flat Altiplano and steep flanks; strong tectonic and erosional contrast</td></tr><tr id="07055db0-99cc-4548-af24-7c42432e2ffd"><td id="BgWV" class=""><strong>Japanese Alps</strong></td><td id="NC^~" class="">Strong right tail; young, steep terrain</td><td id="Rwpu" class="">Low mean, skewed left</td><td id="UhyH" class="">Active uplift and heavy precipitation produce extremely dissected ridges and valleys</td></tr><tr id="28717718-f0dc-4e17-a4ff-f6e2f040ec19"><td id="BgWV" class=""><strong>Rocky Mountains</strong></td><td id="NC^~" class="">Moderate width; lacks extreme tails</td><td id="Rwpu" class="">Balanced mean; moderate skew</td><td id="UhyH" class="">Mixed topography of plateaus and valleys; intermediate ruggedness</td></tr><tr id="feeab8c9-60eb-4172-b684-9440084b78e8"><td id="BgWV" class=""><strong>Tien Shan</strong></td><td id="NC^~" class="">Broad, slightly heavy-tailed distribution</td><td id="Rwpu" class="">Moderately low mean</td><td id="UhyH" class="">Active intracontinental orogen; steep structural relief despite arid conditions</td></tr><tr id="9b9acf56-242b-486c-98a5-5fdff04ebb0c"><td id="BgWV" class=""><strong>Drakensberg</strong></td><td id="NC^~" class="">Medium width; single central peak</td><td id="Rwpu" class="">Slightly left-tailed</td><td id="UhyH" class="">High plateau with localized escarpments; moderate overall roughness</td></tr><tr id="736354aa-75e7-43c8-8257-7004c2d68a54"><td id="BgWV" class=""><strong>Great Dividing Range</strong></td><td id="NC^~" class="">Narrow and symmetrical</td><td id="Rwpu" class="">High mean (flat terrain)</td><td id="UhyH" class="">Ancient eroded mountain system with smooth, rolling relief</td></tr><tr id="bf86742e-75d1-40c0-9484-373f7b91ab15"><td id="BgWV" class=""><strong>Taebaek Range</strong></td><td id="NC^~" class="">Small variance; narrow shape</td><td id="Rwpu" class="">High mean, low dispersion</td><td id="UhyH" class="">Gentle ridges and uniform topography; limited steep slopes except coastal edges</td></tr><tr id="2e1fc8c7-4152-4eef-bfdf-6d61c69a9925"><td id="BgWV" class=""><strong>Atlas Mountains</strong></td><td id="NC^~" class="">Very low values and narrow distribution</td><td id="Rwpu" class="">Very high mean (flat)</td><td id="UhyH" class="">Plateau-like mountain range with predominantly gentle slopes; minimal rugged terrain</td></tr></tbody></table><ul id="f5dc7c4d-acc8-465b-bdfe-0f1da4dc2855" class="bulleted-list"><li style="list-style-type:disc"><strong>Hessian Roughness (R₂)</strong><p id="eb8c7262-4327-467a-81f6-75ea930984c3" class="">Derived from the curvature of the DEM using a Hessian-based operator across spatial scales.</p><p id="0701a743-177b-4673-969e-a0e027cac24c" class="">Large R₂ values and a heavy right-tailed histogram indicate <strong>sharp ridges, steep valleys, or strong curvature</strong>.</p><p id="df4d8ac3-7cc0-4c8e-b17b-e702bc1d68d1" class="">Broad distributions or multiple peaks suggest a mixture of landforms (e.g., steep scarps and flat plateaus).</p></li></ul><ul id="b6acb6d9-c382-4633-9244-cce401fb2bdc" class="bulleted-list"><li style="list-style-type:disc"><strong>Cosine Roughness (R₁)</strong><p id="e8958f3e-a1e0-46d9-8f7d-727ee231286b" class="">Computed from the dot product between the surface normal and the vertical axis (z-direction).</p><p id="49ab7cff-aa5e-45ae-b62b-d9e65a8e4205" class="">Higher values correspond to <strong>flatter terrain</strong>, while lower values indicate <strong>steeper slopes</strong>.</p><p id="1fb5c983-3434-49d9-a2b1-5b0003306aab" class="">A left-skewed histogram therefore reflects a landscape dominated by steep, rugged surfaces.</p></li></ul><ul id="728883ca-120a-4e3a-b13f-5afd4cbd9217" class="bulleted-list"><li style="list-style-type:disc"><strong>Glacial and periglacial mountains</strong> (Himalaya, Alps, Japanese Alps) exhibit large R₂ tails and low R₁ means—typical of active frost weathering and strong slope processes.</li></ul><ul id="356c3288-d820-4e37-8bb6-ccf39fc6c9be" class="bulleted-list"><li style="list-style-type:disc"><strong>Plateau–scarp systems</strong> (Andes, Tien Shan) show bimodal curvature distributions due to the juxtaposition of flat uplands and steep flanks.</li></ul><ul id="f06bc36f-f501-4b54-bc69-f1ff7d7eed67" class="bulleted-list"><li style="list-style-type:disc"><strong>Old or peneplained mountains</strong> (Great Dividing Range, Atlas, Taebaek) display narrow, high-R₁ histograms, indicating smooth, uniform surfaces with minimal structural relief.</li></ul><h2 id="283817fd-e8e4-805c-a80c-e8dd98f8637a" class=""><strong>Q Does hessian and cosine roughness captures the same feature?</strong></h2><p id="283817fd-e8e4-80e0-9a38-dd3b50ab614b" class="">⇒ Seems not! We normalized these two factors to calculate their mutual information.</p><p id="283817fd-e8e4-80d1-9f57-e858043b8c6b" class="">It turned out that their mutual information is about 0.07 bits (about 0.5% for both of their entropy) although both showed around 13 bit of entropy. </p><p id="283817fd-e8e4-8055-9eaa-d388fde38e8d" class="">
+</p><h2 id="283817fd-e8e4-8096-a524-e25ed709ec47" class="">3. Radar Vegetation Index (RVI)</h2><p id="fca55a44-924e-4c93-93bd-e03ef78d50ba" class="">The <strong>Radar Vegetation Index (RVI)</strong> provides a quantitative measure of surface characteristics derived from polarimetric SAR data.</p><p id="3c89a66e-8c8e-400c-a3e1-d48c41bdf83e" class="">It effectively distinguishes between <strong>bare ground, snow-covered terrain, and vegetated areas</strong>, reflecting differences in surface roughness, moisture, and canopy structure.</p><hr id="67fc2a9e-3d1c-4cc7-874e-dead2a7e1669"/><h3 id="2383ca5e-9479-42f7-8da3-97e871e87127" class=""><strong>General Interpretation</strong></h3><ul id="b010ac12-9a68-4ecc-8e62-4362c6d45fde" class="bulleted-list"><li style="list-style-type:disc"><strong>RVI ≈ 0</strong> → Predominantly <strong>dry or rocky terrains</strong></li></ul><ul id="325d87c4-75b1-4fa4-b689-1f50be094cdf" class="bulleted-list"><li style="list-style-type:disc"><strong>RVI ≈ 1</strong> → Predominantly <strong>moist or densely vegetated regions</strong></li></ul><p id="090b84c4-e074-401f-89e8-b93237fec2db" class=""><strong>1. Snow-Covered Areas</strong></p><ul id="e4f7f766-c762-488b-91fc-259cc2968952" class="bulleted-list"><li style="list-style-type:disc"><em>Shallow snow or icy surfaces</em> → <strong>RVI low</strong></li></ul><ul id="e5569bb1-593e-476e-a01b-0bd939e74ee9" class="bulleted-list"><li style="list-style-type:disc"><em>Deep snow, wet snow, or multiple scattering conditions</em> → <strong>RVI medium to high</strong></li></ul><p id="aced1389-0cd5-4340-b936-f9a2c2570a7f" class=""><strong>2. Vegetated Areas</strong></p><ul id="a2ae9c73-6d01-41ad-831a-db1ac3534f06" class="bulleted-list"><li style="list-style-type:disc"><em>Deciduous / coniferous forests, shrublands</em> → <strong>RVI high</strong></li></ul><ul id="a97c042d-ca98-4cfe-aac7-d2eaccef6e80" class="bulleted-list"><li style="list-style-type:disc"><em>Grasslands or sparsely vegetated regions</em> → <strong>RVI medium to high</strong></li></ul><p id="41ed76ee-582e-4e05-a4f7-ee301b5db7bd" class=""><strong>3. Bare Rock / Dry Terrain</strong></p><ul id="d5a5e034-a631-4055-846f-5029d2adc4ff" class="bulleted-list"><li style="list-style-type:disc"><em>Arid highlands, exposed rocky areas, smooth plains (low surface roughness)</em> → <strong>RVI low</strong></li></ul><table id="e98e4700-26ef-48bc-a69b-dfb7fff29bad" class="simple-table"><thead class="simple-table-header"><tr id="2f84f6f8-797c-4581-b7da-5cd7eb040575"><th id="VmgL" class="simple-table-header-color simple-table-header">Mountain Range</th><th id="\VLG" class="simple-table-header-color simple-table-header">Mean RVI</th><th id="rlb`" class="simple-table-header-color simple-table-header">Standard Deviation</th><th id="?Z[H" class="simple-table-header-color simple-table-header">Summary</th></tr></thead><tbody><tr id="c8bce4c0-4256-4b5b-92fc-10fa3face3ed"><td id="VmgL" class=""><strong>Alps</strong></td><td id="\VLG" class="">0.702</td><td id="rlb`" class="">0.128</td><td id="?Z[H" class="">High mean, low variance — deep snow cover and humid alpine meadows produce strong VH scattering with uniform snow distribution.</td></tr><tr id="61fa17e8-553a-4867-8d1d-76532ca54ab2"><td id="VmgL" class=""><strong>Atlas Mountains</strong></td><td id="\VLG" class="">0.465</td><td id="rlb`" class="">0.148</td><td id="?Z[H" class="">Moderate RVI — semi-arid North African climate with sparse vegetation and partial snow at high elevations.</td></tr><tr id="f8bd74d8-56e4-4f8f-a562-abd28a967a0b"><td id="VmgL" class=""><strong>Great Dividing Range</strong></td><td id="\VLG" class="">0.732</td><td id="rlb`" class="">0.178</td><td id="?Z[H" class="">Very high mean — moist eastern Australian climate with extensive green zones; high σ due to coastal–inland contrast.</td></tr><tr id="030c6140-7501-4148-aac5-d7c3c0a9ac67"><td id="VmgL" class=""><strong>Japanese Alps</strong></td><td id="\VLG" class="">0.728</td><td id="rlb`" class="">0.134</td><td id="?Z[H" class="">High mean — humid maritime climate with evergreen forests and frequent winter snow; relatively uniform terrain lowers σ.</td></tr><tr id="1b793d84-4610-4d65-824a-4a25cfabba70"><td id="VmgL" class=""><strong>Taebaek Mountains</strong></td><td id="\VLG" class="">0.731</td><td id="rlb`" class="">0.104</td><td id="?Z[H" class="">High and very stable — dense temperate forests with minimal seasonal variation yield the lowest σ.</td></tr><tr id="ba527cf5-0013-4cfa-a543-8d4067e22ab6"><td id="VmgL" class=""><strong>Andes</strong></td><td id="\VLG" class="">0.695</td><td id="rlb`" class="">0.169</td><td id="?Z[H" class="">Above moderate — wide climatic range from arid plateaus to humid tropics; mixed VH and VV scattering raises σ.</td></tr><tr id="5beac979-12b3-47c1-bb2a-188bdad97b2b"><td id="VmgL" class=""><strong>Drakensberg</strong></td><td id="\VLG" class="">0.599</td><td id="rlb`" class="">0.160</td><td id="?Z[H" class="">Moderate — seasonal rainfall and mixed grassland-forest cover across South African highlands; σ reflects east–west humidity gradient.</td></tr><tr id="fad2136b-4c4d-4dc4-b9ec-6bb67d12caa2"><td id="VmgL" class=""><strong>Himalayas</strong></td><td id="\VLG" class="">0.553</td><td id="rlb`" class="">0.193</td><td id="?Z[H" class="">Below moderate, high diversity — coexistence of wet southern slopes, dry northern plateaus, and glaciated zones causes large σ.</td></tr><tr id="894cdc99-0f83-4b45-9b5a-0a0b020372e9"><td id="VmgL" class=""><strong>Rocky Mountains</strong></td><td id="\VLG" class="">0.602</td><td id="rlb`" class="">0.261</td><td id="?Z[H" class="">Moderate mean with highest σ — extreme contrasts among deserts, grasslands, coniferous forests, and glaciers.</td></tr><tr id="731739e0-3e5c-476b-880c-f3e65608e703"><td id="VmgL" class=""><strong>Tian Shan</strong></td><td id="\VLG" class="">0.477</td><td id="rlb`" class="">0.215</td><td id="?Z[H" class="">Low mean — continental arid climate; only glacial valleys show elevated RVI while slopes remain dry.</td></tr></tbody></table><h3 id="283817fd-e8e4-8004-a8f4-f067da32e5be" class="">3.1 Region Type Interpretation</h3><table id="283817fd-e8e4-807d-9441-f41044b2bfd2" class="simple-table"><thead class="simple-table-header"><tr id="283817fd-e8e4-80d2-9186-e225c20887e9"><th id="LR=t" class="simple-table-header-color simple-table-header">Region Type</th><th id="tSeF" class="simple-table-header-color simple-table-header">Typical RVI Characteristics</th><th id="V[jh" class="simple-table-header-color simple-table-header">Physical Explanation</th></tr></thead><tbody><tr id="283817fd-e8e4-80d3-8247-fd5b861d1696"><td id="LR=t" class=""><strong>Humid Temperate Climate</strong> <em>(Japan, Korea, Eastern Australia)</em></td><td id="tSeF" class=""><strong>RVI ≈ 0.7–0.75, σ ≤ 0.15</strong></td><td id="V[jh" class="">Abundant precipitation and dense forest cover lead to strong VH scattering and high spatial uniformity.</td></tr><tr id="283817fd-e8e4-8049-b93a-c2320f3cbb34"><td id="LR=t" class=""><strong>Snow-Dominated Alpine Zone</strong> <em>(Alps, Andes)</em></td><td id="tSeF" class=""><strong>RVI ≈ 0.7, σ ≈ 0.13–0.17</strong></td><td id="V[jh" class="">Stable high-mountain environments where snow layers coexist with vegetative scattering.</td></tr><tr id="283817fd-e8e4-80a0-a74a-e8b0787b7bd1"><td id="LR=t" class=""><strong>Transitional Semi-Arid Region</strong> <em>(Atlas, Drakensberg)</em></td><td id="tSeF" class=""><strong>RVI ≈ 0.45–0.6, σ ≈ 0.15–0.16</strong></td><td id="V[jh" class="">Seasonal vegetation with limited rainfall and localized moist areas.</td></tr><tr id="283817fd-e8e4-80d7-96d3-f75ada413f1e"><td id="LR=t" class=""><strong>Continental Alpine Region</strong> <em>(Himalayas, Rockies, Tian Shan)</em></td><td id="tSeF" class=""><strong>RVI ≈ 0.5–0.6, σ &gt; 0.2</strong></td><td id="V[jh" class="">Strong climatic contrasts (dry plains, humid valleys, glaciated zones) result in high spatial heterogeneity.</td></tr></tbody></table><h3 id="283817fd-e8e4-8061-a97d-e23b1ab175e3" class="">3.2 Height related Interpretation</h3><table id="971150ef-0345-41ca-bb17-9b12b5cc8aab" class="simple-table"><thead class="simple-table-header"><tr id="a09f5572-05ac-4050-a1c5-0c515d4bd69f"><th id="_{wR" class="simple-table-header-color simple-table-header">Pattern</th><th id="m&gt;;&lt;" class="simple-table-header-color simple-table-header" style="width:486px">Interpretation</th></tr></thead><tbody><tr id="8c45aefd-bb99-4392-8912-e481e485b4eb"><td id="_{wR" class=""><strong>↑ Mean Elevation → ↑ RVI Variability (σ)</strong></td><td id="m&gt;;&lt;" class="" style="width:486px">Higher altitudes host coexisting zones of snow, rock, and vegetation, resulting in diverse scattering mechanisms. <em>(e.g., Himalayas, Tian Shan, Rockies)</em></td></tr><tr id="e5a69e5e-b62c-4839-978a-8552a43a0c07"><td id="_{wR" class=""><strong>↓ Mean Elevation with Low σ → Stable RVI</strong></td><td id="m&gt;;&lt;" class="" style="width:486px">Low-elevation, humid forest regions show minimal topographic variation and homogeneous VH/VV ratios. <em>(e.g., Taebaek, Japanese Alps)</em></td></tr><tr id="f7f1a9b6-e5a0-4b24-bbee-421267455fcd"><td id="_{wR" class=""><strong>High Elevation σ → Complex Scattering Domain</strong></td><td id="m&gt;;&lt;" class="" style="width:486px">Large elevation differences create mixed surfaces of snow, ice, vegetation, and rock, broadening the RVI histogram. <em>(e.g., Andes, Himalayas)</em></td></tr></tbody></table><h2 id="283817fd-e8e4-802c-b170-ea647ba3156d" class="">4. Cross Polarization Ratio</h2><p id="283817fd-e8e4-8001-9d35-ce94e59a427a" class="">
+</p><p id="1e9a0fce-b5a8-40a2-b160-933d2d976fad" class="">The <strong>VH/VV ratio</strong> serves as a complementary indicator of <strong>vegetation density</strong> and <strong>surface moisture</strong>, reflecting the same physical process as the <strong>Radar Vegetation Index (RVI)</strong> — the balance between <strong>volume</strong> and <strong>surface scattering</strong>.</p><ul id="44000d76-a370-4ab4-8bdc-afb240f7c36a" class="bulleted-list"><li style="list-style-type:disc"><strong>High VH/VV</strong> → strong depolarization → dense canopy, moist vegetation, or snow</li></ul><ul id="ad14ad5a-8a4c-4188-a8b8-05295e0895fe" class="bulleted-list"><li style="list-style-type:disc"><strong>Low VH/VV</strong> → dominant surface reflection → bare or rocky terrain</li></ul><p id="cbe82aec-b2fc-431c-99a0-8fef0e0ec177" class="">Histograms of VH/VV and RVI show <strong>similar global patterns</strong>, confirming their shared sensitivity to vegetation structure.</p><p id="8bd6fbb7-c572-4576-8113-2c17e8a29ec1" class="">However, <strong>minor deviations</strong> arise, and we expect that this is because of:</p><ol type="1" id="e321c15a-f79b-419a-92d5-eaf17fb4cdd4" class="numbered-list" start="1"><li><strong>Topography and slope</strong> (affecting VV more strongly),</li></ol><ol type="1" id="75376bd1-ae2d-44cf-a1bf-bd7e28c25014" class="numbered-list" start="2"><li><strong>Snow wetness or mixed canopy</strong> (altering multiple scattering),</li></ol><ol type="1" id="c833942a-8f97-4986-810f-e51db40a0222" class="numbered-list" start="3"><li><strong>Nonlinear weighting in RVI</strong> (4σVH term vs. simple ratio).</li></ol><p id="9dbddaa8-89a7-4236-b707-6b3b08975a38" class="">In summary, <strong>RVI and VH/VV together</strong> offer a robust interpretation of mountain surface characteristics, capturing both <strong>moisture variability</strong> and <strong>structural heterogeneity</strong>.</p><h2 id="283817fd-e8e4-80ea-aa91-f6c7e74d04af" class="">5. Forest Degradation Index (FDI)</h2><table id="138e5b20-327c-4f4b-b92a-dd70f58dd89e" class="simple-table"><thead class="simple-table-header"><tr id="40993045-4e38-4e3c-9c60-e33eb6ec758c"><th id="IZYS" class="simple-table-header-color simple-table-header">Category</th><th id="|~?&gt;" class="simple-table-header-color simple-table-header">Mean FDI Range</th><th id="Cq&gt;H" class="simple-table-header-color simple-table-header">Representative Ranges</th></tr></thead><tbody><tr id="f26f891f-ea57-43d9-91c5-35496ccae107"><td id="IZYS" class=""><strong>Low Degradation (0.63–0.65)</strong></td><td id="|~?&gt;" class="">0.63–0.65</td><td id="Cq&gt;H" class="">Taebaek, Japanese Alps, Great Dividing Range, Alps</td></tr><tr id="3427c12e-ae33-4da1-ad49-4718dba4966d"><td id="IZYS" class=""><strong>Moderate Degradation (0.65–0.70)</strong></td><td id="|~?&gt;" class="">0.65–0.70</td><td id="Cq&gt;H" class="">Andes, Drakensberg, Rockies</td></tr><tr id="bf63a043-f0be-4ea1-a62c-38cde651a878"><td id="IZYS" class=""><strong>High Degradation (0.70–0.77)</strong></td><td id="|~?&gt;" class="">0.70–0.77</td><td id="Cq&gt;H" class="">Himalayas, Atlas, Tian Shan</td></tr></tbody></table><ul id="0d68f132-bb53-4d8a-b05d-17a404b6b3ea" class="bulleted-list"><li style="list-style-type:disc"><strong>High mean FDI → low vegetation cover or high soil/rock exposure.</strong><ul id="70a537d9-f872-46bf-a1d9-38079034053f" class="bulleted-list"><li style="list-style-type:circle"><em>Atlas (0.77), Tian Shan (0.76), Himalayas (0.72)</em> — driven by aridity or extreme alpine conditions.</li></ul></li></ul><ul id="2f814ab3-0482-4932-9456-0d85fed15a4a" class="bulleted-list"><li style="list-style-type:disc"><strong>High FDI standard deviation → large regional variability in degradation.</strong><ul id="2d89226b-482b-4f76-ba0a-b2c1c83b3a81" class="bulleted-list"><li style="list-style-type:circle"><em>Rockies (0.13) &gt; Himalayas (0.10) &gt; Tian Shan (0.11)</em> — diverse internal climatic and ecological zones.</li></ul></li></ul><ul id="d7a5a94f-273a-4e5e-a1ca-87c0e63bca74" class="bulleted-list"><li style="list-style-type:disc"><strong>Low FDI → stable and humid forested regions.</strong><ul id="0bd66365-0d70-4431-9315-40a6a65317e3" class="bulleted-list"><li style="list-style-type:circle"><em>Taebaek (0.63), Japanese Alps (0.64), Great Dividing Range (0.63)</em> — uniform, well-preserved forest landscapes.</li></ul></li></ul><p id="283817fd-e8e4-8001-9ff4-e69cf39afdf5" class="">
+</p><h2 id="283817fd-e8e4-8082-918e-dc2b52a821d0" class="">6. Precipitation </h2><table id="ac342d7d-e1d9-4a75-8d48-1c82950b8afb" class="simple-table"><thead class="simple-table-header"><tr id="1691e045-dc93-44b9-ac7e-f5b6de4cf932"><th id="gLL`" class="simple-table-header-color simple-table-header">Mountain Range</th><th id="dRp^" class="simple-table-header-color simple-table-header">Mean Precipitation</th><th id="_vd_" class="simple-table-header-color simple-table-header">Distribution Type</th><th id="Zu_^" class="simple-table-header-color simple-table-header">Characteristics</th></tr></thead><tbody><tr id="e78e7712-a9f5-4e8e-95fe-901b33e47506"><td id="gLL`" class=""><strong>Alps</strong></td><td id="dRp^" class="">Around 1700 mm</td><td id="_vd_" class="">Bimodal</td><td id="Zu_^" class="">Reflects strong orographic rainfall due to contrast between humid northern/western slopes and drier southern slopes.</td></tr><tr id="bcd26071-3e4b-4e1f-af35-9fd0cfe4faec"><td id="gLL`" class=""><strong>Atlas</strong></td><td id="dRp^" class="">Around 400 mm</td><td id="_vd_" class="">Unimodal, right-skewed</td><td id="Zu_^" class="">Semi-arid climate with limited Mediterranean influence; low average precipitation and small variability.</td></tr><tr id="d82408ba-7a77-403e-9ea1-59a7518e181d"><td id="gLL`" class=""><strong>Great Dividing Range</strong></td><td id="dRp^" class="">Around 1200 mm</td><td id="_vd_" class="">Weakly bimodal</td><td id="Zu_^" class="">Difference between humid coastal regions and drier inland zones; varies with elevation.</td></tr><tr id="5cc32510-ae00-42dc-b251-334b15cf399e"><td id="gLL`" class=""><strong>Japanese Alps</strong></td><td id="dRp^" class="">Around 2000 mm</td><td id="_vd_" class="">Right-skewed</td><td id="Zu_^" class="">Influenced by monsoon and maritime climate; summer-dominant rainfall pattern.</td></tr><tr id="410b26bb-af7f-4011-a0a0-7d826c317149"><td id="gLL`" class=""><strong>Taebaek</strong></td><td id="dRp^" class="">Around 1000 mm</td><td id="_vd_" class="">Unimodal</td><td id="Zu_^" class="">Reflects Korea’s east-high, west-low topography; higher rainfall along the east coast.</td></tr><tr id="2e627faa-f366-47b8-806a-e23fba155c31"><td id="gLL`" class=""><strong>Andes</strong></td><td id="dRp^" class="">Two distinct peaks</td><td id="_vd_" class="">Strongly bimodal</td><td id="Zu_^" class="">Large regional contrast between humid tropical north and arid high-altitude south.</td></tr><tr id="6d9080af-8c74-4624-92a6-740ca2b61c9b"><td id="gLL`" class=""><strong>Drakensberg</strong></td><td id="dRp^" class="">Around 1400 mm</td><td id="_vd_" class="">Unimodal</td><td id="Zu_^" class="">Plateau-type climate with relatively uniform rainfall; wet summer season.</td></tr><tr id="15b66f6c-15eb-495c-8345-72d44853deb7"><td id="gLL`" class=""><strong>Himalaya</strong></td><td id="dRp^" class="">~2500 mm (wide variance)</td><td id="_vd_" class="">Broad spectrum</td><td id="Zu_^" class="">Southern slopes affected by monsoon rainfall, northern highlands remain arid; world’s strongest precipitation gradient.</td></tr><tr id="2737bca0-a380-4caf-9131-96f08187e4c0"><td id="gLL`" class=""><strong>Rocky Mountains</strong></td><td id="dRp^" class="">700–1000 mm</td><td id="_vd_" class="">Mild right-skewed</td><td id="Zu_^" class="">Rainfall concentrated on western slopes; interior regions relatively dry.</td></tr><tr id="c68503b5-70e2-4d70-ac19-95c78e1c096e"><td id="gLL`" class=""><strong>Tien Shan</strong></td><td id="dRp^" class="">300–600 mm</td><td id="_vd_" class="">Unimodal</td><td id="Zu_^" class="">Dry inland mountain system with low mean precipitation and small dispersion.</td></tr></tbody></table><p id="283817fd-e8e4-80ed-b173-e87769a656b5" class="">Precipitation measures the amount of water that falls from the atmosphere to the Earth&#x27;s surface in the form of rain, snow, sleet, or hail.</p><p id="283817fd-e8e4-80d0-a836-e3fe562e0de1" class="">Our data comes from NASA’s GP</p><ul id="283817fd-e8e4-806f-812b-d595ffa51aa6" class="bulleted-list"><li style="list-style-type:disc">High precipitation</li></ul><p id="283817fd-e8e4-8069-b7ef-f028477f2655" class="">Data utilized NASA’s GPM mission that estimates global precipitation with precision of 0.1°<strong>×</strong> 0.1° for almost every hour. Since this year’s data were not fully revised, we used the averaged data from 2022 to 2024. We just considered the accumulated annual precipitation since our other data cannot cons</p><h3 id="44d0384f-2a8d-43a9-834e-92c42bad78fd" class="">Relationship between Mean and Standard Deviation</h3><ul id="3383921c-b566-47e0-a107-36236482cc5e" class="bulleted-list"><li style="list-style-type:disc">The <strong>Himalayas</strong> and <strong>Alps</strong> exhibit both high mean precipitation and high variance, reflecting their <strong>diverse climatic zones and large elevation differences</strong>.</li></ul><ul id="c6178f16-dcca-48d3-942c-aad647d0b940" class="bulleted-list"><li style="list-style-type:disc">In contrast, the <strong>Taebaek</strong>, <strong>Atlas</strong>, and <strong>Tien Shan</strong> ranges show both low mean and low variance, indicating <strong>dry and relatively homogeneous precipitation environments</strong>.</li></ul><hr id="3fc32dfa-0191-4bca-84a9-65ebcf53e4db"/><h3 id="b68b3012-4ffc-4521-96fb-dcc5397aca61" class="">Topographic Effect</h3><ul id="6da23daa-2309-4d95-80c0-9c4872ea4791" class="bulleted-list"><li style="list-style-type:disc">As <strong>topographic complexity increases</strong>, the <strong>standard deviation (variance) of precipitation</strong> also tends to rise.<p id="8bef88f2-e056-4cae-b4aa-a0dff704015c" class="">For example, the <strong>Alps</strong>, <strong>Andes</strong>, and <strong>Himalayas</strong> possess highly complex relief, leading to the <strong>coexistence of multiple climatic zones</strong> within the same mountain system.</p></li></ul><h2 id="283817fd-e8e4-80e3-bc71-e4c63d6d28d7" class="">Contemporary Interpretation</h2><h3 id="1985f4a1-63e6-44c2-a618-f56a5efed249" class=""><strong>SARchive: A Journey to See Earth More Clearly through Radar Data</strong></h3><p id="0ab548b1-d22c-4e7d-ae8f-e3e76e4c2995" class="">Our goal was simple: to turn radar data into understanding — and that understanding into something we can share. What began as a set of small questions about mountain systems has evolved into <strong>SARchive</strong>, a platform that connects data, geography, and imagination to help us see our planet more distinctly.</p><hr id="690e1dc9-3a7a-43b9-8ac4-89c8fe4969b3"/><h3 id="d92ae40c-19d0-44bb-a520-d3e6afcd0684" class=""><strong>The Power of SAR Data</strong></h3><p id="14f11edd-3057-486a-b8fa-53fdcd1b4248" class="">Synthetic Aperture Radar (SAR) data, when combined with Digital Elevation Models (DEMs), allows for quantitative analysis of mountain morphology and environmental conditions.</p><p id="283817fd-e8e4-804c-aed6-ece9d28513f4" class="">
+</p><p id="da7bc29e-248c-4e1c-aa28-e20d5496e80f" class=""><strong>Quantitative Surface Interpretation</strong></p><p id="9527b2e2-9756-4731-aeac-5a455e1a87cd" class="">Polarimetric indicators such as the Radar Vegetation Index (RVI) and cross-polarization ratio (VH/VV) reveal variations in surface roughness, moisture, and canopy structure. These metrics distinguish bare ground, snow-covered regions, and vegetated zones by capturing the balance between <strong>volume scattering</strong> and <strong>surface scattering</strong>, highlighting both hydrological changes and structural heterogeneity.</p><p id="283817fd-e8e4-8065-b977-eada8f6a0ff7" class="">
+</p><p id="2cb1474b-ab45-4aa8-8cf8-0844a0f9aafd" class=""><strong>Morphological Complexity</strong></p><p id="4e028a42-1d15-4194-b65a-d85bd3a51e3c" class="">Through <strong>Hessian roughness (R₂)</strong> and <strong>Cosine roughness (R₁)</strong>, we explored the curvature and slope of terrain. Interestingly, these two metrics capture different aspects of landscape geometry — their mutual information is only <strong>0.07 bits</strong>, about <strong>0.5% of their individual entropy (~13 bits) when we calculated for global data</strong>. This indicates that these multiple, independent measures are necessary to fully describe the structural complexity of mountainous terrains.</p><p id="283817fd-e8e4-8075-9ec1-fef453b4598b" class="">
+</p><p id="982446d4-469f-4b11-8ac5-c0cd20f5153c" class=""><strong>Multi-Dimensional Environmental Analysis</strong></p><p id="4753e7c1-a465-4b35-a8ff-327843ab60c5" class="">By combining SAR-based indices (RVI, VH/VV) with ecological metrics such as the Forest Degradation Index (FDI), we can interpret not only elevation or precipitation patterns but also the ecological stability and climatic heterogeneity of mountain ecosystems.</p><hr id="7d46995a-85fc-4a9b-b1c1-81366603671d"/><h3 id="61217e9a-6359-480b-be01-fe945959323c" class=""><strong>Key Insights from Global Mountain Analysis</strong></h3><p id="c51ca866-8099-402e-bc1b-93fa7254b1be" class="">The integration of SAR indicators and geographical data reveals how each mountain system carries a distinct geomorphological and ecological identity.</p><p id="283817fd-e8e4-8020-a62b-e5513bf9d0f1" class="">
+</p><p id="7df33516-f2ea-4d57-a712-d2770e4c8489" class=""><strong>Topographic Diversity</strong></p><p id="787c56ba-7fc3-4ca4-965c-59cb916b1648" class="">The <strong>Himalayas</strong> exhibit both the highest mean elevation and the greatest variance, encompassing everything from tropical foothills to 8,000-meter snow peaks. The <strong>Andes</strong> show extreme elevation contrasts — from the coastal lowlands to the Andean plateau — while the <strong>Taebaek</strong> and <strong>Great Dividing Range</strong> display smooth, eroded forms with low elevation variance, reflecting ancient, stable mountain systems.</p><p id="283817fd-e8e4-80e0-93da-fbec1216e700" class="">
+</p><p id="0803b730-3340-4901-a2d5-70e1149e3aa2" class=""><strong>Geomorphological Evolution</strong></p><p id="cea12995-c003-42ce-ad4c-d15b728fb654" class="">Roughness metrics provide a clear morphological classification.</p><p id="0811aae6-11a2-4298-9e24-830ac9a6eb66" class="">Glacial and periglacial ranges such as the <strong>Himalayas, Alps,</strong> and <strong>Japanese Alps</strong> feature heavy right-tailed R₂ distributions and low mean R₁ values, indicating steep slopes shaped by frost weathering and active mass movements. Plateau–scarp systems like the <strong>Andes</strong> and <strong>Tien Shan</strong> exhibit <strong>bimodal curvature distributions</strong>, reflecting the juxtaposition of flat uplands and steep escarpments. In contrast, ancient ranges such as the <strong>Great Dividing Range, Atlas,</strong> and <strong>Taebaek</strong> show narrow, high-R₁ histograms, indicating smooth and uniform surfaces with minimal structural relief.</p><p id="283817fd-e8e4-8062-8ac5-c513eadb8a0c" class="">
+</p><p id="bf040999-c35f-428b-85fe-d8d164ffeec0" class=""><strong>Climate and Vegetation Patterns</strong></p><p id="575792da-078d-4e82-a65d-5aa7c8ebf84a" class="">SAR indices highlight subtle climatic and ecological contrasts.</p><p id="ad884cfd-cdf9-4638-bed9-06bed5a634d7" class="">Moist temperate regions like the <strong>Taebaek</strong>, <strong>Japanese Alps</strong>, and <strong>Great Dividing Range</strong> show high mean RVI values with very low variability (σ ≤ 0.15), reflecting stable forest cover and consistent VH backscatter. Their low FDI values (≤ 0.65) indicate well-preserved forest landscapes.</p><p id="47fbde20-9cdb-4f7f-be7e-e8b06b035168" class="">Continental highlands such as the <strong>Rocky Mountains, Himalayas,</strong> and <strong>Tien Shan</strong> display high RVI variance, revealing strong spatial heterogeneity across deserts, grasslands, coniferous forests, and glaciers. A positive correlation between elevation and RVI variability suggests that diverse scattering mechanisms — from snow to vegetation to rock — coexist at higher altitudes.</p><p id="84f2cf57-b27a-4666-bade-e775f6bc0073" class="">Meanwhile, ranges such as the <strong>Atlas</strong>, <strong>Tien Shan</strong>, and <strong>Himalayas</strong> show elevated FDI means (≥ 0.72–0.77), signifying degraded or sparsely vegetated surfaces under arid or alpine conditions.</p><p id="283817fd-e8e4-8054-ac1f-e65028d08771" class="">
+</p><p id="69412739-f603-47ed-af84-d1b32e5a39d1" class=""><strong>Precipitation and Terrain Complexity</strong></p><p id="18a54be1-e3e7-47a1-bc70-0dded10559c1" class="">Topographic complexity tends to increase the variance of precipitation within a single system. The <strong>Alps</strong>, <strong>Andes</strong>, and <strong>Himalayas</strong> demonstrate this vividly, encompassing multiple climatic zones within one range. In particular, the Himalayas show one of the world’s strongest precipitation gradients — with humid monsoonal slopes to the south and arid plateaus to the north. Conversely, ranges such as the <strong>Taebaek</strong>, <strong>Atlas</strong>, and <strong>Tien Shan</strong> maintain low mean precipitation and variance, indicating dry and relatively uniform hydroclimatic conditions.</p><hr id="918a6736-fd13-4cca-8e01-7352593b9da3"/><h3 id="7a86332d-af5e-4c93-928c-ed7ac57ac748" class=""><strong>Conclusion</strong></h3><p id="be47b44b-b70d-4527-8aec-8d266915c55a" class="">The SARchive project demonstrates that <strong>radar data can reveal the unseen structure of Earth’s mountains</strong> — their curvature, texture, and environmental contrasts — with remarkable precision. By fusing SAR-derived roughness and vegetation indices with classical geomorphological data, we can better understand how climate, erosion, and structure interact across scales.</p><p id="283817fd-e8e4-802e-bec4-e23ff85d25b4" class="">
+</p><p id="7fec14b2-bfaf-4b91-86e1-49dd00d62538" class="">Ultimately, <strong>SARchive</strong> is more than a dataset; it is an evolving way of seeing — transforming the invisible patterns of radar reflections into a coherent story about our planet’s dynamic surface.</p><p id="283817fd-e8e4-805e-9b29-e14869527d3c" class="">
+</p><p id="283817fd-e8e4-803a-8dfd-e7e65e9924a5" class="">
+</p></div></article>
+
+<script>
+// When graphs.png is clicked, notify the parent window to open a fullscreen image modal.
+(function(){
+	document.addEventListener('click', function(e){
+		var target = e.target;
+		// climb up to the nearest anchor
+		while (target && target !== document.documentElement) {
+			if (target.tagName && target.tagName.toLowerCase() === 'a') break;
+			target = target.parentElement;
+		}
+		if (!target || !target.getAttribute) return;
+		var href = target.getAttribute('href');
+		if (href && /(^|\/)graphs\.png(\?.*)?$/i.test(href)){
+			e.preventDefault();
+			try {
+				// Resolve relative URL to absolute for safety
+				var abs = new URL(href, window.location.href).toString();
+				if (window.parent && window.parent !== window) {
+					window.parent.postMessage({ type: 'OPEN_IMAGE', src: abs }, '*');
+				}
+			} catch(_err) {
+				if (window.parent && window.parent !== window) {
+					window.parent.postMessage({ type: 'OPEN_IMAGE', src: href }, '*');
+				}
+			}
+		}
+	}, false);
+})();
+</script>
+
+<span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>

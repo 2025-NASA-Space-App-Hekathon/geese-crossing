@@ -5,178 +5,117 @@
     {
       "rgb": [243, 255, 89],
       "hex": "#f3ff59",
-      "year": 1600,
       "rock_type": "Sedimentary rocks or undifferentiated facies"
     },
     {
       "rgb": [255, 243, 231],
       "hex": "#fff3e7",
-      "year": "Status (Not Age)",
       "rock_type": "Ice shelf, Extension of the ice shelf"
     },
     {
       "rgb": [231, 231, 231],
       "hex": "#e7e7e7",
-      "year": "Status (Not Age)",
       "rock_type": "Inland ice, Glacier"
     },
     {
       "rgb": [113, 243, 166],
       "hex": "#71f3a6",
-      "year": 1000,
       "rock_type": "Extrusive volcanic rocks"
     },
     {
       "rgb": [206, 206, 255],
       "hex": "#ceceff",
-      "year": 359,
       "rock_type": "Endogenous rocks (plutonic and/or metamorphic)"
     },
     {
       "rgb": [231, 190, 77],
       "hex": "#e7be4d",
-      "year": 1000,
       "rock_type": "Endogenous rocks (plutonic and/or metamorphic)"
     },
     {
       "rgb": [190, 130, 65],
       "hex": "#be8241",
-      "year": 1600,
       "rock_type": "Endogenous rocks (plutonic and/or metamorphic)"
     },
     {
       "rgb": [255, 77, 255],
       "hex": "#ff4dff",
-      "year": 4000,
       "rock_type": "Endogenous rocks (plutonic and/or metamorphic)"
     },
     {
       "rgb": [255, 154, 231],
       "hex": "#ff9ae7",
-      "year": 539,
       "rock_type": "Sedimentary rocks or undifferentiated facies"
     },
     {
       "rgb": [154, 231, 231],
       "hex": "#9ae7e7",
-      "year": 252,
       "rock_type": "Sedimentary rocks or undifferentiated facies"
     },
     {
       "rgb": [255, 178, 178],
       "hex": "#ffb2b2",
-      "year": 2500,
       "rock_type": "Sedimentary rocks or undifferentiated facies"
     },
     {
       "rgb": [255, 178, 49],
       "hex": "#ffb231",
-      "year": 359,
       "rock_type": "Sedimentary rocks or undifferentiated facies"
     },
     {
       "rgb": [255, 24, 24],
       "hex": "#ff1818",
-      "year": "Unknown",
       "rock_type": "Large Igneous Provinces (LIP)"
     },
     {
       "rgb": [255, 178, 219],
       "hex": "#ffb2db",
-      "year": 539,
       "rock_type": "Sedimentary rocks or undifferentiated facies"
     },
     {
       "rgb": [255, 178, 101],
       "hex": "#ffb265",
-      "year": 539,
       "rock_type": "Endogenous rocks (plutonic and/or metamorphic)"
     },
     {
       "rgb": [219, 142, 49],
       "hex": "#db8e31",
-      "year": 1600,
       "rock_type": "Endogenous rocks (plutonic and/or metamorphic)"
     },
     {
       "rgb": [255, 154, 130],
       "hex": "#ff9a82",
-      "year": 539,
       "rock_type": "Endogenous rocks (plutonic and/or metamorphic)"
     },
     {
       "rgb": [190, 113, 255],
       "hex": "#be71ff",
-      "year": 539,
       "rock_type": "Sedimentary rocks or undifferentiated facies"
     },
     {
       "rgb": [171, 211, 223],
       "hex": "#abd3df",
-      "year": 252,
       "rock_type": "Sedimentary rocks or undifferentiated facies"
     },
     {
       "rgb": [154, 231, 49],
       "hex": "#9ae731",
-      "year": 1000,
       "rock_type": "Extrusive volcanic rocks"
     },
     {
       "rgb": [231, 166, 255],
       "hex": "#e7a6ff",
-      "year": 252,
       "rock_type": "Extrusive volcanic rocks"
     },
     {
       "rgb": [172, 212, 223],
       "hex": "#acd4df",
-      "year": 252,
       "rock_type": "Sedimentary rocks or undifferentiated facies"
     },
     {
       "rgb": [36, 255, 130],
       "hex": "#24ff82",
-      "year": 359,
       "rock_type": "Extrusive volcanic rocks"
     }
-  ],
-  "year_statistics": {
-    "1000": 3,
-    "1600": 3,
-    "252": 4,
-    "359": 3,
-    "4000": 1,
-    "539": 5,
-    "2500": 1,
-    "Status (Not Age)": 2,
-    "Unknown": 1
-  },
-  "rock_type_statistics": {
-    "Sedimentary rocks or undifferentiated facies": 9,
-    "Extrusive volcanic rocks": 4,
-    "Endogenous rocks (plutonic and/or metamorphic)": 7,
-    "Ice shelf, Extension of the ice shelf": 1,
-    "Inland ice, Glacier": 1,
-    "Large Igneous Provinces (LIP)": 1
-  },
-  "color_meaning": {
-    "description": "Geological Map Color Meanings",
-    "year_meaning": "Number representing geological age (millions of years ago)",
-    "rock_types": {
-      "Sedimentary rocks or undifferentiated facies": "Sedimentary rock (layered rock)",
-      "Extrusive volcanic rocks": "Extrusive volcanic rock (rock erupted from volcano)",
-      "Endogenous rocks (plutonic and/or metamorphic)": "Endogenous rock (rock formed deep underground)",
-      "Large Igneous Provinces (LIP)": "Large Igneous Provinces",
-      "Ice shelf, Extension of the ice shelf": "Ice Shelf (Current State)",
-      "Inland ice, Glacier": "Glacier (Current State)"
-    },
-    "color_patterns": {
-      "Yellow shades": "Sedimentary rocks",
-      "Green shades": "Extrusive volcanic rocks",
-      "Purple shades": "Endogenous rocks",
-      "Red": "Large Igneous Provinces (LIP)",
-      "Gray": "Ice Shelf/Glacier"
-    }
-  }
+  ]
 }
