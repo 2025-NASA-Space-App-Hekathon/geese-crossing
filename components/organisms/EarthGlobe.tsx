@@ -68,7 +68,12 @@ export default function EarthGlobe() {
 
     const containerRef = useRef<HTMLDivElement>(null);
     const computedColorScheme = useComputedColorScheme('light', { getInitialValueInEffect: true });
-    const url = computedColorScheme === 'light' ? '/earth_daymap.jpg' : '/earth_nightmap.jpg';
+    const withBase = (p: string) => {
+        const bp = (process.env.NEXT_PUBLIC_BASE_PATH || '').replace(/\/$/, '');
+        if (!bp) return p;
+        return p.startsWith('/') ? `${bp}${p}` : `${bp}/${p}`;
+    };
+    const url = computedColorScheme === 'light' ? withBase('/earth_daymap.jpg') : withBase('/earth_nightmap.jpg');
     // const url = "mountains.tif";
 
     useEffect(() => {
@@ -78,15 +83,15 @@ export default function EarthGlobe() {
         (isTiff ? loadGeoTiffToTexture(url) : loadStandardImage(url))
             .then(tex => { if (!cancelled) setTexture(tex); })
             .catch(e => { if (!cancelled) setError(e.message); });
-        loadGeoTiffHeightMap('/earth.tif', { invert: true })
+        loadGeoTiffHeightMap(withBase('/earth.tif'), { invert: true })
             .then(h => { if (!cancelled) setHeightMap(h); })
             .catch(() => { });
         // Load mountains mask (non-zero -> colored overlay)
         setMountainsLoadStatus('loading');
-        loadGeoTiffMaskTexture('/mountains.tif', { threshold: 0, color: '#37ff00ff', maxAlpha: 1, scaleAlphaByValue: true })
+        loadGeoTiffMaskTexture(withBase('/mountains.tif'), { threshold: 0, color: '#37ff00ff', maxAlpha: 1, scaleAlphaByValue: true })
             .then(tex => { if (!cancelled) setMountainsMask(tex); })
             .catch(err => { if (!cancelled) console.warn('mountains.tif load fail', err); });
-        loadGeoTiffSingleBand('/mountains.tif')
+        loadGeoTiffSingleBand(withBase('/mountains.tif'))
             .then(ds => { if (!cancelled) { setMountainsBand(ds); setMountainsLoadStatus('ok'); setMountainsLoadError(null); } })
             .catch(err => { if (!cancelled) { console.warn('mountains single band load fail', err); setMountainsLoadStatus('error'); setMountainsLoadError(String(err)); } });
         return () => { cancelled = true; };

@@ -26,16 +26,37 @@ export default function OverlayManager({ folderPath, globeRef, segments = 96, au
     const initialize = useOverlayStore(s => s.initialize);
     const { registerTexture, markLoading, markError } = useOverlayActions();
 
-    // Fetch overlay list + optional polling
+    // Helper to prefix with basePath in static export (GitHub Pages)
+    const withBase = React.useCallback((p: string) => {
+        const bp = (process.env.NEXT_PUBLIC_BASE_PATH || '').replace(/\/$/, '');
+        if (!bp) return p;
+        return p.startsWith('/') ? `${bp}${p}` : `${bp}/${p}`;
+    }, []);
+
+    // Fetch overlay list + optional polling (fallback to static manifest on export)
     useEffect(() => {
         let aborted = false;
         const fetchList = async () => {
             try {
-                const res = await fetch(`/api/overlays?folder=${encodeURIComponent(folderPath)}`);
-                const json = await res.json();
-                if (!json.success) throw new Error(json.error || 'Failed to load overlays');
-                if (!aborted) {
-                    initialize(json.files.map((f: any) => ({ id: f.id, name: f.name, path: f.path, extension: f.extension })));
+                // Try dynamic API (works on Vercel/Node). If it fails (e.g., GitHub Pages), fall back to static manifest.
+                let files: Array<{ id: string; name: string; path: string; extension: string }> | null = null;
+                try {
+                    const res = await fetch(withBase(`/api/overlays?folder=${encodeURIComponent(folderPath)}`), { cache: 'no-store' });
+                    if (res.ok) {
+                        const json = await res.json();
+                        if (json.success) files = json.files;
+                    }
+                } catch {}
+                if (!files) {
+                    const manifestUrl = withBase('/overlays/manifest.json');
+                    const res2 = await fetch(manifestUrl, { cache: 'no-store' });
+                    const json2 = await res2.json();
+                    const folder = folderPath.replace(/^\/+/, '');
+                    const subset = (json2.files || []).filter((f: any) => f.path.startsWith(`/${folder}`));
+                    files = subset;
+                }
+                if (!aborted && files) {
+                    initialize(files.map((f: any) => ({ id: f.id, name: f.name, path: withBase(f.path), extension: f.extension })));
                 }
             } catch (e) {
                 if (!aborted) console.warn('[OverlayManager] list fetch error:', e);

@@ -6,7 +6,10 @@
         "dev": "next dev",
         "build": "next build",
         "start": "next start",
-        "lint": "next lint"
+        "lint": "next lint",
+        "preexport": "node ./scripts/build_overlays_manifest.mjs",
+    "export": "node ./scripts/toggle_api_for_export.mjs off && NEXT_EXPORT=true next build && node ./scripts/toggle_api_for_export.mjs on",
+        "export:gh": "NEXT_BASE_PATH=/${npm_package_name} NEXT_ASSET_PREFIX=/${npm_package_name} NEXT_PUBLIC_BASE_PATH=/${npm_package_name} npm run export"
     },
     "dependencies": {
         "@mantine/core": "8.3.0",

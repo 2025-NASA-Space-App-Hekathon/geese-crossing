@@ -23,6 +23,11 @@ type RockTypeJson = {
 
 export default function OverlayLegend() {
   const overlays = useOrderedOverlays();
+  const withBase = (p: string) => {
+    const bp = (process.env.NEXT_PUBLIC_BASE_PATH || '').replace(/\/$/, '');
+    if (!bp) return p;
+    return p.startsWith('/') ? `${bp}${p}` : `${bp}/${p}`;
+  };
 
   // Determine visibility of target overlays by name (from file name without extension)
   const yearVisible = useMemo(() => overlays.some(o => o.visible && /year_of_creation/i.test(o.name)), [overlays]);
@@ -37,7 +42,7 @@ export default function OverlayLegend() {
   useEffect(() => {
     let aborted = false;
     if (yearVisible && !yearsData && !yearsErr) {
-      fetch('/years.json')
+      fetch(withBase('/years.json'))
         .then(r => r.json())
         .then((j: YearsJson) => { if (!aborted) setYearsData(j); })
         .catch(e => { if (!aborted) setYearsErr(String(e)); });
@@ -48,7 +53,7 @@ export default function OverlayLegend() {
   useEffect(() => {
     let aborted = false;
     if (rockVisible && !rockData && !rockErr) {
-      fetch('/rock_type.json')
+      fetch(withBase('/rock_type.json'))
         .then(r => r.json())
         .then((j: RockTypeJson) => { if (!aborted) setRockData(j); })
         .catch(e => { if (!aborted) setRockErr(String(e)); });
