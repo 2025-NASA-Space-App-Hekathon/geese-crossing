@@ -750,12 +750,13 @@ document.addEventListener('DOMContentLoaded', function () {
 			if (el && el.style) el.style.display = 'none';
 		});
 
-		// Show the chosen slice [startNode, endNode)
+		// Show the chosen slice [startNode, endNode) without including the first node of the next section
 		let showing = false;
 		for (const el of Array.from(body.children)) {
 			if (el === startNode) showing = true;
-			if (showing && el && el.style) el.style.display = '';
+			// If we've reached the beginning of the next section, stop before showing it
 			if (endNode && el === endNode) break;
+			if (showing && el && el.style) el.style.display = '';
 		}
 	} catch (e) {
 		// Fail open: if any error, show full content
