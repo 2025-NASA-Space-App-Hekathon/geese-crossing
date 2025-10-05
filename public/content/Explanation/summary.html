@@ -1,0 +1,737 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>연구 요약 최종</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 10px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.callout img.notion-static-icon {
+	width: 1em;
+	height: 1em;
+}
+
+.callout p {
+	margin: 0;
+}
+
+.callout h1,
+.callout h2,
+.callout h3 {
+	margin: 0 0 0.6rem;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray {
+	color: rgba(134, 131, 126, 1);
+	fill: rgba(134, 131, 126, 1);
+}
+.highlight-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.highlight-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.highlight-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.highlight-blue {
+	color: rgba(63, 126, 190, 1);
+	fill: rgba(63, 126, 190, 1);
+}
+.highlight-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.highlight-default_background {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray_background {
+	background: rgba(42, 28, 0, 0.07);
+}
+.highlight-brown_background {
+	background: rgba(139, 46, 0, 0.086);
+}
+.highlight-orange_background {
+	background: rgba(224, 101, 1, 0.129);
+}
+.highlight-yellow_background {
+	background: rgba(211, 168, 0, 0.137);
+}
+.highlight-teal_background {
+	background: rgba(0, 100, 45, 0.09);
+}
+.highlight-blue_background {
+	background: rgba(0, 111, 200, 0.09);
+}
+.highlight-purple_background {
+	background: rgba(102, 0, 178, 0.078);
+}
+.highlight-pink_background {
+	background: rgba(197, 0, 93, 0.086);
+}
+.highlight-red_background {
+	background: rgba(223, 22, 0, 0.094);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(134, 131, 126, 1);
+	fill: rgba(134, 131, 126, 1);
+}
+.block-color-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.block-color-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.block-color-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.block-color-blue {
+	color: rgba(63, 126, 190, 1);
+	fill: rgba(63, 126, 190, 1);
+}
+.block-color-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(240, 239, 237, 1);
+}
+.block-color-brown_background {
+	background: rgba(245, 237, 233, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 235, 222, 1);
+}
+.block-color-yellow_background {
+	background: rgba(249, 243, 220, 1);
+}
+.block-color-teal_background {
+	background: rgba(232, 241, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(232, 242, 250, 1);
+}
+.block-color-purple_background {
+	background: rgba(243, 235, 249, 1);
+}
+.block-color-pink_background {
+	background: rgba(250, 233, 241, 1);
+}
+.block-color-red_background {
+	background: rgba(252, 233, 231, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(209, 156, 0, 0.282); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 99, 174, 0.172); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="283817fd-e8e4-801c-b91e-e80ed2ce90fe" class="page sans"><header><h1 class="page-title">연구 요약 최종</h1><p class="page-description"></p></header><div class="page-body"><figure id="283817fd-e8e4-806b-b00a-d94e2cf6eae6" class="image"><a href="image.png"><img style="width:304px" src="image.png"/></a></figure><p id="283817fd-e8e4-80cd-8032-cb49532471fa" class="">
+</p><p id="03dd3c2f-8829-48c6-a478-753e15334d39" class="">Mountains are among the most dynamic and complex landforms on Earth, shaped by a wide range of <strong>physical, geological, and climatic processes</strong> — including precipitation regimes, lithology, tectonic history, and erosional forces.</p><p id="75a6d5fd-0797-488f-bc8e-722f64463c7e" class="">To understand these systems in a unified and quantitative framework, our study conducts a <strong>global comparative analysis of major mountain ranges</strong> using both physical and remote sensing perspectives.</p><p id="0a9676e5-b4b5-4010-a03f-40a4cc3f7cf8" class="">By integrating <strong>Synthetic Aperture Radar (SAR)</strong> observations with high-resolution <strong>Digital Elevation Models (DEM)</strong>, we extract a set of surface and environmental features that represent each mountain’s morphology and ecological condition.</p><p id="f2713e84-a310-4fe4-a9dd-31332b3ca4a7" class="">SAR-based parameters, such as <strong>polarimetric backscatter ratios (VV, VH), Radar Vegetation Index (RVI) and</strong> Forest degradation Index, provide insights into <strong>vegetation density</strong>, <strong>soil moisture</strong>, and <strong>surface texture</strong>—even in areas obscured by clouds or snow.</p><p id="c4f6bb5d-05ab-4965-8e52-fe0c603e08bc" class="">Meanwhile, DEM-derived roughness metrics (Hessian and cosine-based analyses) quantify the <strong>topographic ruggedness</strong> and <strong>structural complexity</strong> of each range.</p><p id="b0ddb798-b6c4-48f6-b1c4-949109fe0fd7" class="">By combining these remote sensing features with known physical drivers (e.g., precipitation distribution, rock composition, and formation age),</p><p id="de483b97-4f2a-42fc-abca-905ba5d7b5ac" class="">our study aims to construct a <strong>comprehensive morphological and environmental portrait</strong> of the world’s mountains.</p><p id="deb8eb2a-c057-4eef-b9e2-c2c61e36f510" class="">This integrated framework bridges <strong>geological context</strong> and <strong>satellite-observed surface properties</strong>,</p><p id="aae09c5c-a282-4aa4-a328-1a1afa2129fa" class="">offering a new quantitative approach to explore how Earth’s mountain systems differ, evolve, and interact with climate and vegetation across scales.</p><p id="283817fd-e8e4-802c-ae70-c8fb82204555" class="">
+</p><h1 id="99e54431-87ad-473a-86cc-2ad03f9c4ddd" class=""><strong>I. Why </strong><em> Synthetic Aperture Radar ,</em><strong> SAR?</strong></h1><h3 id="06ee1573-befa-4069-b385-ca66fca3ac00" class=""><strong>1. Definition and Principle of SAR</strong></h3><hr id="16e101ba-791f-47da-9951-4a2f682c957a"/><p id="4659f63b-1c60-4015-be44-f50dc19b8483" class=""><em>Synthetic Aperture Radar (SAR) is an active remote sensing system.</em></p><p id="dcab232a-a1f0-4e79-b313-5e6e51c58fa9" class="">SAR emits microwave pulses toward Earth’s surface and records the backscattered echoes.</p><p id="551ad103-a039-453e-8f07-5ed0c59fcad2" class="">Because microwaves are <em>self-generated</em> and <em>longer in wavelength</em> than visible light, SAR can acquire data <strong>day and night</strong>, <strong>through clouds</strong>, <strong>smoke</strong>, or even <strong>vegetation canopies and soil layers</strong>, depending on the wavelength.</p><p id="3e86bc8e-5b8d-47ea-9d6d-70e8f53960ca" class="">This enables continuous monitoring in regions where optical sensors fail — such as tropical rainforests, mountain ranges, and polar zones.</p><hr id="148e58cb-300d-4148-b463-adc791522b87"/><h2 id="04ab7025-33d3-4b73-b377-04b269a8ac11" class=""><strong>2. Why “Synthetic Aperture”?</strong></h2><p id="54afd758-e581-4e49-ac8e-9e31b0e81f0c" class="">Achieving fine radar resolution is constrained by three interdependent physical factors:</p><ol type="1" id="89601698-6f2c-49e0-9df2-01d208a0d1fe" class="numbered-list" start="1"><li><strong>Aperture size (D):</strong> the physical length of the antenna.</li></ol><ol type="1" id="de1b9297-8898-475f-a1bf-741960f2c3ae" class="numbered-list" start="2"><li><strong>Wavelength (λ):</strong> the energy scale of transmitted microwaves.</li></ol><ol type="1" id="4b58b54c-b3bf-40b0-8180-8a37712bfa4d" class="numbered-list" start="3"><li><strong>Feasibility of operation:</strong> the practical limitation of building and flying extremely long antennas.</li></ol><p id="339b748c-57f3-4559-b3a6-325b187fc658" class="">The angular resolution θ of a radar system follows the relationship:</p><p id="c09efed9-c531-49d3-9af3-6b201cf466e2" class="">θ∼λ/D</p><p id="77a0b216-1b1b-4c12-88c5-d6a2f5c4191c" class="">This means that sharper (smaller) angular resolution requires either a <strong>shorter wavelength</strong> or a <strong>larger antenna</strong>.</p><p id="6648aee6-92de-4141-af68-bd2b0de5dafe" class="">However, both cannot be pushed arbitrarily because there is tradeoff: short wavelengths are heavily scattered by the atmosphere and surface roughness, while extremely large antennas are mechanically impossible to deploy on aircraft or satellites.</p><p id="0260a21a-eb1b-4d93-91cd-e44e4a754877" class="">For example, at a wavelength of <strong>5 cm</strong>, achieving a <strong>10-meter spatial resolution</strong> would theoretically require a <strong>4-kilometer-long antenna</strong> — a clear violation of practical engineering constraints.</p><p id="2a80690a-939f-40ef-9c55-fc20be6badd2" class=""><strong>Synthetic Aperture Radar (SAR)</strong> resolves this paradox by <em>synthesizing</em> a large aperture virtually.</p><p id="61763f34-eed2-49fd-97f0-d22b51bffc7f" class="">Instead of constructing a 4-km physical antenna, the radar moves along its flight path and <strong>records coherent backscatter echoes over time</strong>.</p><p id="4f0bf475-eddb-40dc-bf06-59e2417377c6" class="">By combining these signals coherently, SAR reconstructs the same phase information that would have been captured by a giant stationary antenna.</p><p id="571b8dff-c062-4166-ab70-7fd89346a7db" class="">Thus, the term <strong>“Synthetic Aperture”</strong> represents a <strong>logical and physical synthesis</strong>:</p><ul id="fddb7f4b-26d2-46e3-acc5-5c2ec341c5de" class="bulleted-list"><li style="list-style-type:disc">Using <strong>motion</strong> in place of <strong>structure</strong>,</li></ul><ul id="d564a97d-1e67-4f56-9e30-28f3838ba47b" class="bulleted-list"><li style="list-style-type:disc">Using <strong>coherence</strong> in place of <strong>size</strong>,<p id="d1947d9d-7f8f-4211-9e5f-59cca92290f9" class="">to achieve high-resolution imaging without violating feasibility constraints.</p><p id="283817fd-e8e4-80ef-b070-cf064390687a" class="">
+</p></li></ul><figure id="283817fd-e8e4-80af-a7b8-ddad053c0f91" class="image"><a href="image%201.png"><img style="width:709.9750366210938px" src="image%201.png"/></a></figure><hr id="6a992987-9417-40ac-bebf-68cf7f844a80"/><h2 id="76522e19-fcb2-42cb-91ae-8e6f32f22203" class=""><strong>3. Imaging Geometry and Distortion Mechanisms</strong></h2><table id="fbc7bf49-83ea-484e-bd0b-d8bbbf19da9b" class="simple-table"><thead class="simple-table-header"><tr id="c223bdae-e729-438e-8c20-4a90a1e34c5e"><th id="\|sg" class="simple-table-header-color simple-table-header"><strong>Term</strong></th><th id="Zl]s" class="simple-table-header-color simple-table-header"><strong>Definition</strong></th><th id="~eci" class="simple-table-header-color simple-table-header"><strong>Logical Role</strong></th></tr></thead><tbody><tr id="2393d601-920f-4da4-a6c3-70501fbf3f3c"><td id="\|sg" class="">Slant Range</td><td id="Zl]s" class="">Line-of-sight distance from antenna to target</td><td id="~eci" class="">True radar measurement</td></tr><tr id="cd56b92a-39cb-4b97-939e-48a51118565e"><td id="\|sg" class="">Ground Range</td><td id="Zl]s" class="">Projection of slant range onto Earth’s surface</td><td id="~eci" class="">Georeferenced mapping domain</td></tr><tr id="e56520b1-ff9f-40eb-a6d0-cc12a9dd44cc"><td id="\|sg" class="">Along-Track</td><td id="Zl]s" class="">Direction parallel to flight path</td><td id="~eci" class="">Time-domain synthesis</td></tr><tr id="43a9d703-4af2-4386-92ac-32e28b6d5234"><td id="\|sg" class="">Across-Track</td><td id="Zl]s" class="">Direction perpendicular to flight path</td><td id="~eci" class="">Range-domain imaging</td></tr></tbody></table><p id="81133aa9-4429-470d-b6d5-611a8edfce97" class="">However, due to the <strong>nonlinear mapping</strong> between slant and ground ranges, mountainous terrain introduces distortions:</p><ul id="9018ccee-fd65-4be9-a908-6223443d2ed8" class="bulleted-list"><li style="list-style-type:disc"><strong>Layover:</strong> when the top of a mountain returns the signal <em>before</em> its base.</li></ul><ul id="da02f5ce-787c-460e-a9cc-255ebca8ddc8" class="bulleted-list"><li style="list-style-type:disc"><strong>Shadow:</strong> when radar illumination fails to reach a slope facing away from the sensor.</li></ul><p id="01e7dc90-cc1e-477c-bee2-ba7f32b1c47a" class="">These effects create a one-to-many mapping between pixel intensity and real-world surface geometry, which must be corrected during geocoding.</p><hr id="b6b3b9f2-9c44-4e18-9e3e-2ee9888daf60"/><h2 id="cce92445-0fc6-4d91-b193-7305275e2c87" class=""><strong>4. Wavelength and Physical Penetration</strong></h2><table id="5b70d880-d354-469e-b45b-eb633f64b6a5" class="simple-table"><thead class="simple-table-header"><tr id="1816d6a8-462a-4d7d-89c5-9b28b8868ebd"><th id="&gt;uO=" class="simple-table-header-color simple-table-header"><strong>Band</strong></th><th id="Nucn" class="simple-table-header-color simple-table-header"><strong>Approx. Wavelength</strong></th><th id="L@sL" class="simple-table-header-color simple-table-header"><strong>Dominant Scattering Source</strong></th><th id="o:}|" class="simple-table-header-color simple-table-header"><strong>Physical Sensitivity</strong></th></tr></thead><tbody><tr id="48b34364-f636-4413-bf23-43e8fd427775"><td id="&gt;uO=" class=""><strong>X-band (~3 cm)</strong></td><td id="Nucn" class="">Canopy tops</td><td id="L@sL" class="">Surface roughness</td><td id="o:}|" class="">Cannot penetrate dense forest</td></tr><tr id="7d47f7a3-09eb-4146-897c-16eff099a14e"><td id="&gt;uO=" class=""><strong>L-band (~23 cm)</strong></td><td id="Nucn" class="">Tree trunks, ground</td><td id="L@sL" class="">Volume scattering</td><td id="o:}|" class="">Penetrates vegetation</td></tr><tr id="741f9e27-c521-422d-abeb-a0926b7fc2d2"><td id="&gt;uO=" class=""><strong>P-band (~1 m)</strong></td><td id="Nucn" class="">Soil, sub-surface</td><td id="L@sL" class="">Double-bounce effects</td><td id="o:}|" class="">Used in archaeology, soil studies</td></tr></tbody></table><p id="2471b745-1300-40ad-b0cc-9f07d2e4a515" class=""><strong>Logical Relation:</strong></p><p id="3b13372c-3d17-4c8d-9979-5918f36f417f" class="">Penetration depth ∝ λ</p><p id="7326bc37-2300-45f5-968b-59c33d240dc5" class="">⇒ Longer wavelengths access deeper structural layers.</p><figure id="283817fd-e8e4-804b-b7e5-c3faf75c820f" class="image"><a href="image%202.png"><img style="width:709.9750366210938px" src="image%202.png"/></a></figure><hr id="e7a47f10-b08f-4809-a261-9ddf66cf179e"/><h2 id="4cb56215-dbab-40db-a886-9348800bb288" class=""><strong>5. Polarization and Scattering Mechanisms</strong></h2><p id="0f9fafc5-77f0-4443-9fb7-5e677ba64376" class="">Each radar pulse can be polarized horizontally (H) or vertically (V).</p><p id="26896316-a743-45c7-93a4-328d107e24d1" class="">Different combinations reveal distinct surface scattering mechanisms:</p><table id="08ccb88c-aa7e-4c04-9a51-280e8bdfa5ca" class="simple-table"><thead class="simple-table-header"><tr id="d85baa04-416c-4512-ab26-086b0f106bb0"><th id="FXfP" class="simple-table-header-color simple-table-header"><strong>Polarization Mode</strong></th><th id="e]Ma" class="simple-table-header-color simple-table-header"><strong>Dominant Mechanism</strong></th><th id="BD@H" class="simple-table-header-color simple-table-header"><strong>Surface Type Example</strong></th></tr></thead><tbody><tr id="ba46c35d-d0df-4e7c-a972-c919b592982e"><td id="FXfP" class=""><strong>VV</strong></td><td id="e]Ma" class="">Mirror-like reflection</td><td id="BD@H" class="">Smooth bare soil, calm water</td></tr><tr id="b20cec1b-4cf9-4053-95b1-6bb68ae64b18"><td id="FXfP" class=""><strong>VH or HV</strong></td><td id="e]Ma" class="">Volume scattering</td><td id="BD@H" class="">Leaves, branches, vegetation</td></tr><tr id="f40be522-bad1-4709-961b-59263c4f32bf"><td id="FXfP" class=""><strong>HH</strong></td><td id="e]Ma" class="">Double-bounce scattering</td><td id="BD@H" class="">Tree trunks, buildings, man-made targets</td></tr></tbody></table><p id="70bacc97-f524-43e7-a0d5-7b2ffc3aef3e" class="">Surface roughness ↑ ⇒ depolarization ↑</p><p id="1529abf6-a538-40ad-8094-74c2ebe6435b" class="">Hence, multi-polarization analysis forms the logical space where physical structure ↔ electromagnetic response are inferred.</p><figure id="283817fd-e8e4-800f-a6bd-d1ed8af25f71" class="image"><a href="image%203.png"><img style="width:710px" src="image%203.png"/></a></figure><figure id="283817fd-e8e4-8092-a73e-f7f8a09da0c5" class="image"><a href="image%204.png"><img style="width:709.9874877929688px" src="image%204.png"/></a></figure><hr id="babd3b61-827f-4cdc-8c09-9bf28156ca7d"/><h2 id="510c7ed4-2061-48ec-bb65-bc6220761faa" class=""><strong>6. Speckle Phenomenon</strong></h2><p id="28d9a394-cf07-47f8-aaed-18d2bafdf89e" class=""><strong>Observation:</strong> SAR images contain granular “noise.”</p><ul id="2bf659a2-0deb-41b2-a102-363f80835111" class="bulleted-list"><li style="list-style-type:disc">Let <em>S₁, S₂, …, Sₙ</em> = scatterers within a pixel.</li></ul><ul id="91dbc797-82d7-41d0-b58c-103e629427ae" class="bulleted-list"><li style="list-style-type:disc">Their phase differences cause <em>constructive</em> or <em>destructive</em> interference.</li></ul><p id="f776f62e-d94e-4e40-a169-e73bcc6323c0" class="">⇒ The resulting intensity pattern (speckle) is not random noise but <strong>a deterministic interference phenomenon</strong>.</p><p id="6c0187af-7edb-409b-8b79-853d57a82185" class="">To reduce speckle, analysts employ:</p><ul id="586dfc23-f6b7-4660-abcc-fd8c8020b11f" class="bulleted-list"><li style="list-style-type:disc"><strong>Multi-look averaging</strong> (spatial coherence reduction)</li></ul><ul id="728fb9ff-45ee-4aba-ab31-45fda9bffe55" class="bulleted-list"><li style="list-style-type:disc"><strong>Temporal averaging</strong> (multi-date coherence)</li></ul><hr id="60012886-0678-4f08-bc4d-6ccc95776241"/><h2 id="0f33ff14-3c02-4ddb-bc13-a82529aec1a8" class=""><strong>7. Resolution vs Pixel Size</strong></h2><p id="322b2112-34f8-4f04-a9f7-85613bd5d097" class=""><strong>Resolution (R):</strong> minimum physical separation the sensor can distinguish.</p><p id="888f56e4-c298-42cd-8232-afaea796ac7a" class=""><strong>Pixel Size (p):</strong> grid spacing during image resampling.</p><p id="8ae5cf8a-7795-456b-ae57-518f8c35c829" class="">Although often conflated, <em>R ≠ p</em>.</p><p id="5d40c0bb-2cb1-4375-9ca8-5ce133ce2727" class="">If p &lt; R, oversampling occurs (no new detail).</p><p id="9f846b9f-0b74-4359-bae9-cff7ce819ea5" class="">If p &gt; R, information loss occurs.</p><p id="c50b817f-2d65-45f2-bf4c-9102b1401882" class="">Hence, the logical constraint:</p><p id="16997645-ac36-4e16-b8b6-b62a672b698e" class="">Optimal Imaging Condition: p≈R\text{Optimal Imaging Condition: } p \approx R</p><p id="7d7fd4be-60b9-4383-ac25-c896cccec263" class="">Optimal Imaging Condition: p≈R</p><hr id="411a97f4-af1d-4444-b5c8-3d1e077c884c"/><h2 id="4b69a47f-4e84-4fce-a271-969d239db637" class=""><strong>8. Interferometric SAR (InSAR)</strong></h2><p id="bfd4aabe-697f-470d-a7a4-2496ecac0557" class="">When two SAR images (I₁, I₂) are acquired over the same area, their <strong>phase difference (Δϕ)</strong> encodes path length change Δr:</p><p id="a4cf46f2-2cee-4569-9204-4a85bfb48ebf" class="">
+</p><p id="283817fd-e8e4-80d1-a706-da76a8002ae6" class=""><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Δ</mi><mi>r</mi><mo>=</mo><mfrac><mrow><mi>λ</mi><mi mathvariant="normal">Δ</mi><mi>ϕ</mi></mrow><mrow><mn>4</mn><mi>π</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">Δr=\frac {λΔϕ}{4\pi}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord">Δ</span><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.2772em;vertical-align:-0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.9322em;"><span style="top:-2.655em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">4</span><span class="mord mathnormal mtight" style="margin-right:0.03588em;">π</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.4461em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">λ</span><span class="mord mtight">Δ</span><span class="mord mathnormal mtight">ϕ</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span><span>﻿</span></span></p><p id="a699f096-84a3-4213-92ba-b02270dd1c85" class="">Thus, InSAR enables centimeter-level detection of ground deformation — from earthquakes, landslides, glacier movement, to urban subsidence.</p><p id="20979dc2-8da5-405a-a02d-898e90f73a25" class=""><strong>Workflow:</strong></p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="e7d0d334-b291-49fe-9201-e527b2c6a794" class="code code-wrap"><code class="language-Plain Text" style="white-space:pre-wrap;word-break:break-all">Raw Signal → Calibration → Co-Registration → Interferogram Formation → Phase Unwrapping → Geocoding → Deformation Analysis
+</code></pre><hr id="ee78034f-6efd-49bb-82b6-3be3233d4700"/><p id="283817fd-e8e4-8029-acdd-e8d900326f0e" class=""><strong>References</strong></p><ul id="6bc159fc-5c6d-4c5e-a984-d636a7b82f11" class="bulleted-list"><li style="list-style-type:disc">NASA Earthdata – <em>Remote Sensing Basics  </em><a href="https://www.earthdata.nasa.gov/learn/earth-observation-data-basics/remote-sensing">https://www.earthdata.nasa.gov/learn/earth-observation-data-basics/remote-sensing</a></li></ul><ul id="2442a224-e28e-4194-abf3-d8126ef00137" class="bulleted-list"><li style="list-style-type:disc">NASA Earthdata – <em>Synthetic Aperture Radar (SAR) </em><a href="https://www.earthdata.nasa.gov/learn/earth-observation-data-basics/sar">https://www.earthdata.nasa.gov/learn/earth-observation-data-basics/sar</a></li></ul><ul id="283817fd-e8e4-8024-85e5-c4979487ab73" class="bulleted-list"><li style="list-style-type:disc">NASA SARHB CH3 - <a href="https://earthdata.nasa.gov/s3fs-public/2025-04/SARHB_CH3_Content.pdf">https://earthdata.nasa.gov/s3fs-public/2025-04/SARHB_CH3_Content.pdf</a></li></ul><h1 id="283817fd-e8e4-80c4-a6e5-d94f4eb9870a" class="">II. Dataset</h1><h2 id="4f478eca-6518-4ae9-80b2-3cca89ff9879" class=""><strong>2.1 Sentinel-1 SAR Dataset (GRD Level)</strong></h2><h3 id="7fec7f44-c0c2-458e-b685-481ee303d89d" class=""><strong>Dataset Overview</strong></h3><p id="fd56bf66-e365-46ce-9254-8a2c12875eb7" class="">The Sentinel-1 constellation, operated by the <strong>European Space Agency (ESA)</strong> under the <strong>Copernicus Programme</strong>, provides open-access radar data from <strong>C-band Synthetic Aperture Radar (SAR)</strong> sensors.</p><p id="e5c2f473-c78a-4d80-a4bb-e44ae7ea9a48" class="">The mission consists of twin satellites — <strong>Sentinel-1A</strong> and <strong>Sentinel-1B</strong> (with Sentinel-1C to follow) — designed for continuous, all-weather Earth observation.</p><p id="28ac7a8e-85ed-4b7d-961f-b60ee3ad8f94" class="">In this project, we used <strong>Ground Range Detected (GRD)</strong> products, which are <strong>radiometrically calibrated</strong> and <strong>orthorectified</strong> (geo-corrected) datasets.</p><p id="c646175b-6b1b-4e2d-a5ac-80c360f31e5f" class="">These products represent radar intensity projected on the ground range coordinate system, suitable for direct analysis and visualization.</p><figure id="283817fd-e8e4-8048-9120-fe35df74b5f4" class="image"><a href="image%205.png"><img style="width:500px" src="image%205.png"/></a></figure><hr id="06f7f25a-4074-4850-9ace-576c37e42eda"/><p id="283817fd-e8e4-8041-ac61-f453655e2b80" class=""><strong>Acquisition Parameters in our Project</strong></p><table id="89085646-1f88-4813-b5a8-4733a915ed89" class="simple-table"><thead class="simple-table-header"><tr id="2a57a46e-b33b-441d-93b7-3823bfa466e4"><th id="XqfZ" class="simple-table-header-color simple-table-header">Parameter</th><th id="IoMX" class="simple-table-header-color simple-table-header">Description</th></tr></thead><tbody><tr id="3010aa5b-a80f-41c1-ad4d-71d22c229117"><td id="XqfZ" class=""><strong>Instrument Mode</strong></td><td id="IoMX" class="">IW (Interferometric Wide Swath)</td></tr><tr id="391c6370-3350-463d-931d-25de820173a0"><td id="XqfZ" class=""><strong>Frequency Band</strong></td><td id="IoMX" class="">C-band (5.405 GHz)</td></tr><tr id="ebc22bbf-8b81-4235-b158-107376e00b52"><td id="XqfZ" class=""><strong>Polarizations</strong></td><td id="IoMX" class="">VV and VH (dual-polarization)</td></tr><tr id="d838a938-8226-4088-9436-e4d0c9df3776"><td id="XqfZ" class=""><strong>Processing Level</strong></td><td id="IoMX" class="">GRD (Ground Range Detected)</td></tr><tr id="3e955787-b01a-4bad-a5f8-e2f167c70222"><td id="XqfZ" class=""><strong>Data Source</strong></td><td id="IoMX" class="">Google Earth Engine (GEE)</td></tr><tr id="ba53f2ec-203d-44f3-966d-536d48e71fd9"><td id="XqfZ" class=""><strong>Temporal Coverage</strong></td><td id="IoMX" class="">From 2014</td></tr><tr id="920e3bff-8ebd-480a-8fe2-376cf177edc0"><td id="XqfZ" class=""><strong>Access Policy</strong></td><td id="IoMX" class="">Free and open under Copernicus Data Policy</td></tr></tbody></table><p id="f9ce1115-1a6d-43ad-9ac7-ba53f02bc349" class="">The <strong>VV</strong> and <strong>VH</strong> channels represent vertical–vertical and vertical–horizontal polarization components, respectively — corresponding to the radar’s transmitted and received electromagnetic orientations.</p><p id="54770038-8059-4d8d-99f9-fb9b17f74767" class="">Their ratio provides a proxy for <strong>surface roughness and vegetation volume scattering</strong>.</p><hr id="cd2696eb-26b5-432c-b0e6-f75a278e6f8f"/><h3 id="8853a14b-f06e-4bd3-86cf-dfbbb51a7e39" class=""><strong>Code Example: Sentinel-1 Data Import and Ratio Computation</strong></h3><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="cae0032c-5ca0-4f8e-8123-093dec5f8890" class="code code-wrap"><code class="language-Python" style="white-space:pre-wrap;word-break:break-all">def get_s1_layers(roi, start=&quot;2023-01-01&quot;, end=&quot;2023-12-31&quot;):
+    s1 = (
+        ee.ImageCollection(&quot;COPERNICUS/S1_GRD&quot;)
+        .filterBounds(roi)
+        .filterDate(start, end)
+        .filter(ee.Filter.eq(&quot;instrumentMode&quot;, &quot;IW&quot;))
+        .filter(ee.Filter.listContains(&quot;transmitterReceiverPolarisation&quot;, &quot;VV&quot;))
+        .filter(ee.Filter.listContains(&quot;transmitterReceiverPolarisation&quot;, &quot;VH&quot;))
+    )
+    img = s1.median().clip(roi)
+    vv = img.select(&quot;VV&quot;)
+    vh = img.select(&quot;VH&quot;)
+    ratio = vh.divide(vv).log10().multiply(10).rename(&quot;VH_VV_ratio&quot;)
+    return vv, vh, ratio
+
+</code></pre><p id="310c598f-88dc-4d03-b2b5-93f5838d69ab" class="">This script retrieves Sentinel-1 C-band dual-polarized images over a specified <strong>Region of Interest (ROI)</strong> and computes the logarithmic ratio (in dB) between VH and VV channels — a key metric for <strong>vegetation analysis</strong>. </p><p id="283817fd-e8e4-8093-8898-d9e73a4c100a" class="">Here is the intensity mapping of sentinel-1 of VH and VV polarization (March, 2023)  - <br/>Processed and visualized by <em>Team GeeseCrossing (NASA Space Apps Challenge 2025)</em>.</p><figure id="283817fd-e8e4-80e1-95b2-c0777d803182" class="image"><a href="image%206.png"><img style="width:709.9874877929688px" src="image%206.png"/></a></figure><p id="283817fd-e8e4-8054-bf07-d1e7a4577570" class=""><a href="https://en.wikipedia.org/wiki/Sentinel-1">https://en.wikipedia.org/wiki/Sentinel-1</a></p><hr id="3851de7a-8151-4d9b-bf1c-070ed173e515"/><h2 id="8b63d300-3ca3-4dac-923b-c29e8c62aa93" class=""><strong>2.2 Digital Elevation Model (DEM) Dataset</strong></h2><h3 id="079d090b-2b64-45e9-b9e1-fc7c27445bba" class=""><strong>Dataset Overview</strong></h3><p id="bee60f71-5b60-496b-81f8-4b6ac5d2de48" class="">The <strong>Digital Elevation Model (DEM)</strong> data were obtained from the <strong>NASA Shuttle Radar Topography Mission (SRTM)</strong>, which used both <strong>C-band</strong> and <strong>X-band</strong> radar sensors mounted on the Space Shuttle Endeavour in February 2000.</p><p id="d00a457f-5087-4d6a-a602-adec95260514" class="">SRTM data provide a <strong>global elevation map</strong> covering latitudes between <strong>60° N and 56° S</strong>, representing approximately <strong>80% of Earth’s land surface</strong>.</p><hr id="853de6a9-29f7-4754-9909-7ec60e941b1f"/><h3 id="32d0da49-9649-41bd-883d-ac48e1139951" class=""><strong>Technical Specifications</strong></h3><table id="9fae7ed0-04be-4ad3-bb84-cf9ccf6efc2d" class="simple-table"><thead class="simple-table-header"><tr id="2ccf78b3-a9ff-4249-8641-6773df13f8f4"><th id="B`FZ" class="simple-table-header-color simple-table-header">Parameter</th><th id="b\=W" class="simple-table-header-color simple-table-header">Description</th></tr></thead><tbody><tr id="ca8b9aa5-3d92-484f-93c7-f80e089314ad"><td id="B`FZ" class=""><strong>Resolution</strong></td><td id="b\=W" class="">30 arc-seconds (~1 km)</td></tr><tr id="9efa66d7-423f-4067-860d-57bba20b2acc"><td id="B`FZ" class=""><strong>Vertical Reference</strong></td><td id="b\=W" class="">WGS84 ellipsoid with EGM96 geoid correction</td></tr><tr id="a3894ec8-b353-4fd2-a081-25b4e4a60ece"><td id="B`FZ" class=""><strong>Acquisition Method</strong></td><td id="b\=W" class="">Interferometric single-pass (dual-antenna geometry)</td></tr><tr id="d1cea6a3-1805-4304-a009-0447b7e55793"><td id="B`FZ" class=""><strong>Coverage</strong></td><td id="b\=W" class="">Global (excluding high polar regions)</td></tr><tr id="4f6ff4b1-f827-459a-bb53-8be414522ba8"><td id="B`FZ" class=""><strong>Data Providers</strong></td><td id="b\=W" class="">NASA, NGA, DLR, and ASI (Italy)</td></tr><tr id="c28a2cfe-9bda-4687-8ad8-7845404ed7bb"><td id="B`FZ" class=""><strong>Access</strong></td><td id="b\=W" class="">Open data via <a href="https://search.earthdata.nasa.gov/search">NASA Earthdata Search</a></td></tr></tbody></table><p id="595c3f21-c227-41ff-84a9-bb1610ca3b95" class="">The SRTM mission derived elevation through <strong>Interferometric SAR (InSAR)</strong> techniques, processing simultaneous radar observations from two antennas to calculate terrain height.</p><p id="05cdc002-8839-410f-bb29-a7f62ef0f906" class="">Subsequent post-processing included <strong>void-filling</strong> using auxiliary datasets such as <strong>ASTER</strong> and <strong>GMTED</strong>, ensuring global coverage with minimal missing data.</p><hr id="14e7e5bd-46ef-4535-86a0-a608353d68d7"/><h3 id="847048a2-7853-4d9b-bf89-84aaf85b9417" class=""><strong>Applications in This Study</strong></h3><p id="413100d6-f3a5-47fe-b400-884ee4b7ad64" class="">The DEM dataset was used to:</p><ul id="792d11bc-d7f5-4568-b070-66de02c7ad8b" class="bulleted-list"><li style="list-style-type:disc">Visualize Earth’s <strong>3D topographic structure</strong> on a global sphere, and</li></ul><ul id="9361974a-ff95-426f-abdc-b1a9dcb92a22" class="bulleted-list"><li style="list-style-type:disc">Quantify the <strong>ruggedness and relief</strong> of each studied mountain range.</li></ul><p id="21ed6c24-7fa0-4b04-ae41-ffdeff978be5" class="">Combining DEM with Sentinel-1 SAR imagery enabled the correction of <strong>layover and shadow effects</strong> and improved understanding of how <strong>surface slope and roughness</strong> influence radar backscatter intensity.</p><hr id="8dee6743-1b2c-4d8d-9e7f-ba6ee1299fb9"/><h3 id="da34a87f-006a-42c3-a5ff-452157fb1130" class=""><strong>Summary of Dataset Logic</strong></h3><table id="047073f6-f228-4138-98f3-da5ee792484a" class="simple-table"><thead class="simple-table-header"><tr id="8dd52e16-2e98-4f45-8651-3bc5277ffb4b"><th id="NPXf" class="simple-table-header-color simple-table-header">Logical Aspect</th><th id="EMql" class="simple-table-header-color simple-table-header">Sentinel-1 GRD</th><th id="_Zrt" class="simple-table-header-color simple-table-header">SRTM DEM</th></tr></thead><tbody><tr id="5074fc2d-ecb5-4356-b545-bbc6a9cfc026"><td id="NPXf" class=""><strong>Physical Basis</strong></td><td id="EMql" class="">Microwave backscatter</td><td id="_Zrt" class="">Radar interferometric elevation</td></tr><tr id="9fb2bb92-ab28-48bb-bba1-ffa1715e32ec"><td id="NPXf" class=""><strong>Primary Quantity</strong></td><td id="EMql" class="">Radar reflectivity (VV, VH)</td><td id="_Zrt" class="">Surface height (altitude)</td></tr><tr id="3de12a86-1aeb-467d-a931-cddc9ce3a76d"><td id="NPXf" class=""><strong>Spatial Nature</strong></td><td id="EMql" class="">2D radiometric map</td><td id="_Zrt" class="">3D topographic model</td></tr><tr id="65cd2738-0337-40cd-810f-a734da5a828a"><td id="NPXf" class=""><strong>Analytical Role</strong></td><td id="EMql" class="">Surface property estimation</td><td id="_Zrt" class="">Terrain correction and structure mapping</td></tr></tbody></table><p id="283817fd-e8e4-8024-a682-cf42e783ba0f" class=""><br/></p><h2 id="5bcb8d30-eba9-402a-9597-be3f4e1098cf" class=""><strong>2.3.1 EarthEnv – GMBA Mountain Inventory v2 (2022)</strong></h2><p id="e7ddc783-da5b-4cd5-ae06-44f865a3610d" class="">🔗 <a href="https://www.earthenv.org/mountains">https://www.earthenv.org/mountains</a></p><h3 id="198a1b69-4f7c-4d83-ad92-2c55de889439" class=""><strong>Dataset Overview</strong></h3><p id="f5a3fe9a-d3fe-4492-8942-199f8902a6d8" class="">The <strong>Global Mountain Biodiversity Assessment (GMBA) Mountain Inventory v2</strong> is a comprehensive global database that defines mountain regions in a hierarchical framework for use in comparative mountain science.</p><p id="f36aaaf6-5a82-40dd-a137-042eec2bc381" class="">The dataset contains over <strong>8,600 mountain polygons</strong> worldwide, each classified into <strong>up to ten hierarchical subranges</strong> from continental-scale systems to local ridges.</p><p id="d479dc7a-1584-4457-ad96-2493fff7b58a" class="">It provides rich attribute information such as <strong>area, elevation range, and geographic hierarchy</strong>, making it widely used in <strong>ecology, geography, and Earth system studies</strong>.</p><h3 id="26c4756a-0c01-4f64-b6a7-04ff12519d0e" class=""><strong>Data Use in This Study</strong></h3><p id="39c5ccb0-88f4-4e2a-94ad-82dde0702f22" class="">We used the <strong>standard GMBA dataset</strong>, which includes only the <strong>core mountain ranges</strong> defined by the GMBA criteria.</p><p id="9a8a733b-2aba-452f-8585-1f68f616438f" class="">This dataset serves as the <strong>spatial baseline</strong> for defining the Regions of Interest (ROIs) in our SAR analysis, enabling global comparison of radar backscatter characteristics across different mountain systems.</p><figure id="283817fd-e8e4-80fb-ad4d-e09fbfc5cddd" class="image"><a href="image%207.png"><img style="width:709.9750366210938px" src="image%207.png"/></a></figure><p id="283817fd-e8e4-8021-bdb8-f38365de27e7" class=""><strong>Global distribution of onshore geological units visualized from the </strong><em><strong>ms:World_CGMW_50M_GeologicalUnitsOnshore</strong></em><strong> dataset, showing major bedrock formations and structural domains. - </strong>Processed and visualized by <em>Team GeeseCrossing (NASA Space Apps Challenge 2025)</em>.<br/><br/></p><hr id="bc2b5626-e3d6-476b-877b-01b957471c80"/><h2 id="fb727edf-5db4-4086-84c1-7e6c4cf6f7bd" class=""><strong>2.3.2 CGMW – Bedrock and Structural Geology Map</strong></h2><p id="e9b0d7c0-9442-4749-9253-3296586bf1d3" class=""><em>(Commission for the Geological Map of the World)</em></p><h3 id="e213facf-5b9b-478f-9a35-2cd486a5e94e" class=""><strong>Dataset Overview</strong></h3><p id="cba51905-8d9e-46a8-a2c1-acf5d251783e" class="">The <strong>CGMW Bedrock and Structural Geology Map</strong> provides a digital global representation of the Earth’s <strong>bedrock composition and major tectonic features</strong>, including <strong>faults, folds, and lithologic boundaries</strong>.</p><p id="653550a9-81d2-4dff-8579-9e7968b80f1b" class="">It is distributed in a <strong>Web Map Service (WMS)</strong> format compliant with <strong>OGC standards</strong>, allowing easy integration into GIS platforms for spatial analysis.</p><p id="049f1688-04d7-4249-9e7e-d876e9c5f157" class="">This dataset is commonly used as a <strong>geological background layer</strong> for research in tectonics, natural hazards, and environmental modeling.</p><p id="1d757207-65f7-4d7d-8736-09a855645883" class="">By combining this dataset with SAR data, one can interpret how <strong>bedrock types and structural discontinuities</strong> influence radar scattering behavior and terrain morphology.</p><h3 id="1b9cdcc6-f778-46af-8618-b55b092866e1" class=""><strong>Data Use in This Study</strong></h3><p id="059911b0-babf-467c-8fed-adb938832fab" class="">The CGMW dataset was used as a <strong>reference layer</strong> to interpret how variations in <strong>bedrock geology and fault density</strong> correspond to spatial differences in SAR backscatter intensity across mountainous regions. - <br/>Processed and visualized by <em>Team GeeseCrossing (NASA Space Apps Challenge 2025)</em>.</p><p id="283817fd-e8e4-803a-b962-ce059c406f6d" class="">
+</p><figure id="283817fd-e8e4-807e-ba03-eace9b4b5ed8" class="image"><a href="image%208.png"><img style="width:7820px" src="image%208.png"/></a></figure><hr id="a2b4f7e0-7881-4b78-b86a-9b204b0f178b"/><h2 id="38738f36-b255-4aac-af1d-c21911d00e96" class=""><strong>2.3.3 NASA – Global Precipitation Measurement (GPM) Mission</strong></h2><p id="b1038846-942e-4fbc-ac72-54eaf1f791b8" class="">🔗 <a href="https://gpm.nasa.gov/missions/GPM">https://gpm.nasa.gov/missions/GPM</a></p><h3 id="f9b5936c-970d-4653-b1e6-9b568e42f73f" class=""><strong>Dataset Overview</strong></h3><p id="bdf7f64a-705d-416b-b9df-7eca50f317de" class="">The <strong>Global Precipitation Measurement (GPM)</strong> mission, led by <strong>NASA</strong> in collaboration with <strong>JAXA</strong>, is an international satellite constellation designed to measure <strong>global precipitation</strong>—including rain, snow, and mixed-phase events.</p><p id="6aca778b-917b-4545-928b-a0ea6bef9e34" class="">It employs the <strong>IMERG (Integrated Multi-satellite Retrievals for GPM)</strong> algorithm to merge observations from multiple passive microwave and radar sensors.</p><ul id="e9706bd7-6bf3-490e-854b-f6cbff05e51e" class="bulleted-list"><li style="list-style-type:disc"><strong>Spatial resolution:</strong> ~0.1° (≈10 km)</li></ul><ul id="bde2082d-9eef-4a91-a4e9-9ae3a9b81086" class="bulleted-list"><li style="list-style-type:disc"><strong>Temporal resolution:</strong> Half-hourly and monthly composites</li></ul><ul id="8a0bac78-9a38-479c-afce-bfb35bf34944" class="bulleted-list"><li style="list-style-type:disc"><strong>Primary parameters:</strong> Precipitation rate, accumulation, and phase (liquid/solid)</li></ul><h3 id="a6d317cd-3540-4c74-b990-4235799c54e4" class=""><strong>Data Use in This Study</strong></h3><p id="73c2118e-69f9-48b7-a1fe-41469cf726a6" class="">We used the GPM IMERG product to represent <strong>precipitation distribution</strong> across mountain systems.</p><p id="a1482545-80de-42fb-a8c8-307787af0d84" class="">This provides environmental context for interpreting SAR backscatter variations related to <strong>surface moisture, snow cover, and vegetation wetness</strong>.</p><figure id="283817fd-e8e4-800d-8b4e-f17158eb1766" class="image"><a href="image%209.png"><img style="width:5411px" src="image%209.png"/></a></figure><p id="283817fd-e8e4-80ac-beb9-fa347e4f2efa" class=""><strong>2022 - 2024 (3 years avarage for the accumulated precipitation over year) - </strong><br/>Processed and visualized by <em>Team GeeseCrossing (NASA Space Apps Challenge 2025)</em>.</p><h1 id="283817fd-e8e4-80db-be48-f751af85ca36" class="">III. Method</h1><p id="283817fd-e8e4-80f8-8ffe-cb1570461dc2" class="">
+</p><p id="283817fd-e8e4-8051-9689-dfb5eefcb329" class="">Here is the method of our analysis.</p><h3 id="acd8e19f-4c76-411b-a538-aa690b0e9b01" class=""><strong>3.1 Overview of sentinel-1 Dataset</strong></h3><p id="9a6db38b-3e79-472e-ada8-855f29acbc01" class="">From the <strong>Sentinel-1 GRD level dataset</strong>, we extracted <strong>C-band backscatter intensity</strong> for <strong>VV (vertical–vertical)</strong> and <strong>VH (vertical–horizontal)</strong> polarizations.</p><p id="26c90beb-a989-48bf-8f1d-305010521b34" class="">By combining these radar measurements with <strong>topographic and mountain-range location data</strong>, we obtained physically interpretable features representing the environmental characteristics of mountainous regions.</p><p id="92004b62-46ff-4634-99eb-05df406c6bac" class="">Mountain environments exhibit complex interactions among <strong>topographic relief, bedrock exposure, vegetation cover, soil moisture, and snow conditions</strong>.</p><p id="e260f30d-b602-4fe9-9894-eafc8aa56e55" class="">Therefore, the <strong>SAR backscatter intensity (σ⁰)</strong> observed in VV and VH channels reflects not only surface roughness but also the integrated <strong>structural and environmental state</strong> of the terrain.</p><hr id="2fab9d31-6c2c-44f9-ba3f-d5d5f0b8925d"/><h3 id="7f2fbd4d-92ef-47be-ac03-47bc9c615707" class=""><strong>3.2 Physical Interpretation of Polarization Signals</strong></h3><p id="ff8574e8-7630-4f8e-893b-6a3d73b27311" class="">Sentinel-1’s <strong>VH polarization</strong> is sensitive to <strong>volume scattering</strong> within vegetation and <strong>moisture content</strong>, while <strong>VV polarization</strong> primarily responds to <strong>surface scattering</strong> and is strongly influenced by <strong>soil moisture</strong> and <strong>surface roughness</strong>.</p><table id="f707cd58-2eb9-48c6-9894-5183e1f88991" class="simple-table"><thead class="simple-table-header"><tr id="719641a1-f6c6-4f2f-861f-e3111078847d"><th id="og@P" class="simple-table-header-color simple-table-header"><strong>Polarization</strong></th><th id="~h@a" class="simple-table-header-color simple-table-header"><strong>Dominant Scattering Mechanism</strong></th><th id="Zjcf" class="simple-table-header-color simple-table-header"><strong>High Backscatter (in Mountain Terrain)</strong></th><th id="QOUu" class="simple-table-header-color simple-table-header"><strong>Low Backscatter (in Mountain Terrain)</strong></th></tr></thead><tbody><tr id="febfcb7f-ca3f-4508-a950-53db14dbb72c"><td id="og@P" class=""><strong>VV (Vertical–Vertical)</strong></td><td id="~h@a" class="">Surface scattering</td><td id="Zjcf" class="">• Exposed rock and rough surfaces• Slopes facing the radar (specular reflection)• Moist or snow-covered surfaces with high dielectric constant</td><td id="QOUu" class="">• Dense forest canopy absorbing surface reflection• Radar shadow or steep shaded slopes</td></tr><tr id="b8e87349-a303-4256-ba29-cc1e13d817ee"><td id="og@P" class=""><strong>VH (Vertical–Horizontal)</strong></td><td id="~h@a" class="">Volume scattering</td><td id="Zjcf" class="">• Dense coniferous or broadleaf forests• Multiple scattering from branches, leaves, and trunks• Snow-covered or moist soils enhancing scattering</td><td id="QOUu" class="">• Bare or rocky surfaces with little vegetation• Thin snow or dry, smooth ground</td></tr></tbody></table><p id="50dab2f3-2864-4768-914e-44c1f897359b" class="">Thus, <strong>VV</strong> generally represents <strong>surface reflectivity</strong>, whereas <strong>VH</strong> captures <strong>vegetation structure and water content</strong> within the mountain ecosystem.</p><hr id="b262c269-d8a7-4a41-849a-0ff7774c7c0c"/><h3 id="7ac9bc2a-34e5-4e53-ae6e-90cc017a095b" class=""><strong>3.3 Derived Vegetation and Surface Indices</strong></h3><p id="c916b1f9-2fe8-469f-9510-1274f32c88e2" class="">We computed additional vegetation-related features from Sentinel-1 C-band backscatter:</p><ul id="451468fc-30bc-4c9c-9fe8-c57eefeaecdc" class="bulleted-list"><li style="list-style-type:disc"><strong>Polarization Ratio:</strong>VH/VV Ratio=<style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>10</mn><mi>l</mi><mi>o</mi><msub><mi>g</mi><mn>10</mn></msub><mo stretchy="false">(</mo><mfrac><msub><mi>σ</mi><mrow><mi>V</mi><mi>V</mi></mrow></msub><msub><mi>σ</mi><mrow><mi>V</mi><mi>H</mi></mrow></msub></mfrac><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">10log_{10}(\frac{σ_{VV}}{σ_{VH}})</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.1953em;vertical-align:-0.4453em;"></span><span class="mord">10</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">o</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">10</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.7117em;"><span style="top:-2.655em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">σ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3448em;"><span style="top:-2.3567em;margin-left:-0.0359em;margin-right:0.0714em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.22222em;">V</span><span class="mord mathnormal mtight" style="margin-right:0.08125em;">H</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.1433em;"><span></span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.4103em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">σ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3448em;"><span style="top:-2.3567em;margin-left:-0.0359em;margin-right:0.0714em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.22222em;">VV</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.1433em;"><span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.4453em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mclose">)</span></span></span></span></span><span>﻿</span></span><p id="65bd2cf7-e2e7-4660-9126-4cdc2a460015" class="">→ Relative measure of <strong>volume vs. surface scattering</strong></p></li></ul><ul id="d36fda1d-0568-4384-90f3-22d6977f3062" class="bulleted-list"><li style="list-style-type:disc"><strong>Radar Vegetation Index (RVI)</strong><p id="64d7af7e-9b07-4e0d-b101-11a816416c53" class=""><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi><mi>V</mi><mi>I</mi><mo>=</mo><mfrac><mrow><mn>4</mn><msub><mi>σ</mi><mrow><mi>V</mi><mi>H</mi></mrow></msub></mrow><mrow><msub><mi>σ</mi><mrow><mi>V</mi><mi>H</mi></mrow></msub><mo>+</mo><msub><mi>σ</mi><mrow><mi>V</mi><mi>V</mi></mrow></msub></mrow></mfrac></mrow><annotation encoding="application/x-tex">RVI = \frac{4\sigma_{VH}}{\sigma_{VH} + \sigma_{VV}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.00773em;">R</span><span class="mord mathnormal" style="margin-right:0.22222em;">V</span><span class="mord mathnormal" style="margin-right:0.07847em;">I</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.3067em;vertical-align:-0.4453em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8614em;"><span style="top:-2.655em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">σ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3448em;"><span style="top:-2.3567em;margin-left:-0.0359em;margin-right:0.0714em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.22222em;">V</span><span class="mord mathnormal mtight" style="margin-right:0.08125em;">H</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.1433em;"><span></span></span></span></span></span></span><span class="mbin mtight">+</span><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">σ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3448em;"><span style="top:-2.3567em;margin-left:-0.0359em;margin-right:0.0714em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.22222em;">VV</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.1433em;"><span></span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.4103em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">4</span><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.03588em;">σ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3448em;"><span style="top:-2.3567em;margin-left:-0.0359em;margin-right:0.0714em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.22222em;">V</span><span class="mord mathnormal mtight" style="margin-right:0.08125em;">H</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.1433em;"><span></span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.4453em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span><span>﻿</span></span></p><p id="75160b42-8c9b-4d79-a16e-f62937ad9fbd" class="">→ Empirical indicator of <strong>vegetation density and moisture</strong></p></li></ul><p id="41c845dc-6e1c-4f9b-8268-4301faf9d87d" class="">All ratio-based quantities were <strong>normalized</strong> within the Region of Interest (ROI) to ensure comparability between mountain systems.</p><hr id="d9602b0c-0843-415f-aa28-c0e6d4ee728b"/><h3 id="2cb1eb6b-c91e-47e6-8157-018a5442ccbb" class=""><strong>3.4 Interpretation of VH/VV Ratio (in dB Scale)</strong></h3><table id="df637208-89c0-48df-bf22-ab8836a68ed1" class="simple-table"><thead class="simple-table-header"><tr id="12c6ec66-d8ca-47c2-9b42-9cb5387c4982"><th id="EObm" class="simple-table-header-color simple-table-header"><strong>VH/VV Ratio Range (dB)</strong></th><th id="S?bI" class="simple-table-header-color simple-table-header"><strong>Interpretation</strong></th><th id="xGM?" class="simple-table-header-color simple-table-header"><strong>Environmental Condition</strong></th></tr></thead><tbody><tr id="2ec5cffb-e9c0-4771-81a0-2066dde1600c"><td id="EObm" class=""><strong>High </strong></td><td id="S?bI" class="">Strong VH response relative to VV</td><td id="xGM?" class="">Vegetation-rich, snow-covered, or moisture-abundant zones</td></tr><tr id="0daabb45-d282-4640-a083-3d0347862a9d"><td id="EObm" class=""><strong>Low</strong></td><td id="S?bI" class="">Weak VH relative to VV</td><td id="xGM?" class="">Dry, rocky, or sparsely vegetated alpine areas</td></tr></tbody></table><p id="67ea6001-0a2a-4e34-9301-9012b0343d07" class="">In general, <strong>higher VH/VV ratios</strong> indicate enhanced <strong>volume scattering</strong> (forested or wet conditions),</p><p id="2a436308-faf6-475a-8cb3-3877145d3d24" class="">while <strong>lower ratios</strong> indicate dominant <strong>surface reflection</strong> (exposed rock, arid slopes, or glacially polished terrain).</p><hr id="1c8d1975-cb6e-45cf-b4b6-106740095ce3"/><h3 id="f84304b7-14d4-4b4d-bff4-aaf447652a50" class=""><strong>3.5 Roughness 1 &amp; Roughness 2</strong></h3><p id="35cd4a70-815f-40a7-9fb1-e8d280e3b3a7" class="">The <strong>surface roughness</strong> represents the morphological complexity and structural variability of mountain terrains.</p><p id="31fb8bfa-4a96-466e-86f0-4c9ca0383282" class="">In this study, two complementary roughness indicators were derived from the <strong>Digital Elevation Model (DEM)</strong> data — one based on the first-order derivative (slope gradient) and the other on the second-order derivative (surface curvature).</p><hr id="664a2198-4819-4dd8-a97d-904a6429ab40"/><h3 id="90405c6c-3b84-42fb-b5a3-7ffa1278c9ae" class=""><strong>(1) Roughness 1 — Normal Vector-Based First-Order Roughness</strong></h3><p id="8f92edd3-5c69-497f-b4bd-9cd398618a84" class=""><strong>Roughness 1</strong> quantifies the degree of surface slope and directional variability using the local <strong>surface normal vectors</strong>.</p><p id="695e9ed5-5471-48ce-a911-55aacaf8492f" class="">For each DEM pixel, the normal vector is computed and its inner product with the vertical z-axis vector is used to obtain the angle (θ) between them.</p><p id="79db8a28-b195-42dc-8be0-325717635648" class="">This procedure is extended to the four surrounding triangular planes, and the average of their cosine values is calculated.</p><p id="ead1acae-a109-4ec3-bfc8-20f4409d04b6" class="">A value close to <strong>4</strong> indicates a flat terrain, whereas values approaching <strong>0</strong> represent steep and highly inclined surfaces.</p><p id="70870468-56a0-4ed6-a729-6a4419f5e130" class="">Thus, Roughness 1 serves as a <strong>first-order derivative metric</strong> that characterizes the overall slope intensity and anisotropy of the terrain.</p><hr id="88bdf90f-14e0-4cda-bdd1-cec74eb0d9e2"/><h3 id="5bbc2f17-39d2-45de-8c74-d3d71e5c7c39" class=""><strong>(2) Roughness 2 — Hessian-Based Second-Order Roughness</strong></h3><p id="2bae3970-4ae6-44fd-98c8-4868f7e77c91" class=""><strong>Roughness 2</strong> captures finer-scale morphological variations, including <strong>convexity</strong> and <strong>concavity</strong>, which cannot be fully represented by slope-based metrics.</p><p id="80ed5630-a23b-4a1e-b780-7688f8e4b1af" class="">A <strong>Gaussian-scale Hessian analysis</strong> was applied to the DEM to compute the second derivatives of elevation over a fixed spatial window (e.g., 5 km).</p><p id="6384740a-16e3-4a27-91ae-1f272d1fcd6c" class="">From the resulting Hessian matrix, the <strong>principal curvatures (λ₁, λ₂)</strong> and their orientations were extracted, enabling the estimation of <strong>ridge</strong> and <strong>valley</strong> strength at each location.</p><p id="0a279b1d-6c9c-440c-9018-012f7810c5b8" class="">This approach effectively quantifies the <strong>local curvature</strong> and <strong>morphological patterns</strong> of the terrain, providing a multi-scale view of its structural complexity.</p><hr id="75c3030d-d861-4991-8734-a0cb27dfecb1"/><h3 id="3d7efa8f-df4a-4848-988a-ac4a1aa56f2a" class=""><strong>(3) Morphological Significance</strong></h3><p id="51ad3a97-57e5-4f76-be79-13a16ee4fd8b" class="">Together, these two roughness metrics provide a complementary description of terrain morphology:</p><ul id="363b1426-b94d-4b38-a288-5aa3828d0c3c" class="bulleted-list"><li style="list-style-type:disc"><strong>Roughness 1</strong> reflects the <strong>macro-scale slope and orientation</strong> of the surface (first-order variation),</li></ul><ul id="75b11598-a0d3-4ec8-bb4f-51b6a1cb85cb" class="bulleted-list"><li style="list-style-type:disc"><strong>Roughness 2</strong> emphasizes <strong>micro-scale curvature and form</strong> (second-order variation).</li></ul><p id="92be7dd1-56e0-4c8e-8b75-3fd33e8322b9" class="">By integrating both indicators, the study quantitatively captures the morphological heterogeneity of mountain systems,</p><p id="4ca9f2f4-3ff3-4056-94cb-8d345c6f6532" class="">offering a robust representation of the <strong>terrain morphology</strong> as a key feature in subsequent geospatial and environmental analyses.</p><p id="283817fd-e8e4-80bb-86cf-f00bf092ab03" class="">
+</p><p id="283817fd-e8e4-80db-9eb3-d78e972bfc31" class="">
+</p><h1 id="283817fd-e8e4-8083-92b6-c744c08e2348" class="">IV. Results and Findings</h1><p id="283817fd-e8e4-8098-9db7-f3ef5246b914" class="">
+</p><p id="283817fd-e8e4-809a-815f-fb9a077cd1c3" class="">
+</p><p id="283817fd-e8e4-8099-9300-e097b63fbe81" class="">
+</p><p id="283817fd-e8e4-80c7-801e-fd80290cba47" class="">Parameter histogram figure</p><p id="283817fd-e8e4-8026-a2e0-d7b3cfb4ca19" class="">
+</p><p id="283817fd-e8e4-8010-8435-e6b9d8ab68a5" class="">Height : represents the height of each pixels from DEM datas</p><ul id="283817fd-e8e4-80a2-a1d1-ca340394b8df" class="bulleted-list"><li style="list-style-type:disc">Mean 기준 높이 : 히말라야 &gt; 드라켄스버그 &gt; tien shan &gt; rocky mountain &gt;alps&gt;andes&gt; japaense alps&gt;atlas&gt;great dividing range &gt;taeback</li></ul><table id="0b5f8442-7051-49c0-8f40-1de03ddf5a82" class="simple-table"><thead class="simple-table-header"><tr id="a92803e1-d7a1-4649-bb74-b82e010aad3d"><th id="vkOq" class="simple-table-header-color simple-table-header">산맥</th><th id="H&gt;qj" class="simple-table-header-color simple-table-header">평균고도 (m)</th><th id="\@;Y" class="simple-table-header-color simple-table-header">표준편차 (m)</th><th id="szg{" class="simple-table-header-color simple-table-header">해석</th></tr></thead><tbody><tr id="abe96efd-4ef8-4c02-9f19-e7cf576fd99d"><td id="vkOq" class=""><strong>Alps</strong></td><td id="H&gt;qj" class=""><strong>842</strong></td><td id="\@;Y" class=""><strong>702</strong></td><td id="szg{" class="">전형적인 고산 지형. 평균은 중고도, 분산이 큰 것은 빙하 계곡–산정 복합 구조 때문. 높은 해발 차로 인해 강한 눈–암석–식생 혼합대가 존재.</td></tr><tr id="b846b565-7be4-4471-b3bf-fa583dd858b0"><td id="vkOq" class=""><strong>Atlas</strong></td><td id="H&gt;qj" class=""><strong>568</strong></td><td id="\@;Y" class=""><strong>392</strong></td><td id="szg{" class="">북아프리카의 반건조 산맥. 중저고도이며 고도 변화는 완만. 전체적으로 완만한 구릉지형에 가까움.</td></tr><tr id="b8191492-2ce3-46c5-be76-d2b790e2356f"><td id="vkOq" class=""><strong>Great Dividing Range</strong></td><td id="H&gt;qj" class=""><strong>355</strong></td><td id="\@;Y" class=""><strong>260</strong></td><td id="szg{" class="">호주 동부 해안 산맥으로 고도가 낮고 완만. 해발 500m 미만의 구릉성 지형이 많아 고도 분산도 낮음.</td></tr><tr id="83cb0e18-2244-49b4-a84a-d3d9543d8884"><td id="vkOq" class=""><strong>Japanese Alps</strong></td><td id="H&gt;qj" class=""><strong>693</strong></td><td id="\@;Y" class=""><strong>557</strong></td><td id="szg{" class="">중고도 산악 지형으로, 활화산 지대와 협곡이 섞여 있음. 고도 변화가 커서 지형적 다양성이 높음.</td></tr><tr id="bb247e41-eccc-4212-ad9d-7a58323a5a97"><td id="vkOq" class=""><strong>Taebaek</strong></td><td id="H&gt;qj" class=""><strong>336</strong></td><td id="\@;Y" class=""><strong>252</strong></td><td id="szg{" class="">저고도 산맥으로, 완만한 능선과 침식된 형태가 주를 이룸. 고도 분산이 작아 비교적 균질한 산지.</td></tr><tr id="502a38dd-e35b-40a6-82d0-f04db670eeb4"><td id="vkOq" class=""><strong>Andes</strong></td><td id="H&gt;qj" class=""><strong>749</strong></td><td id="\@;Y" class=""><strong>1137</strong></td><td id="szg{" class="">남북으로 매우 길게 뻗은 초고도 산맥. 일부 지역은 4000m 이상, 일부는 해안저지대로 급격히 변함 → 표준편차가 매우 큼.</td></tr><tr id="74131ddf-4c5a-4453-858a-9dc7b0c5fd33"><td id="vkOq" class=""><strong>Drakensberg</strong></td><td id="H&gt;qj" class=""><strong>1546</strong></td><td id="\@;Y" class=""><strong>520</strong></td><td id="szg{" class="">남아프리카의 고원지대 산맥. 평균고도가 높지만, 지형은 완만. 고원형 산지의 전형적 특성.</td></tr><tr id="36e37090-e630-4264-a3f3-ebc4050dc43a"><td id="vkOq" class=""><strong>Himalaya</strong></td><td id="H&gt;qj" class=""><strong>3236</strong></td><td id="\@;Y" class=""><strong>2125</strong></td><td id="szg{" class="">평균과 분산 모두 최고. 세계에서 가장 고도가 높고, 고도 스펙트럼이 넓음(평지~8000m). 강한 relief로 인해 눈·빙하·식생대가 공존.</td></tr><tr id="5199996f-5316-45ba-a1a4-7b05575466eb"><td id="vkOq" class=""><strong>Rocky Mountains</strong></td><td id="H&gt;qj" class=""><strong>1142</strong></td><td id="\@;Y" class=""><strong>675</strong></td><td id="szg{" class="">북미 중고도 산맥. 고도 분산이 크고, 여러 평원 및 고원과 연결되어 다양성 높음.</td></tr><tr id="b426534e-8b5f-4c8a-aaa5-da40bc38946b"><td id="vkOq" class=""><strong>Tien Shan</strong></td><td id="H&gt;qj" class=""><strong>1281</strong></td><td id="\@;Y" class=""><strong>1011</strong></td><td id="szg{" class="">중앙아시아 내륙의 고산지대. 평균이 높고 분산도 큼. 고원–빙하지대–분지의 복합 구조.</td></tr></tbody></table><p id="283817fd-e8e4-80d4-ada1-c7e67b28c2e2" class="">Morpology</p><p id="283817fd-e8e4-8042-914a-f30b9741a2b8" class="">hessian roughness</p><ul id="283817fd-e8e4-801e-9b20-ef495d274f7b" class="bulleted-list"><li style="list-style-type:disc">gaussian smoothing → hessian value 구하기,</li></ul><ul id="283817fd-e8e4-80e2-bc5d-f1a13afd7b8c" class="bulleted-list"><li style="list-style-type:disc">관심있는게 울퉁불퉁 정도이니까  absolute value</li></ul><ul id="283817fd-e8e4-8093-a8e1-e041a8605e85" class="bulleted-list"><li style="list-style-type:disc">더 크게 오프셋 될수록 더 울퉁불퉁하다!</li></ul><ul id="283817fd-e8e4-80a3-a03a-cc675fffdc80" class="bulleted-list"><li style="list-style-type:disc">mean 기준 울퉁불퉁 정도 : japanese alps &gt; </li></ul><p id="283817fd-e8e4-8004-934d-cf6a334a685a" class="">cosine roughness</p><ul id="283817fd-e8e4-802f-b389-d0cc7af2e578" class="bulleted-list"><li style="list-style-type:disc">각 픽셀에서 법선벡터와 z축과 내적 후 평균</li></ul><ul id="283817fd-e8e4-8017-8974-f02f39143cbb" class="bulleted-list"><li style="list-style-type:disc">4에 가까울수록 평평, 작아질수록 기울어짐을 의미</li></ul><ul id="283817fd-e8e4-8090-b2a3-ce6a2e5fb6c2" class="bulleted-list"><li style="list-style-type:disc">산맥의 분포와 관련</li></ul><p id="283817fd-e8e4-8014-9b08-f6715d14d2c5" class="">
+</p><p id="283817fd-e8e4-8034-8754-c7e158f5bf92" class="">식생 인덱스 (veg index)</p><ul id="f51da97a-66af-4e58-a264-f601f957fdd0" class="bulleted-list"><li style="list-style-type:disc">RVI ≈ 0 → 건조·암석지형 중심</li></ul><ul id="283817fd-e8e4-80b2-9110-c6279e98f394" class="bulleted-list"><li style="list-style-type:disc">RVI ≈ 1 → 습윤·식생밀집 지역 중심</li></ul><ul id="283817fd-e8e4-80ac-95f7-d51cb3fa1474" class="bulleted-list"><li style="list-style-type:disc">좀더 자세히 분석하자면</li></ul><p id="283817fd-e8e4-804d-8a2b-ead6f0280b32" class="">눈 지역</p><ul id="283817fd-e8e4-806a-803f-e0dc544aa7c1" class="bulleted-list"><li style="list-style-type:disc">얕은 눈 또는 빙판 → RVI ≈ 0.2–0.4 (low)</li></ul><ul id="283817fd-e8e4-8070-8d81-fa92a3c2aa30" class="bulleted-list"><li style="list-style-type:disc">깊은 눈, 습설, 다중 반사 → RVI ≈ 0.5–0.7 (medium–high)</li></ul><p id="283817fd-e8e4-8007-adf6-f4dd1f7c99b3" class="">수풀</p><ul id="458b1efb-9963-4843-949c-12dad6624dad" class="bulleted-list"><li style="list-style-type:disc">활엽수림 / 침엽수림 / 관목지 → <strong>RVI ≈ 0.6–0.9 (high)</strong></li></ul><ul id="4a14a2cb-252d-4c74-baed-0638002f7060" class="bulleted-list"><li style="list-style-type:disc">초원 / 저밀도 식생 → <strong>RVI ≈ 0.4–0.6 (medium)</strong></li></ul><p id="283817fd-e8e4-80f9-973e-c3c20c2e2a32" class="">Bare rock / Dry area</p><ul id="14d5c5e3-171b-4cf4-a4a9-75abd990ced1" class="bulleted-list"><li style="list-style-type:disc">건조한 고산지, 암석 노출 지대 , 완만한 평탄면 (거칠기 낮음) → <strong>RVI ≈ 0.1–0.3 (very low)</strong></li></ul><p id="283817fd-e8e4-8040-a6bf-fc16943d39a6" class="">기반 해석 (순서대로 RVI 평균, 시그마)</p><ul id="283817fd-e8e4-80bb-ac44-c6b3053e2cd0" class="bulleted-list"><li style="list-style-type:disc">알프스 (0.702, 0.128) : 깊은 눈으로 인한 높은 값 추정</li></ul><ul id="283817fd-e8e4-80f4-a482-dbe137bc6b50" class="bulleted-list"><li style="list-style-type:disc">아틀라스 (0.465, 0.148) : </li></ul><ul id="283817fd-e8e4-80c7-9f53-ff9e518cedcc" class="bulleted-list"><li style="list-style-type:disc">great dividing (0.732, 0.178 )</li></ul><ul id="283817fd-e8e4-8004-961d-cea6e2078d03" class="bulleted-list"><li style="list-style-type:disc">japanese alps (0.728, 0.134)</li></ul><ul id="283817fd-e8e4-807b-af10-c3e9ff84caed" class="bulleted-list"><li style="list-style-type:disc">taeback (0731, 0.104)</li></ul><ul id="283817fd-e8e4-80ce-9405-c8d3a9997c10" class="bulleted-list"><li style="list-style-type:disc">andes (0.695, 0.169)</li></ul><ul id="283817fd-e8e4-80fd-a7ae-da2d5d0d6fc7" class="bulleted-list"><li style="list-style-type:disc">draskensberg (0.599, 0.160)</li></ul><ul id="283817fd-e8e4-8019-b20a-e5538d4baefd" class="bulleted-list"><li style="list-style-type:disc">himalaya (0.553, 0.193)</li></ul><ul id="283817fd-e8e4-80c9-b4f1-fd4319db2759" class="bulleted-list"><li style="list-style-type:disc">rocky (0.602, 0.261)</li></ul><ul id="283817fd-e8e4-80d1-a0e4-e69315af5f80" class="bulleted-list"><li style="list-style-type:disc">tien shan (0.477, 0.215)</li></ul><table id="65da793b-2894-4c9c-ad13-1124fce2636e" class="simple-table"><thead class="simple-table-header"><tr id="2ada81ab-09df-409b-8c4b-62ca5a3bc883"><th id="JhI`" class="simple-table-header-color simple-table-header">산맥</th><th id="[k:=" class="simple-table-header-color simple-table-header">RVI 평균</th><th id="|YGp" class="simple-table-header-color simple-table-header">표준편차</th><th id="\cb_" class="simple-table-header-color simple-table-header">해석</th></tr></thead><tbody><tr id="9000ae31-f3f8-4c35-9372-70d7ec14fa6e"><td id="JhI`" class=""><strong>알프스 (0.702, 0.128)</strong></td><td id="[k:=" class="">평균이 높고 분산이 낮음</td><td id="|YGp" class="">깊은 눈과 고습한 알프스 초원으로 인해 VH 산란이 강함. 적설대가 넓고 균질하여 σ가 낮게 나타남.</td><td id="\cb_" class=""></td></tr><tr id="b1c55734-c800-4c42-890c-1511f2e8a7a3"><td id="JhI`" class=""><strong>아틀라스 (0.465, 0.148)</strong></td><td id="[k:=" class="">중간 수준</td><td id="|YGp" class="">북아프리카의 반건조 기후대에 위치해 식생이 희박하며, 고지대에서만 부분적 적설 발생. 지역별 강수 차로 인해 중간 수준의 σ.</td><td id="\cb_" class=""></td></tr><tr id="7f679c3f-96b2-45b0-bad1-d4baed091ff7"><td id="JhI`" class=""><strong>그레이트디바이딩 (0.732, 0.178)</strong></td><td id="[k:=" class="">매우 높은 평균</td><td id="|YGp" class="">호주 동부의 습윤기후 영향으로 연중 녹지대가 넓게 분포. 해안 숲과 내륙 건조지대의 대비로 σ가 높음.</td><td id="\cb_" class=""></td></tr><tr id="ae5c867a-0399-48e8-9df3-755a249326b0"><td id="JhI`" class=""><strong>일본 알프스 (0.728, 0.134)</strong></td><td id="[k:=" class="">높음</td><td id="|YGp" class="">다습한 해양성 기후, 상록수림 및 겨울철 잦은 적설로 VH 산란이 강함. 지형이 비교적 균질하여 σ가 낮음.</td><td id="\cb_" class=""></td></tr><tr id="a6c4fbab-1f21-4730-80fd-d972885664c0"><td id="JhI`" class=""><strong>태백산맥 (0.731, 0.104)</strong></td><td id="[k:=" class="">높고 매우 안정적</td><td id="|YGp" class="">한반도의 습윤 온대림대에 속하며, 조밀한 산림 피복과 계절적 변동이 적어 σ가 가장 낮음.</td><td id="\cb_" class=""></td></tr><tr id="babcf0e6-bfdd-4d8c-9520-2a6f6a91bb5e"><td id="JhI`" class=""><strong>안데스 (0.695, 0.169)</strong></td><td id="[k:=" class="">중간 이상</td><td id="|YGp" class="">남북으로 길게 뻗은 기후대 다양성(건조 고원–습윤 열대림)이 존재. VH와 VV 혼합 산란으로 평균은 높지만 σ도 중간 수준.</td><td id="\cb_" class=""></td></tr><tr id="7a1edafc-d928-4229-ba4b-0bf7855f5059"><td id="JhI`" class=""><strong>드라켄즈버그 (0.599, 0.160)</strong></td><td id="[k:=" class="">중간 수준</td><td id="|YGp" class="">남아프리카 고원지대 특유의 계절성 강수와 초지·삼림 혼재. σ는 동서습도차를 반영.</td><td id="\cb_" class=""></td></tr><tr id="eaeceaca-1fe2-45ef-8143-164fecd606b9"><td id="JhI`" class=""><strong>히말라야 (0.553, 0.193)</strong></td><td id="[k:=" class="">중간 이하, 다양성 높음</td><td id="|YGp" class="">남사면의 숲과 북사면의 건조 고원, 만년설 지대가 공존. 매우 넓은 환경 스펙트럼으로 σ가 큼.</td><td id="\cb_" class=""></td></tr><tr id="836a32f1-e9f2-4362-80b6-7c214bd9e443"><td id="JhI`" class=""><strong>로키산맥 (0.602, 0.261)</strong></td><td id="[k:=" class="">중간 수준, <strong>가장 높은 σ</strong></td><td id="|YGp" class="">사막·초원·침엽수림·빙하지대가 한데 섞인 복합 산맥. 지역 간 환경 대비가 극심하여 분포가 넓음.</td><td id="\cb_" class=""></td></tr><tr id="1e22b137-843a-4fe0-8019-89fcbfa12918"><td id="JhI`" class=""><strong>톈산산맥 (0.477, 0.215)</strong></td><td id="[k:=" class="">낮음</td><td id="|YGp" class="">중앙아시아의 대륙성 건조기후 영향. 빙하나 융설 계곡에서는 RVI가 높지만, 평지·사면 대부분은 건조해 평균이 낮고 σ가 큼.</td><td id="\cb_" class=""></td></tr></tbody></table><table id="b509aeff-ee25-4e5b-925a-3b0689b158fe" class="simple-table"><thead class="simple-table-header"><tr id="d2857dc0-4ec9-4406-b53e-fd002478ef72"><th id="NWDr" class="simple-table-header-color simple-table-header">지역 구분</th><th id="uVrS" class="simple-table-header-color simple-table-header">전형적 RVI 특성</th><th id="J~ii" class="simple-table-header-color simple-table-header">물리적 원인</th></tr></thead><tbody><tr id="6fe1c1a3-5cec-420e-b136-09988646a8a2"><td id="NWDr" class=""><strong>습윤 온대 기후 (일본, 한국, 호주 동부)</strong></td><td id="uVrS" class="">RVI ≈ 0.7~0.75, σ ≤ 0.15</td><td id="J~ii" class="">풍부한 강수와 밀집 산림. VH 산란이 강하고 공간적 균질성 높음.</td></tr><tr id="f5ecb106-f788-4b4b-9ffa-eb2f73277208"><td id="NWDr" class=""><strong>적설 중심 고산대 (알프스, 안데스)</strong></td><td id="uVrS" class="">RVI ≈ 0.7, σ ≈ 0.13~0.17</td><td id="J~ii" class="">적설층과 식생 산란이 공존하는 안정된 고산 환경.</td></tr><tr id="535ce6b6-15a8-4394-bfc7-51aa5c775cfb"><td id="NWDr" class=""><strong>전이형 반건조 지역 (아틀라스, 드라켄즈버그)</strong></td><td id="uVrS" class="">RVI ≈ 0.45~0.6, σ ≈ 0.15~0.16</td><td id="J~ii" class="">계절성 식생, 제한적 강수, 국지적 습윤 지대.</td></tr><tr id="82677dee-c0b3-47fe-8bc1-6003e481911b"><td id="NWDr" class=""><strong>대륙성 고산 지역 (히말라야, 로키, 톈산)</strong></td><td id="uVrS" class="">RVI ≈ 0.5~0.6, σ &gt; 0.2</td><td id="J~ii" class="">기후대 대비가 극심(건조 평원–습윤 계곡–빙하지대). 공간적 이질성 큼.</td></tr></tbody></table><table id="5fab3c6b-677a-4b6e-83a8-b9d0180c4940" class="simple-table"><thead class="simple-table-header"><tr id="8764b12e-bad8-49d6-ac8b-b957814e1d57"><th id="OoVU" class="simple-table-header-color simple-table-header">패턴</th><th id="N`_f" class="simple-table-header-color simple-table-header">의미</th></tr></thead><tbody><tr id="112f4867-6bfa-48b5-bceb-83b7059ed5a4"><td id="OoVU" class=""><strong>평균고도 ↑ → RVI 변동폭(σ) ↑</strong></td><td id="N`_f" class="">고도가 높을수록 적설·암석·식생대가 공존해 산란 구조가 다양해짐. (예: 히말라야, 톈산, 로키)</td></tr><tr id="890f7eb4-0145-426e-93ae-8493be3e4e0d"><td id="OoVU" class=""><strong>평균고도 ↓, σ 낮음 → RVI 안정적</strong></td><td id="N`_f" class="">저고도·습윤 산림대에서는 지형 변화가 작아 VH/VV 비율이 균질. (예: 태백, 일본 알프스)</td></tr><tr id="c1a81d0f-7150-44a7-8d60-1acb3bcf659f"><td id="OoVU" class=""><strong>고도 σ 높음 → 복합 산란 영역</strong></td><td id="N`_f" class="">해발 차이가 크면 눈·얼음·식생·암석이 함께 존재해 RVI 히스토그램이 넓게 퍼짐. (예: 안데스, 히말라야)</td></tr></tbody></table><p id="283817fd-e8e4-8001-9d35-ce94e59a427a" class="">Cross polarization rario is another indicator closely related to the <strong>spatial distribution of vegetation</strong> and <strong>surface moisture</strong>.</p><p id="00598016-af6d-4062-a5f0-8a8d22d784ce" class="">It can be interpreted in the same physical context as the <strong>Radar Vegetation Index (RVI)</strong>, since both express the relative contribution of <strong>volume scattering (VH)</strong> to <strong>surface scattering (VV)</strong> within the observed area.</p><ul id="6b5f45a9-d29d-4c01-b610-5f24f85e1c00" class="bulleted-list"><li style="list-style-type:disc"><strong>High VH/VV ratio</strong> → strong depolarization and volume scattering → dense canopy, snow, or moist vegetation zones</li></ul><ul id="ff29e578-31ff-4e08-b15e-89ccc36ef377" class="bulleted-list"><li style="list-style-type:disc"><strong>Low VH/VV ratio</strong> → dominant surface reflection → bare, dry, or rocky terrain</li></ul><p id="02219e80-900b-437f-a60c-1da173581353" class="">When histograms of VH/VV ratio are compared with those of RVI across multiple mountain ranges,</p><p id="1fdb088a-0356-4a0a-a025-a1e5e3bf7ae0" class="">the overall pattern shows <strong>strong similarity</strong>, confirming that both indices capture the same physical process — the ratio between <strong>surface and volumetric scattering</strong>.</p><p id="a278367d-8219-4274-9d89-db431e0cac97" class="">However, <strong>minor differences in histogram shape</strong> appear among certain ranges.</p><p id="d212ecec-1877-4637-9496-663b723aac3f" class="">These differences are likely due to <strong>empirical and structural factors</strong> such as:</p><ol type="1" id="9fc36401-2898-4da2-ae86-b4e861901442" class="numbered-list" start="1"><li><strong>Local topography and slope orientation</strong> — radar incidence angle affects VV response more strongly than VH, shifting the ratio distribution.</li></ol><ol type="1" id="2d0fc080-2041-42f5-bc32-cd5b6c3b8651" class="numbered-list" start="2"><li><strong>Snow wetness or canopy structure</strong> — when the scattering medium changes (e.g., wet snow or mixed vegetation), RVI remains high but VH/VV ratio may slightly decrease due to multiple reflections.</li></ol><ol type="1" id="9d065144-f88b-486c-b8b3-9354768b1268" class="numbered-list" start="3"><li><strong>Calibration and normalization differences</strong> — RVI uses a nonlinear weighting (4σVH term), whereas VH/VV is a simple ratio, making it more sensitive to low backscatter values in dry or shaded areas.</li></ol><p id="7a18b96a-7065-43be-b380-932ebe2e62d3" class="">Thus, although the <strong>cross-polarization ratio</strong> and <strong>RVI</strong> provide nearly equivalent vegetation sensitivity,</p><p id="4fd4b14e-07d9-4672-83f8-cab5315b0469" class="">their histogram shapes may exhibit subtle deviations depending on <strong>terrain slope, snow conditions, and local surface roughness</strong>.</p><p id="365c1719-eb7a-498d-be98-71b09d8ae53d" class="">These nuances highlight the importance of using both indices together to robustly interpret <strong>mountain surface and vegetation structure</strong>.</p><p id="283817fd-e8e4-8004-8ff1-eb6c50a97e39" class="">
+</p><p id="283817fd-e8e4-80ea-aa91-f6c7e74d04af" class="">FDI 지수</p><table id="5c41e476-4dca-4831-9724-aa67a2f3e523" class="simple-table"><thead class="simple-table-header"><tr id="c972b054-0754-4fb2-ab9a-d5b12a609f4e"><th id="MtVF" class="simple-table-header-color simple-table-header">구분</th><th id="oKeD" class="simple-table-header-color simple-table-header">FDI 평균 범위</th><th id="_OKf" class="simple-table-header-color simple-table-header">대표 산맥</th><th id="c[gq" class="simple-table-header-color simple-table-header">특징</th></tr></thead><tbody><tr id="a2cc06bc-e423-4e46-a860-c67660c8d400"><td id="MtVF" class=""><strong>낮은 훼손도 (0.63–0.65)</strong></td><td id="oKeD" class="">태백, 일본, 그레이트디바이딩, 알프스</td><td id="_OKf" class="">습윤 기후대 / 식생 풍부 / 균질한 피복</td><td id="c[gq" class=""></td></tr><tr id="f3ee29d2-7166-45ee-b8ac-7f9f464c9d06"><td id="MtVF" class=""><strong>중간 훼손도 (0.65–0.70)</strong></td><td id="oKeD" class="">안데스, 드라켄즈버그, 로키</td><td id="_OKf" class="">기후대 다양 / 산림–초지–적설 혼재</td><td id="c[gq" class=""></td></tr><tr id="9b54c2b3-2046-4938-ad0f-793df1ce7ede"><td id="MtVF" class=""><strong>높은 훼손도 (0.70–0.77)</strong></td><td id="oKeD" class="">히말라야, 아틀라스, 톈산</td><td id="_OKf" class="">고산 건조대 / 노출면·빙설·사면 반사 우세</td><td id="c[gq" class=""></td></tr></tbody></table><ol type="1" id="bd3feb1b-3289-4aa3-9876-fd18b33dfde2" class="numbered-list" start="1"><li><strong>FDI 평균이 높다 → 식생 피복률이 낮거나 토양/암석 노출이 많음.</strong><ul id="69960188-1ca0-40e5-a0be-602d06148168" class="bulleted-list"><li style="list-style-type:disc">아틀라스(0.77), 톈산(0.76), 히말라야(0.72) → 자연적 건조화 또는 극고산대 영향.</li></ul></li></ol><ol type="1" id="7a23a75a-03fe-4ebe-8fe0-fb1686bc7b52" class="numbered-list" start="2"><li><strong>FDI 표준편차가 높다 → 지역별 훼손 편차가 큼.</strong><ul id="6042dbb4-a31a-41ba-842b-9d6f2d7e9405" class="bulleted-list"><li style="list-style-type:disc">로키(0.13) &gt; 히말라야(0.10) &gt; 톈산(0.11): 내부적으로 다양한 환경대 존재.</li></ul></li></ol><ol type="1" id="2aaecf96-7566-4dda-9baf-58e6872cd0cc" class="numbered-list" start="3"><li><strong>FDI가 낮다 → 안정된 산림·습윤지대.</strong><ul id="c04583c9-7497-49da-a681-8df8daf1c161" class="bulleted-list"><li style="list-style-type:disc">태백(0.63), 일본 알프스(0.64), 그레이트디바이딩(0.63): 균질하고 보호된 산림 환경.</li></ul></li></ol><p id="283817fd-e8e4-8082-918e-dc2b52a821d0" class="">
+</p></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>

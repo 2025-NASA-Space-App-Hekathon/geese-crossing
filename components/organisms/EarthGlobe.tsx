@@ -15,7 +15,8 @@ import MountainsMaskOverlay from './MountainsMaskOverlay';
 import OverlayManager from './OverlayManager';
 import FocusAnimator from '../atoms/FocusAnimator';
 import { useMountainStore } from '../../components/store/mountainStore';
-import { useOrderedOverlays, useOverlayActions, useAnyOverlayVisible } from '../../components/store/overlayStore';
+import { useOrderedOverlays, useOverlayActions } from '../../components/store/overlayStore';
+import { useUIStore } from '../../components/store/uiStore';
 
 export default function EarthGlobe() {
     const [texture, setTexture] = useState<THREE.Texture | null>(null);
@@ -23,7 +24,7 @@ export default function EarthGlobe() {
     // Precipitation overlay removed per user request
     const [heightMap, setHeightMap] = useState<THREE.Texture | null>(null);
     const [mountainsMask, setMountainsMask] = useState<THREE.Texture | null>(null);
-    const [showMountainsMask, setShowMountainsMask] = useState(true);
+    const showMountainsMask = useUIStore((s) => s.showMountainsMask);
     const [showEarthSurface, setShowEarthSurface] = useState(true);
     const [mountainsBand, setMountainsBand] = useState<SingleBandDataset | null>(null);
     const [mountainsLoadStatus, setMountainsLoadStatus] = useState<'idle' | 'loading' | 'ok' | 'error'>('idle');
@@ -124,12 +125,12 @@ export default function EarthGlobe() {
 
     const controlsRef = useRef<any>(null);
     const { setSelected: setSelectedMountain } = useMountainStore();
+    const selectedMountain = useMountainStore((s) => s.selected);
     const sceneCameraRef = useRef<THREE.Camera | null>(null);
     const [showMountainLabels, setShowMountainLabels] = useState(true);
     const [resetVirtualRotKey, setResetVirtualRotKey] = useState(0);
     // Multi overlay store hooks
     const orderedOverlays = useOrderedOverlays();
-    const anyOverlayVisible = useAnyOverlayVisible();
     const { toggleVisibility, setOpacity, hideAll, showAll } = useOverlayActions();
 
     // 오버레이가 선택되어도 지구 표면과 산 마스크는 계속 표시
@@ -137,6 +138,26 @@ export default function EarthGlobe() {
     //     setShowEarthSurface(!selectedOverlayId);
     //     setShowMountainsMask(!selectedOverlayId);
     // }, [selectedOverlayId]);
+
+    // 선택이 해제되면(축소) 카메라 언포커싱 애니메이션 트리거
+    useEffect(() => {
+        if (!globeRef.current) return;
+        // selectedMountain가 null 이거나 id<=0 이면 언포커스
+        if (!selectedMountain || selectedMountain.id <= 0) {
+            // 이미 언포커싱 중이면 무시
+            if (focusState.current.mode === 'unfocusing') return;
+            focusState.current = {
+                mode: 'unfocusing',
+                progress: 0,
+                startRotX: globeRef.current.rotation.x,
+                startRotY: globeRef.current.rotation.y,
+                originalDistance: focusState.current.originalDistance,
+                targetRotX: globeRef.current.rotation.x,
+                targetRotY: globeRef.current.rotation.y,
+            } as any;
+            setFocusMode('unfocusing');
+        }
+    }, [selectedMountain]);
 
     // Apply anisotropy when texture becomes available
     const AnisotropySetter = () => {
@@ -161,7 +182,7 @@ export default function EarthGlobe() {
                 <CameraFollowingLight />
                 <EarthMesh
                     texture={texture}
-                    heightMap={anyOverlayVisible ? null : heightMap}
+                    heightMap={heightMap}
                     autoRotate={false}
                     rotationSpeed={0.01}
                     visible={showEarthSurface}
@@ -246,21 +267,7 @@ export default function EarthGlobe() {
                     displacementBias={0.0005}
                 />
             </Canvas>
-            {(focusMode === 'focused' || focusMode === 'focusing') && (
-                <button
-                    onClick={() => {
-                        if (!globeRef.current) return;
-                        if (focusState.current.mode === 'unfocusing') return;
-                        focusState.current = { mode: 'unfocusing', progress: 0, startRotX: globeRef.current.rotation.x, startRotY: globeRef.current.rotation.y, originalDistance: focusState.current.originalDistance, targetRotX: globeRef.current.rotation.x, targetRotY: globeRef.current.rotation.y };
-                        setFocusMode('unfocusing');
-                        setSelectedMountain({
-                            id: 0,
-                            metadata: null,
-                        });
-                    }}
-                    style={{ position: 'absolute', bottom: 16, left: 16, zIndex: 1100, background: 'rgba(0,0,0,0.55)', color: 'white', border: '1px solid rgba(255,255,255,0.2)', padding: '8px 14px', borderRadius: 6, cursor: 'pointer', backdropFilter: 'blur(4px)' }}
-                >축소</button>
-            )}
+            {/* 축소 버튼 제거: 좌측 네비게이션으로 이동 */}
             {error && (<div style={{ position: 'absolute', top: 8, left: 8, color: 'red', fontSize: 12, zIndex: 1000, backgroundColor: 'rgba(0,0,0,0.7)', padding: '4px 8px', borderRadius: '4px' }}>Error: {error}</div>)}
             {mountainsLoadStatus === 'loading' && (
                 <div style={{ position: 'absolute', top: 76, right: 16, background: 'rgba(0,0,0,0.55)', color: '#fff', padding: '6px 10px', fontSize: 12, borderRadius: 6, zIndex: 1100 }}>산 데이터 로딩중...</div>
@@ -270,8 +277,7 @@ export default function EarthGlobe() {
                     산 데이터 오류: {mountainsLoadError || '알 수 없는 오류'}
                 </div>
             )}
-            {/* <button onClick={() => setShowMountainLabels(v => !v)} style={{ position: 'absolute', bottom: 16, left: 430, zIndex: 1100, background: 'rgba(0,0,0,0.55)', color: 'white', border: '1px solid rgba(255,255,255,0.2)', padding: '6px 12px', borderRadius: 6, cursor: 'pointer', fontSize: 12, backdropFilter: 'blur(4px)' }}>{showMountainLabels ? '라벨 숨기기' : '라벨 보이기'}</button> */}
-            <button onClick={() => setShowMountainsMask(v => !v)} style={{ position: 'absolute', bottom: 16, left: 560, zIndex: 1100, background: 'rgba(0,0,0,0.55)', color: 'white', border: '1px solid rgba(255,255,255,0.2)', padding: '6px 12px', borderRadius: 6, cursor: 'pointer', fontSize: 12, backdropFilter: 'blur(4px)' }}>{showMountainsMask ? '산 마스크 숨기기' : '산 마스크 보이기'}</button>
+            {/* 산 마스크 토글 버튼 제거: 좌측 네비게이션으로 이동 */}
 
             {/* <MultiOverlayPanel
                 overlays={orderedOverlays}

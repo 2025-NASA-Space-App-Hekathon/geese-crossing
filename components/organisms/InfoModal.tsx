@@ -1,5 +1,6 @@
+"use client";
 import { useDisclosure } from '@mantine/hooks';
-import { Modal, Button, Flex, Title, Stack, Typography } from '@mantine/core';
+import { Modal, Button, Flex, Title, Stack } from '@mantine/core';
 
 function JsonParser({ data }: { data: string }) {
     const parsedData = JSON.parse(data);
@@ -15,125 +16,25 @@ export default function InfoModal() {
     const [opened, { open, close }] = useDisclosure(false);
 
     const data = require('/public/content/what-is-sar.json');
+  // Path to your HTML inside public/content/Explanation
+  const htmlFilePath = '/content/Explanation/summary.html';
+  const iframeSrc = encodeURI(htmlFilePath);
 
     return (
         <>
             <Modal opened={opened} onClose={close} withCloseButton={false} size={"100%"}>
                 <Flex justify="space-between" p="md">
-                    <Title order={3}>Title</Title>
+                    <Title order={3}>Explanation</Title>
                     <Button variant="outline" onClick={close}>Close</Button>
                 </Flex>
                 <hr />
-                <Stack>
-                    <Typography>
-                        <div dangerouslySetInnerHTML={{
-                            __html: `
-                            <header>
-    <div class="container">
-      <h1>Global Mountain SAR</h1>
-      <nav>
-        <a href="#whatis">What is SAR?</a>
-        <a href="#data">Data Sources</a>
-        <a href="#methods">Methods</a>
-        <a href="#findings">Findings</a>
-      </nav>
-    </div>
-  </header>
-
-  <section id="whatis" class="container">
-    <h2>What is SAR?</h2>
-    <p><strong>Synthetic Aperture Radar (SAR)</strong> is an active remote sensing technique that transmits microwave pulses and records the energy scattered back from Earth’s surface. Unlike optical sensors, SAR works day and night, through clouds, haze, and even vegetation or soil depending on the wavelength.</p>
-
-    <h3>Why “Synthetic Aperture”?</h3>
-    <p>The angular resolution follows: θ ~ λ / D. For λ = 5 cm, achieving 10 m resolution would require a 4 km antenna. SAR synthesizes signals along the flight path, forming a virtual large antenna and enabling fine resolution imaging.</p>
-
-    <h3>Flight Geometry & Distortions</h3>
-    <ul>
-      <li><strong>Slant range</strong>: line-of-sight distance measured by radar.</li>
-      <li><strong>Ground range</strong>: projection of slant range onto the surface.</li>
-      <li><strong>Along-track</strong>: parallel to flight path; <strong>Across-track</strong>: perpendicular.</li>
-      <li><strong>Layover</strong> and <strong>Shadow</strong>: distortions caused by terrain relief.</li>
-    </ul>
-
-    <h3>Wavelengths</h3>
-    <ul>
-      <li>X-band (~3 cm): canopy tops, but cannot penetrate dense forests.</li>
-      <li>L-band (~23 cm): penetrates through vegetation, sensitive to trunks and ground.</li>
-      <li>P-band (~1 m): deeper penetration, used in archaeology and soil studies.</li>
-    </ul>
-
-    <h3>Polarization & Scattering</h3>
-    <ul>
-      <li><strong>VV</strong>: smooth bare soil or water surfaces.</li>
-      <li><strong>VH/HV</strong>: volume scattering from leaves and branches.</li>
-      <li><strong>HH</strong>: double-bounce scattering from trunks or man-made structures.</li>
-    </ul>
-
-    <h3>Speckle</h3>
-    <p>Speckle is grainy noise-like pattern caused by interference from many small scatterers. It is reproducible and can be reduced using multi-look averaging or repeated observations.</p>
-
-    <h3>Resolution vs Pixel Size</h3>
-    <p><strong>Spatial resolution</strong> is the true physical sensor capability. <strong>Pixel size</strong> is the spacing in the processed image grid. They are related but not identical.</p>
-
-    <h3>InSAR (Interferometric SAR)</h3>
-    <p>By comparing the phase of radar signals from at least two acquisitions, distances can be measured with centimeter precision. Interferograms reveal surface changes such as earthquakes, glacier motion, or subsidence.</p>
-    <p>Workflow: raw signal → calibration → interferogram → analysis.</p>
-
-    <div class="refs">
-      <p><em>References:</em><br>
-        <a href="https://www.earthdata.nasa.gov/learn/earth-observation-data-basics/remote-sensing" target="_blank" rel="noopener">NASA Earthdata – Remote Sensing Basics</a><br>
-        <a href="https://www.earthdata.nasa.gov/learn/earth-observation-data-basics/sar" target="_blank" rel="noopener">NASA Earthdata – Synthetic Aperture Radar (SAR)</a>
-      </p>
-    </div>
-  </section>
-
-  <section id="data" class="container">
-    <h2>Data Sources</h2>
-
-    <h3>Digital Elevation Model (DEM)</h3>
-    <p>
-      To analyze mountain structure and surface topography, we use <strong>Digital Elevation Models (DEMs)</strong> available through NASA’s
-      <a href="https://search.earthdata.nasa.gov/search" target="_blank" rel="noopener">Earthdata Search</a>.
-      In this project, we employ DEM products with ~1 km spatial resolution.
-    </p>
-    <p>
-      DEMs are generated by combining remote sensing data (e.g., radar altimetry, optical stereoscopy, and interferometric SAR) into a
-      continuous gridded representation of Earth’s surface elevation. Because radar-based DEMs rely on <strong>active measurements</strong>
-      (microwave pulses transmitted and received), they provide consistent height information independent of sunlight or weather conditions.
-    </p>
-    <p>
-      Using DEMs ensures that we can extract reliable elevation baselines to normalize SAR backscatter, correct for terrain distortions,
-      and interpret slope-dependent scattering patterns across different mountain ranges.
-    </p>
-
-    <h3>Sentinel-1 SAR (C-band)</h3>
-    <p>
-      For radar backscatter analysis, our main dataset comes from the <strong>Sentinel-1 mission</strong>, part of the European Space Agency’s Copernicus program.
-      Sentinel-1A (launched 2014) and Sentinel-1B (2016–2022) operate in the <strong>C-band</strong> (~5.6 cm wavelength), making them highly suitable for
-      mapping vegetation, soil moisture, snow cover, and surface deformation.
-    </p>
-    <p>
-      Sentinel-1 features include:
-    </p>
-    <ul>
-      <li><strong>All-weather, day-and-night imaging</strong> with Synthetic Aperture Radar (SAR).</li>
-      <li>Multiple polarization modes (VV, VH, HH, HV) for structural and surface characterization.</li>
-      <li>Interferometric Wide Swath (IW) mode with ~5 m × 20 m resolution over 250 km swath.</li>
-      <li>Free and open data access, enabling global-scale monitoring and reproducible science.</li>
-    </ul>
-    <p>
-      By combining DEM-derived topography with Sentinel-1 C-band SAR backscatter, we can analyze how elevation, slope, and roughness
-      control radar signals across different mountain systems worldwide.
-    </p>
-  </section>
-
-  <footer>
-    <div class="container">© 2025 Global Mountain SAR Project</div>
-  </footer>
-
-                            ` }} />
-                    </Typography>
-                </Stack>
+                <div style={{ height: 'calc(100dvh - 120px)' }}>
+                    <iframe
+                        src={iframeSrc}
+                        style={{ width: '100%', height: '100%', border: 0 }}
+                        title="Explanation"
+                    />
+                </div>
             </Modal>
 
             <Button variant="default" onClick={open}>
