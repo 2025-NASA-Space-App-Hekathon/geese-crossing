@@ -5,6 +5,7 @@ import { Text, AppShell, Stack, Box, Title, Group, Card } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import Header from '../components/organisms/header/Header';
 import { useMountainStore } from '../components/store/mountainStore';
+import OverlayPanel from '../components/organisms/OverlayPanel';
 
 const EarthGlobe = dynamic(() => import('../components/organisms/EarthGlobe'), { ssr: false });
 
@@ -22,7 +23,7 @@ export default function Page() {
                 breakpoint: 'sm',
                 collapsed: {
                     mobile: !opened,
-                    desktop: selectedMountain?.id ? false : true
+                    desktop: false
                 },
             }}
             padding={0}
@@ -39,22 +40,35 @@ export default function Page() {
                 borderWidth: 0,
             }}>
                 <Stack>
-                    <Card style={{ opacity: 0.9 }}>
-                        <Title order={4}>
-                            {selectedMountain ? selectedMountain.name : 'No mountain selected'}
-                        </Title>
-                    </Card>
+                    {selectedMountain && selectedMountain.id > 0 ? (
+                        <>
+                            <Card style={{ opacity: 0.9 }}>
+                                <Title order={4}>
+                                    {selectedMountain ? selectedMountain.name : 'No mountain selected'}
+                                </Title>
+                            </Card>
 
-                    {selectedMountain && selectedMountain.metadata && (
-                        <Card style={{ opacity: 0.9 }}>
+                            {selectedMountain && selectedMountain.metadata && (
+                                <Card style={{ opacity: 0.9 }}>
+                                    <Text>
+                                        Latitude: {selectedMountain.metadata.latitude.toFixed(4)}°
+                                    </Text>
+                                    <Text>
+                                        Longitude: {selectedMountain.metadata.longitude.toFixed(4)}°
+                                    </Text>
+                                </Card>
+                            )}
+                        </>
+                    ) : (
+                        <Card style={{ opacity: 0.5 }}>
                             <Text>
-                                Latitude: {selectedMountain.metadata.latitude.toFixed(4)}°
-                            </Text>
-                            <Text>
-                                Longitude: {selectedMountain.metadata.longitude.toFixed(4)}°
+                                Select a mountain.
                             </Text>
                         </Card>
                     )}
+                    <Card style={{ opacity: 0.9 }}>
+                        <OverlayPanel />
+                    </Card>
                 </Stack>
             </AppShell.Navbar>
             <AppShell.Header>
