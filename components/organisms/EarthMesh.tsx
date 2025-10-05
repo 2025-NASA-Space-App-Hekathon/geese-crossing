@@ -3,6 +3,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { useFrame, useThree } from '@react-three/fiber';
 import { cartesianToLatLon, ClickInfo, getGlobeRotationForLatLon } from '../../components/utils/globeMath';
+import { useMountainStore } from '../../components/store/mountainStore';
 import { SingleBandDataset } from '../../components/utils/textureLoaders';
 
 export default function EarthMesh({ texture, heightMap, autoRotate, rotationSpeed, onLocationClick, externalRef, initialFocus, mountainsDataset, segments = 96, visible = true }: {
@@ -21,6 +22,7 @@ export default function EarthMesh({ texture, heightMap, autoRotate, rotationSpee
     const ref = externalRef || internalRef;
     const { raycaster } = useThree();
     const [isInitialized, setIsInitialized] = useState(false);
+    const { setHovered } = useMountainStore();
 
     useEffect(() => {
         if (ref.current && texture && !isInitialized) {
@@ -117,12 +119,43 @@ export default function EarthMesh({ texture, heightMap, autoRotate, rotationSpee
     };
 
     const handlePointerMove = (e: any) => {
-        if (!pointerDownRef.current) return;
-        if (movedRef.current) return;
-        const dx = e.clientX - pointerDownRef.current.x;
-        const dy = e.clientY - pointerDownRef.current.y;
-        if (Math.sqrt(dx * dx + dy * dy) > DRAG_THRESHOLD_PX) {
-            movedRef.current = true; // 드래그로 판정 (회전은 OrbitControls 담당)
+        // If mouse is currently pressed, update drag threshold detection for click vs drag
+        if (pointerDownRef.current) {
+            const dx = e.clientX - pointerDownRef.current.x;
+            const dy = e.clientY - pointerDownRef.current.y;
+            if (Math.sqrt(dx * dx + dy * dy) > DRAG_THRESHOLD_PX) {
+                movedRef.current = true; // 드래그로 판정 (회전은 OrbitControls 담당)
+            }
+        }
+
+        // Always perform hover sampling on move (independent of mouse down)
+        if (ref.current && mountainsDataset) {
+            const intersects = raycaster.intersectObject(ref.current);
+            
+            if (intersects.length && intersects[0].uv) {
+                let { x: u, y: v } = intersects[0].uv;
+                if (u < 0) u = 0; else if (u > 1) u = 1;
+                if (v < 0) v = 0; else if (v > 1) v = 1;
+                const px = Math.min(mountainsDataset.width - 1, Math.max(0, Math.round(u * (mountainsDataset.width - 1))));
+                const py = Math.min(mountainsDataset.height - 1, Math.max(0, Math.round((1 - v) * (mountainsDataset.height - 1))));
+                const idx = py * mountainsDataset.width + px;
+                const val = mountainsDataset.data[idx];
+                
+                const intId = Math.round(val);
+                if (intId > 0) {
+                    
+                // Compute lat/lon for display
+                    const inverseQuat = ref.current.quaternion.clone().invert();
+                    const point = intersects[0].point.clone();
+                    const localPoint = point.applyQuaternion(inverseQuat);
+                    const { latitude, longitude } = cartesianToLatLon(localPoint.clone().normalize().multiplyScalar(1.5));
+                    setHovered({ id: intId, metadata: { latitude, longitude } });
+                } else {
+                    setHovered(null);
+                }
+            } else {
+                setHovered(null);
+            }
         }
     };
 
@@ -145,7 +178,7 @@ export default function EarthMesh({ texture, heightMap, autoRotate, rotationSpee
             onPointerDown={handlePointerDown}
             onPointerMove={handlePointerMove}
             onPointerUp={handlePointerUp}
-            onPointerLeave={() => { pointerDownRef.current = null; }}
+            onPointerLeave={() => { pointerDownRef.current = null; setHovered(null); }}
         >
             {/* Adjustable segment resolution */}
             <sphereGeometry args={[1.5, segments, segments]} />

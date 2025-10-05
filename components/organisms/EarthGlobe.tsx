@@ -232,12 +232,18 @@ export default function EarthGlobe() {
                     elevation={0.003}
                     opacity={1.0}
                     followRef={globeRef}
+                    heightMap={heightMap}
+                    displacementScale={0.08}
+                    displacementBias={0.001}
                 />
                 {/* 동적 오버레이 매니저 */}
                 <OverlayManager
                     folderPath="/overlays"
                     globeRef={globeRef}
                     segments={96}
+                    heightMap={heightMap}
+                    displacementScale={0.08}
+                    displacementBias={0.0005}
                 />
             </Canvas>
             {(focusMode === 'focused' || focusMode === 'focusing') && (

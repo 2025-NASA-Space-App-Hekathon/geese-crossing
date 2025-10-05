@@ -10,6 +10,10 @@ interface OverlayManagerProps {
     globeRef: React.RefObject<THREE.Mesh | null>;
     segments?: number;
     autoRefreshMs?: number; // optional polling interval
+    // Optional: apply the same terrain displacement as the base Earth
+    heightMap?: THREE.Texture | null;
+    displacementScale?: number; // default aligns with EarthMesh (0.08)
+    displacementBias?: number;  // small lift to mitigate z-fighting (e.g., 0.0005)
 }
 
 // Multi overlay manager (zustand driven)
@@ -17,7 +21,7 @@ interface OverlayManagerProps {
 // 1. Fetch overlay index (id, path, extension) then initialize store (no textures yet)
 // 2. Lazy-load texture when an overlay becomes visible
 // 3. Render all visible overlays sorted by order (lower order under higher order)
-export default function OverlayManager({ folderPath, globeRef, segments = 96, autoRefreshMs }: OverlayManagerProps) {
+export default function OverlayManager({ folderPath, globeRef, segments = 96, autoRefreshMs, heightMap, displacementScale = 0.08, displacementBias = 0.0005 }: OverlayManagerProps) {
     const ordered = useOrderedOverlays();
     const initialize = useOverlayStore(s => s.initialize);
     const { registerTexture, markLoading, markError } = useOverlayActions();
@@ -81,13 +85,16 @@ export default function OverlayManager({ folderPath, globeRef, segments = 96, au
                     globeRef={globeRef}
                     segments={segments}
                     renderOrderBase={250 + idx}
+                    heightMap={heightMap}
+                    displacementScale={displacementScale}
+                    displacementBias={displacementBias}
                 />
             ))}
         </>
     );
 }
 
-function OverlayMesh({ record, globeRef, segments, renderOrderBase }: { record: OverlayRecord; globeRef: React.RefObject<THREE.Mesh | null>; segments: number; renderOrderBase: number; }) {
+function OverlayMesh({ record, globeRef, segments, renderOrderBase, heightMap, displacementScale, displacementBias }: { record: OverlayRecord; globeRef: React.RefObject<THREE.Mesh | null>; segments: number; renderOrderBase: number; heightMap?: THREE.Texture | null; displacementScale?: number; displacementBias?: number; }) {
     const ref = React.useRef<THREE.Mesh | null>(null);
     useFrame(() => {
         if (globeRef.current && ref.current) {
@@ -96,6 +103,32 @@ function OverlayMesh({ record, globeRef, segments, renderOrderBase }: { record: 
     });
     const material = React.useMemo(() => {
         if (!record.texture) return null;
+        // If a heightMap is provided, use a displacement-capable material so the overlay follows terrain
+        if (heightMap) {
+            const mat = new THREE.MeshStandardMaterial({
+                map: record.texture,
+                transparent: true,
+                depthWrite: false,
+                depthTest: true,
+                opacity: record.opacity,
+                side: THREE.FrontSide,
+                toneMapped: false,
+                alphaTest: 0.05,
+                blending: THREE.NormalBlending,
+                displacementMap: heightMap,
+                displacementScale: displacementScale ?? 0.08,
+                displacementBias: displacementBias ?? 0.0005,
+                roughness: 1,
+                metalness: 0,
+                color: 0xffffff,
+            });
+            // Slight polygon offset to reduce z-fighting with the base Earth
+            mat.polygonOffset = true;
+            mat.polygonOffsetFactor = -1;
+            mat.polygonOffsetUnits = -1;
+            return mat;
+        }
+        // Fallback: no displacement, keep Basic material (lighter & unlit)
         return new THREE.MeshBasicMaterial({
             map: record.texture,
             transparent: true,
@@ -107,10 +140,13 @@ function OverlayMesh({ record, globeRef, segments, renderOrderBase }: { record: 
             alphaTest: 0.05,
             blending: THREE.NormalBlending
         });
-    }, [record.texture, record.opacity]);
+    }, [record.texture, record.opacity, heightMap, displacementScale, displacementBias]);
     if (!material) return null;
-    // Small incremental lift to mitigate z-fighting (order stable)
-    const radius = 1.512 + (record.order * 0.0004);
+    // Base radius: if using displacement, align with EarthMesh radius (1.5) and add tiny epsilon.
+    // Otherwise keep prior slightly lifted shell.
+    const baseRadius = heightMap ? 1.5 : 1.512;
+    const epsilon = heightMap ? 0.001 : 0.0;
+    const radius = baseRadius + epsilon + (record.order * 0.0003);
     return (
         <mesh ref={ref} renderOrder={renderOrderBase}>
             <sphereGeometry args={[radius, segments, segments]} />

@@ -41,12 +41,12 @@ export default function OverlayPanel() {
                         />
                         <span style={{ width: 36, textAlign: 'right', fontVariantNumeric: 'tabular-nums' }}>{(o.opacity * 100).toFixed(0)}%</span>
                     </div>
-                    <div style={{ fontSize: 10, opacity: 0.6 }}>
+                    {/* <div style={{ fontSize: 10, opacity: 0.6 }}>
                         {o.status === 'idle' && !o.visible && '대기'}
                         {o.status === 'loading' && '로딩중...'}
                         {o.status === 'ready' && (o.visible ? '표시중' : '로드됨')}
                         {o.status === 'error' && <span style={{ color: '#ff6666' }}>오류</span>}
-                    </div>
+                    </div> */}
                 </Flex>
             ))
             }
